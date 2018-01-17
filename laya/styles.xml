@@ -1,0 +1,10 @@
+<res>
+   <item name="comp/bg.png" type="Image" compress="0" pack="0" quality="80" props="sizeGrid=32,10,9,8" picType="0"/>
+   <item name="comp/image.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0"/>
+   <item name="gamehall/avater" type="" compress="0" pack="2" quality="80" props="" picType="0"/>
+   <item name="gamehall/effect/logo/logo.atlas" type="Image" compress="0" pack="2" quality="80" props="" picType="0"/>
+   <item name="template/TempleteWindow/public/b3_normal.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0"/>
+   <item name="template/GameChose/gamehall/mainScene/totle_preson.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0"/>
+   <item name="gamehall/mainScene/btn_screen_normal.png" type="Button" compress="0" pack="0" quality="80" props="" picType="0"/>
+   <item name="bitmapFont" type="" compress="0" pack="0" quality="80" props="" picType="0"/>
+</res>

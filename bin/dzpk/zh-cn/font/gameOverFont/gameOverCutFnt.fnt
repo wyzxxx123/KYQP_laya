@@ -1,0 +1,14 @@
+{"file":"gameOverCutFnt.png","frames":{
+"1":{"x":47,"y":31,"w":15,"h":28,"offX":0,"offY":0,"sourceW":15,"sourceH":28},
+"2":{"x":1,"y":89,"w":20,"h":27,"offX":0,"offY":1,"sourceW":20,"sourceH":28},
+"3":{"x":23,"y":91,"w":19,"h":28,"offX":0,"offY":0,"sourceW":19,"sourceH":28},
+"4":{"x":1,"y":1,"w":23,"h":27,"offX":0,"offY":1,"sourceW":23,"sourceH":28},
+"5":{"x":44,"y":91,"w":19,"h":28,"offX":0,"offY":0,"sourceW":19,"sourceH":28},
+"6":{"x":24,"y":31,"w":21,"h":28,"offX":0,"offY":0,"sourceW":21,"sourceH":28},
+"7":{"x":1,"y":60,"w":21,"h":27,"offX":0,"offY":1,"sourceW":21,"sourceH":28},
+"8":{"x":1,"y":30,"w":21,"h":28,"offX":0,"offY":0,"sourceW":21,"sourceH":28},
+"9":{"x":24,"y":61,"w":20,"h":28,"offX":0,"offY":0,"sourceW":20,"sourceH":28},
+",":{"x":49,"y":1,"w":11,"h":12,"offX":0,"offY":16,"sourceW":11,"sourceH":28},
+".":{"x":49,"y":15,"w":10,"h":10,"offX":0,"offY":18,"sourceW":10,"sourceH":28},
+"-":{"x":46,"y":61,"w":17,"h":8,"offX":0,"offY":10,"sourceW":17,"sourceH":28},
+"0":{"x":26,"y":1,"w":21,"h":28,"offX":0,"offY":0,"sourceW":21,"sourceH":28}}}

@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset='utf-8' />
+	<title>www.layabox.com</title>
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'
+	/>
+	<meta name="renderer" content="webkit">
+	<meta name='apple-mobile-web-app-capable' content='yes' />
+	<meta name='full-screen' content='true' />
+	<meta name='x5-fullscreen' content='true' />
+	<meta name='360-fullscreen' content='true' />
+	<meta name="laya" screenorientation ="landscape"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta http-equiv='expires' content='0' />
+	<meta http-equiv="Cache-Control" content="no-siteapp"/>
+</head>
+
+<body>
+	<!--核心包，封装了显示对象渲染，事件，时间管理，时间轴动画，缓动，消息交互,socket，本地存储，鼠标触摸，声音，加载，颜色滤镜，位图字体等-->
+	<script type="text/javascript" src="libs/laya.core.js"></script>
+	<!--封装了webgl渲染管线，如果使用webgl渲染，可以在初始化时调用Laya.init(1000,800,laya.webgl.WebGL);-->
+    <script type="text/javascript" src="libs/laya.webgl.js"></script>
+	<!--是动画模块，包含了swf动画，骨骼动画等-->
+    <script type="text/javascript" src="libs/laya.ani.js"></script>
+	<!--包含更多webgl滤镜，比如外发光，阴影，模糊以及更多-->
+    <script type="text/javascript" src="libs/laya.filter.js"></script>
+	<!--封装了html动态排版功能-->
+    <script type="text/javascript" src="libs/laya.html.js"></script>
+	<!--粒子类库-->
+    <script type="text/javascript" src="libs/laya.particle.js"></script>
+	<!--提供tileMap解析支持-->
+    <script type="text/javascript" src="libs/laya.tiledmap.js"></script>
+	<!--提供了制作UI的各种组件实现-->
+    <script type="text/javascript" src="libs/laya.ui.js"></script>
+
+	<script type="text/javascript" src="libs/laya.debugtool.js"></script>
+	<!-- 物理引擎matter.js -->
+	<!--用户自定义顺序文件添加到这里-->
+	<!--jsfile--Custom-->
+	<!--jsfile--Custom-->
+	<!--自定义的js(src文件夹下)文件自动添加到下面jsfile模块标签里面里-->
+	<!--删除标签，ide不会自动添加js文件，请谨慎操作-->
+	<!--jsfile--startTag-->
+	<script src="js/StorageKeys.js"></script>
+	<script src="js/module/RegistClass.js"></script>
+	<script src="js/module/dzpk/Holdem.js"></script>
+	<script src="js/module/dzpk/DZPKCardType.js"></script>
+	<script src="js/module/CardLogic.js"></script>
+	<script src="js/mbase/base/MsgData.js"></script>
+	<script src="js/mbase/base/InitData.js"></script>
+	<script src="js/GameConfig.js"></script>
+	<script src="js/core/viewmodel/VMManager.js"></script>
+	<script src="js/core/view/Layer.js"></script>
+	<script src="js/core/view/EffectView.js"></script>
+	<script src="js/core/view/CView.js"></script>
+	<script src="js/core/view/Animinator.js"></script>
+	<script src="js/core/SendHandel.js"></script>
+	<script src="js/core/net/SocketManager.js"></script>
+	<script src="js/core/net/Request.js"></script>
+	<script src="js/core/net/Loader.js"></script>
+	<script src="js/core/net/ClassPro.js"></script>
+	<script src="js/core/net/AnalyzerManager.js"></script>
+	<script src="js/core/net/AnalyzeData.js"></script>
+	<script src="js/core/model/ModelManager.js"></script>
+	<script src="js/core/md5.js"></script>
+	<script src="js/core/ExUtils.js"></script>
+	<script src="js/core/event/EventManager.js"></script>
+	<script src="js/core/comlaya/ScaleCom.js"></script>
+	<script src="js/core/CFun.js"></script>
+	<script src="js/analyzer/analyzer1/type/TypeDef.js"></script>
+	<script src="js/analyzer/analyzer1/type/Struct.js"></script>
+	<script src="js/analyzer/analyzer1/SSend.js"></script>
+	<script src="js/analyzer/analyzer1/RpcType.js"></script>
+	<script src="js/analyzer/analyzer1/RpcDef.js"></script>
+	<script src="js/analyzer/analyzer1/PropDef.js"></script>
+	<script src="js/analyzer/analyzer1/Dump.js"></script>
+	<script src="js/analyzer/analyzer1/crypt/Ctx.js"></script>
+	<script src="js/analyzer/analyzer1/Analyzer.js"></script>
+	<script src="js/analyzer/analyzer1/type/TypeArray.js"></script>
+	<script src="js/core/comlaya/BoxMask.js"></script>
+	<script src="js/core/comlaya/ButtonState.js"></script>
+	<script src="js/core/comlaya/CheckState.js"></script>
+	<script src="js/core/comlaya/SettingSlider.js"></script>
+	<script src="js/core/comlaya/SliderCustomer.js"></script>
+	<script src="js/core/model/Model.js"></script>
+	<script src="js/core/view/ComView.js"></script>
+	<script src="js/core/view/DialogView.js"></script>
+	<script src="js/core/view/SceneView.js"></script>
+	<script src="js/core/view/WinView.js"></script>
+	<script src="js/core/viewmodel/ViewModel.js"></script>
+	<script src="js/mbase/base/MCView.js"></script>
+	<script src="js/mbase/base/MEffectView.js"></script>
+	<script src="js/mbase/base/MLayer.js"></script>
+	<script src="js/mbase/base/MModel.js"></script>
+	<script src="js/mbase/base/ModelHandle.js"></script>
+	<script src="js/mbase/base/MViewModel.js"></script>
+	<script src="js/mbase/base/MVMManager.js"></script>
+	<script src="js/mbase/data/Account.js"></script>
+	<script src="js/mbase/data/CityScene.js"></script>
+	<script src="js/mbase/data/HoldemAgent.js"></script>
+	<script src="js/mbase/data/HoldemDeck.js"></script>
+	<script src="js/mbase/data/Player.js"></script>
+	<script src="js/ui/layaUI.max.all.js"></script>
+	<script src="js/module/avaterChose/AvaterChoseView.js"></script>
+	<script src="js/module/avaterChose/AvaterChoseVM.js"></script>
+	<script src="js/module/dzpk/cardtype/CardTypeView.js"></script>
+	<script src="js/module/dzpk/cardtype/CardTypeVM.js"></script>
+	<script src="js/module/dzpk/DZPKCardLogic.js"></script>
+	<script src="js/module/dzpk/DZPKRoomsView.js"></script>
+	<script src="js/module/dzpk/DZPKRoomsVM.js"></script>
+	<script src="js/module/dzpk/help/DZPKHelpView.js"></script>
+	<script src="js/module/dzpk/help/DZPKHelpVM.js"></script>
+	<script src="js/module/dzpk/menu/MenuView.js"></script>
+	<script src="js/module/dzpk/menu/MenuVM.js"></script>
+	<script src="js/module/dzpk/pipei/PiPeiView.js"></script>
+	<script src="js/module/dzpk/pipei/PiPeiVM.js"></script>
+	<script src="js/module/dzpk/record/DZPKRecordView.js"></script>
+	<script src="js/module/dzpk/record/DZPKRecordVM.js"></script>
+	<script src="js/module/dzpk/scene/DZPKEffect.js"></script>
+	<script src="js/module/dzpk/scene/DZPKSceneView.js"></script>
+	<script src="js/module/dzpk/scene/DZPKSceneVM.js"></script>
+	<script src="js/module/dzpk/take/DZPKTakeView.js"></script>
+	<script src="js/module/dzpk/take/DZPKTakeVM.js"></script>
+	<script src="js/module/hall/HallView.js"></script>
+	<script src="js/module/hall/HallVM.js"></script>
+	<script src="js/module/setting/SettingView.js"></script>
+	<script src="js/module/setting/SettingVM.js"></script>
+	<!--jsfile--endTag-->
+
+	<!--启动类添加到这里-->
+	<!--jsfile--Main-->
+	<script src="js/KYQP_laya.js"></script>
+	<!--jsfile--Main-->
+
+</body>
+
+</html>

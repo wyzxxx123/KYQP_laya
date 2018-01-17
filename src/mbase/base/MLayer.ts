@@ -1,0 +1,17 @@
+module mbase.base{
+    export class MLayer extends core.view.Layer{
+
+        private _vm_manager:MVMManager;
+        constructor(){
+            super();
+
+            this._vm_manager = new MVMManager();
+
+            core.view.Layer.WINDOW_LAYER.on(Laya.Event.CLICK,this,this.onCloseWindows);
+        }
+
+        private onCloseWindows(){
+            this._vm_manager.closeWindow();
+        }
+    }
+}

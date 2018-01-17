@@ -1,0 +1,37 @@
+{
+    "x":0,
+    "type":"Windows",
+    "selectedBox":1,
+    "selecteID":2,
+    "props":{"y":0,"x":0,"width":324,"sceneWidth":600,"sceneHeight":400,"sceneColor":"#000000","height":630},
+    "nodeParent":-1,
+    "label":"Windows",
+    "isOpen":true,
+    "isDirectory":true,
+    "isAniNode":true,
+    "hasChild":true,
+    "compId":1,
+    "child":[
+        {
+            "x":15,
+            "type":"Image",
+            "props":{"y":0,"x":0,"skin":"dzpk/zh-cn/gameScene/cardType.png"},
+            "nodeParent":1,
+            "label":"Image",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":2,
+            "child":[
+                ]
+        }],
+    "animations":[
+        {
+            "nodes":[
+                ],
+            "name":"ani1",
+            "id":1,
+            "frameRate":24,
+            "action":0
+        }]
+}
