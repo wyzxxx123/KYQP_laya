@@ -37,8 +37,8 @@ import { VMManager } from '../../core/viewmodel/VMManager';
 
         protected showOther(className:string,exData?:any){
             let initData = laya.utils.Pool.getItemByClass("InitData",InitData);
-            initData.initclassName = className;
-            initData.initexData = exData;
+            initData.className = className;
+            initData.exData = exData;
             this.dispach(VMManager.SHOW_VIEW,initData);
         }
     }

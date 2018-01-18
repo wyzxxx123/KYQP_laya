@@ -20,7 +20,6 @@ define(["require", "exports", "./StorageKeys", "./module/RegistClass", "./GameCo
             // Laya.DebugPanel.init();
             //调用DebugTool调试面板
             // Laya.DebugTool.init();
-            console.log("aaaaaaaa");
             new RegistClass_1.RegistClass();
             new MLayer_1.MLayer();
             this.localInit();

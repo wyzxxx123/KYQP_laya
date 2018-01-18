@@ -27,8 +27,6 @@ export class GameMain {
         //调用DebugTool调试面板
         // Laya.DebugTool.init();
 
-        console.log("aaaaaaaa");
-
         new RegistClass();
         new MLayer();
 

@@ -55,8 +55,8 @@ import { MsgData } from './MsgData';
 
         private showOther(className:string,exData?:any){
             let initData = laya.utils.Pool.getItemByClass("InitData",InitData);
-            initData.initclassName = className;
-            initData.initexData = exData;
+            initData.className = className;
+            initData.exData = exData;
             this.onInitAndShow(initData);
         }
 

@@ -1,9 +1,9 @@
-define(["require", "exports", "../../core/CFun", "./PropDef", "./RpcType", "./type/TypeDef", "./type/TypeArray", "./type/Struct"], function (require, exports, CFun_1, PropDef_1, RpcType_1, TypeDef_1, TypeArray_1, Struct_1) {
+define(["require", "exports", "../../core/CFun", "./PropDef", "./RpcType", "./type/TypeDef", "./type/TypeArray", "./type/Struct", "./Dump"], function (require, exports, CFun_1, PropDef_1, RpcType_1, TypeDef_1, TypeArray_1, Struct_1, Dump_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RpcDef {
         constructor() {
-            this._dump = Dump;
+            this._dump = Dump_1.Dump;
             RpcDef._version = this._dump.Digi;
             RpcDef._type_writers = {};
             RpcDef._type_readers = {};

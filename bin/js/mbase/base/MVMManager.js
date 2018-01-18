@@ -43,8 +43,8 @@ define(["require", "exports", "../../core/CFun", "../../core/model/ModelManager"
         }
         showOther(className, exData) {
             let initData = laya.utils.Pool.getItemByClass("InitData", InitData_1.InitData);
-            initData.initclassName = className;
-            initData.initexData = exData;
+            initData.className = className;
+            initData.exData = exData;
             this.onInitAndShow(initData);
         }
         onInitAndShow(data) {

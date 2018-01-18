@@ -62,9 +62,9 @@ import { CFun } from '../CFun';
 
         private parsingPath(){
             let c:string = this.constructor.toString();
-            let c_s = this.constructor.name + " extends ui.";
+            let c_s = this.constructor.name + " extends layaUI_max_all_1.ui.";
             let s_i = c.indexOf(c_s) + c_s.length;
-            let e_i = c.indexOf(this.constructor.__proto__.name) + this.constructor.__proto__.name.length - 2;
+            let e_i = c.indexOf(this.constructor["__proto__"].name) + this.constructor["__proto__"].name.length - 2;
             let t_c = c.substring(s_i,e_i);
 
             let d_i = t_c.indexOf(".");
