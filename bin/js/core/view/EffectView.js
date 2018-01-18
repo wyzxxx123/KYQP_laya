@@ -1,13 +1,11 @@
-var core;
-(function (core) {
-    var view;
-    (function (view) {
-        class EffectView {
-            constructor() {
-                this._effectLayer = view.Layer.EFFECT_LAYER;
-            }
+define(["require", "exports", "./Layer"], function (require, exports, Layer_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class EffectView {
+        constructor() {
+            this._effectLayer = Layer_1.Layer.EFFECT_LAYER;
         }
-        view.EffectView = EffectView;
-    })(view = core.view || (core.view = {}));
-})(core || (core = {}));
+    }
+    exports.EffectView = EffectView;
+});
 //# sourceMappingURL=EffectView.js.map

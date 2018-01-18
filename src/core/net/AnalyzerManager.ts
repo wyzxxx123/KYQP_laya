@@ -1,7 +1,9 @@
-module core.net{
+import { Analyzer } from '../../analyzer/analyzer1/Analyzer';
+import { ClassPro } from './ClassPro';
+
     export class AnalyzerManager{
 
-        public getAnalyzed(data:any):core.net.ClassPro{
+        public getAnalyzed(data:any):ClassPro{
             return this._analyzer.analyzeRecv(data);
         }
 
@@ -9,10 +11,10 @@ module core.net{
             return this._analyzer.analyzeSend(data);
         }
 
-        private _analyzer:analyzer.analyzer1.Analyzer;
+        private _analyzer:Analyzer;
 
         constructor(){
-            this._analyzer = new analyzer.analyzer1.Analyzer();
+            this._analyzer = new Analyzer();
         }
 
         private static _instance:AnalyzerManager;
@@ -23,4 +25,3 @@ module core.net{
             return this._instance;
         }
     }
-}

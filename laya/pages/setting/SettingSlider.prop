@@ -1,4 +1,4 @@
-<SettingSlider className="core.comlaya.SettingSlider">
+<SettingSlider className="SettingSlider">
 	<!--<prop name="xxx" tips="数字类型" type="number"/>
 	<prop name="xxx" tips="整数类型" type="int"/>
 	<prop name="xxx" tips="字符串类型" type="string"/>

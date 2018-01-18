@@ -1,5 +1,5 @@
-namespace analyzer.analyzer1
-{
+import { TypeDef } from './TypeDef';
+
 	/**
 	 * 指定项类型的列表
 	 * @author	Fictiony
@@ -75,4 +75,3 @@ namespace analyzer.analyzer1
 			return "<TypeArray type=" + this._type.name + " [" + this.join(",") + "]>";
 		}
 	}
-}

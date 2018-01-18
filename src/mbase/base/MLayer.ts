@@ -1,5 +1,6 @@
-module mbase.base{
-    export class MLayer extends core.view.Layer{
+import { Layer } from '../../core/view/Layer';
+import { MVMManager } from './MVMManager';
+    export class MLayer extends Layer{
 
         private _vm_manager:MVMManager;
         constructor(){
@@ -7,11 +8,10 @@ module mbase.base{
 
             this._vm_manager = new MVMManager();
 
-            core.view.Layer.WINDOW_LAYER.on(Laya.Event.CLICK,this,this.onCloseWindows);
+            Layer.WINDOW_LAYER.on(Laya.Event.CLICK,this,this.onCloseWindows);
         }
 
         private onCloseWindows(){
             this._vm_manager.closeWindow();
         }
     }
-}

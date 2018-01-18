@@ -1,4 +1,9 @@
-module core.viewmodel{
+import { SendHandel } from '../SendHandel';
+import { EventManager } from '../event/EventManager';
+import { CView } from '../view/CView';
+import { CFun } from '../CFun';
+import { ComView } from '../view/ComView';
+
     /**
      * @description VM层
      * @author wangyz
@@ -6,14 +11,14 @@ module core.viewmodel{
      * @class ViewModel
      */
     export class ViewModel extends SendHandel{
-        private _event_manager:core.event.EventManager;
+        private _event_manager:EventManager;
         private _event_list:any[];
-        protected _cview:core.view.CView;
+        protected _cview:CView;
 
         protected _data:any = null;
 
         public get data():any{
-            if(!this._data) core.CFun.throw("ViewModel的this._data为空");
+            if(!this._data) CFun.throw("ViewModel的this._data为空");
             return this._data;
         }
 
@@ -25,19 +30,19 @@ module core.viewmodel{
          */
         constructor(){
             super();
-            this._event_manager = core.event.EventManager.ins;
+            this._event_manager = EventManager.ins;
             this._event_list = [];
         }
         
         protected regist(type:string,listener:Function):void{
-            if(!this._event_manager) core.CFun.throw("ViewModel的regist中的this._event_manager还未初始化");
+            if(!this._event_manager) CFun.throw("ViewModel的regist中的this._event_manager还未初始化");
             this._event_manager.on(type,listener,this);
             this._event_list.push({type:type,listener:listener});
         }
 
         //派发事件
         protected dispach(type: string,data: any = null){
-            if(!this._event_manager) core.CFun.throw("ViewModel的dispach中的this._event_manager还未初始化");
+            if(!this._event_manager) CFun.throw("ViewModel的dispach中的this._event_manager还未初始化");
             this._event_manager.dispatch(type,data);
         }
 
@@ -76,12 +81,12 @@ module core.viewmodel{
             this.cview.setClass(arg_class);
         }
 
-        public get view():core.view.ComView{
+        public get view():ComView{
             return this.cview.display;
         }
 
-        protected get cview():core.view.CView{
-            if(!this._cview) core.CFun.throw("_cview还未被初始化！");
+        protected get cview():CView{
+            if(!this._cview) CFun.throw("_cview还未被初始化！");
             return this._cview;
         }
 
@@ -132,4 +137,3 @@ module core.viewmodel{
             return this.view.viewType;
         }
     }
-}

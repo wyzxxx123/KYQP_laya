@@ -1,4 +1,4 @@
-module core.view{
+import { ComView } from './ComView';
     export class SceneView extends ComView{
 
         protected layerInit(){
@@ -11,4 +11,3 @@ module core.view{
             this._view_type = ComView.SCENE;
         }
     }
-}

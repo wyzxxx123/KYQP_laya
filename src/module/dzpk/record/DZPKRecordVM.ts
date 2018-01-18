@@ -1,5 +1,6 @@
-module module.dzpk.record{
-    export class DZPKRecordVM extends mbase.base.MViewModel{
+import { MViewModel } from '../../../mbase/base/MViewModel';
+import { DZPKRecordView } from './DZPKRecordView';
+    export class DZPKRecordVM extends MViewModel{
 
        //继承的
         public onShow(recv?:any){
@@ -13,4 +14,3 @@ module module.dzpk.record{
             this.setClass = DZPKRecordView;
         }
     }
-}

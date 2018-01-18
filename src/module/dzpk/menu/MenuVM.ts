@@ -1,4 +1,10 @@
-module module.dzpk.menu{
+import { MViewModel } from '../../../mbase/base/MViewModel';
+import { CFun } from '../../../core/CFun';
+import { HoldemDeck } from '../../../mbase/data/HoldemDeck';
+import { ModelManager } from '../../../core/model/ModelManager';
+import { HoldemAgent } from '../../../mbase/data/HoldemAgent';
+import { MenuView } from './MenuView';
+import { MsgData } from '../../../mbase/base/MsgData';
     /**
      * @description 菜单界面
      * @author wangyz
@@ -6,7 +12,7 @@ module module.dzpk.menu{
      * @class MenuVM
      * @extends {base.MViewModel}
      */
-    export class MenuVM extends mbase.base.MViewModel{
+    export class MenuVM extends MViewModel{
 
         public openCard(){
             this.closeNow();
@@ -25,36 +31,36 @@ module module.dzpk.menu{
 
         public requestOut(){
             this.closeNow();
-            // uiCore.Application.changeScene(new DZPKRoomHallSceneView());
+            // uiApplication.changeScene(new DZPKRoomHallSceneView());
             if (this.checkPlayerisGaming()) {
-                core.CFun.dialog(core.CFun.getItem(Data.MsgData, "id", 3029)["msg"],null,null,"确 定");
+                CFun.dialog(CFun.getItem(MsgData, "id", 3029)["msg"],null,null,"确 定");
             } else {
-                core.CFun.dialog(core.CFun.getItem(Data.MsgData, "id", 3028)["msg"],this.quitScene,this);
+                CFun.dialog(CFun.getItem(MsgData, "id", 3028)["msg"],this.quitScene,this);
             }  
         }
 
         //判断玩家是否在游戏中
         public checkPlayerisGaming(): boolean {
             if(!this.deckData) return false;
-            var playerData = core.CFun.getItem(this._data, "rid", this.playerData["rid"]);
+            var playerData = CFun.getItem(this._data, "rid", this.playerData["rid"]);
             if (!playerData) {
                 return false;
             }
             return !this.deckData.isPlaying && !playerData.isFold;
         }
         
-        public get deckData():mbase.data.HoldemDeck{
-            if(!core.model.ModelManager.ins.getInstByClassName("HoldemDeck")){
+        public get deckData():HoldemDeck{
+            if(!ModelManager.ins.getInstByClassName("HoldemDeck")){
                 return null;
             }
-            return core.model.ModelManager.ins.getInstByClassName("HoldemDeck");
+            return ModelManager.ins.getInstByClassName("HoldemDeck");
         }
 
-        public get agentkData():mbase.data.HoldemAgent{
-            if(!core.model.ModelManager.ins.getInstByClassName("HoldemDeck")){
+        public get agentkData():HoldemAgent{
+            if(!ModelManager.ins.getInstByClassName("HoldemDeck")){
                 return null;
             }
-            return core.model.ModelManager.ins.getInstByClassName("HoldemDeck");
+            return ModelManager.ins.getInstByClassName("HoldemDeck");
         }
 
         private quitScene(name:String){
@@ -75,4 +81,3 @@ module module.dzpk.menu{
             
         }
     }
-}

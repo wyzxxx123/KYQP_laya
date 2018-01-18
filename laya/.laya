@@ -1,6 +1,6 @@
 <project version="0.9.8">
-   <asynRes>img,temp,sound            </asynRes>
-   <unDealRes>embed            </unDealRes>
+   <asynRes>img,temp,sound               </asynRes>
+   <unDealRes>embed               </unDealRes>
    <resTypes>png,jpg   </resTypes>
    <resExportPath>bin/res/atlas   </resExportPath>
    <asynResExportPath>bin   </asynResExportPath>
@@ -15,13 +15,24 @@ var Dialog=laya.ui.Dialog;]]>   </codeImportsJS>
    <shareResPath/>
    <codeType>1   </codeType>
    <resCanCompress/>
-   <resPublishQuality>80            </resPublishQuality>
+   <resPublishQuality>80               </resPublishQuality>
    <langPath/>
    <defaultFont/>
-   <codeImportsTS><![CDATA[import View=core.view.ComView;
-import Dialogs=core.view.DialogView;
-import Scenes=core.view.SceneView;
-import Windows=core.view.WinView;]]>   </codeImportsTS>
+   <codeImportsTS><![CDATA[import { ComView as View} from '../core/view/ComView';
+import { DialogView as Dialogs } from '../core/view/DialogView';
+import { SceneView as Scenes } from '../core/view/SceneView';
+import { WinView as Windows } from '../core/view/WinView';
+import { ScaleCom } from '../core/comlaya/ScaleCom';
+import { BoxMask } from '../core/comlaya/BoxMask';
+import { ButtonState } from '../core/comlaya/ButtonState';
+import { SliderCustomer } from '../core/comlaya/SliderCustomer';
+import { CheckState } from '../core/comlaya/CheckState';
+import { SettingSlider } from '../core/comlaya/SettingSlider';
+
+import View=ComView;
+import Dialogs=DialogView;
+import Scenes=SceneView;
+import Windows=WinView;]]>   </codeImportsTS>
    <textureWidth>2048   </textureWidth>
    <textureHeight>2048   </textureHeight>
    <picWidth>512   </picWidth>

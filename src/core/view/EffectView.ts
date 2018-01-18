@@ -1,4 +1,4 @@
-module core.view{
+import { Layer } from './Layer';
     export class EffectView{
 
 
@@ -7,4 +7,3 @@ module core.view{
             this._effectLayer = Layer.EFFECT_LAYER;
         }
     }
-}

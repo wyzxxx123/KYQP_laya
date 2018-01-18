@@ -1,5 +1,6 @@
-module mbase.data{
-    export class Player extends base.MModel{
+import { MModel } from '../base/MModel';
+import { CFun } from '../../core/CFun';
+    export class Player extends MModel{
         public static accountId:number = 0;
 
         public lockGold:number = 0;
@@ -132,7 +133,7 @@ module mbase.data{
                         chip: this.recordList[i].chip,
                         win: this.recordList[i].win,
                         deduct: this.recordList[i].deduct,
-                        time: core.CFun.formatDate(new Date(parseInt(this.recordList[i].time) * 1000), "yyyy-MM-dd hh:mm:ss"),
+                        time: CFun.formatDate(new Date(parseInt(this.recordList[i].time) * 1000), "yyyy-MM-dd hh:mm:ss"),
                     });
                 }
             }
@@ -155,4 +156,3 @@ module mbase.data{
             super();
         }   
     }
-}

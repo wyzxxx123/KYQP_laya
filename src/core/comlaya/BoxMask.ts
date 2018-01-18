@@ -1,4 +1,4 @@
-module core.comlaya{
+
     /**
      * @description BOX内部的遮罩
      * @author wangyz
@@ -20,4 +20,3 @@ module core.comlaya{
             this.on(Laya.Event.UNDISPLAY,this,this.onRemoveMask);
         }
     }
-}

@@ -1,5 +1,5 @@
-module mbase.data{
-    export class HoldemDeck extends base.MModel{
+import { MModel } from '../base/MModel';
+    export class HoldemDeck extends MModel{
 
         //sitdown
         public seat:number = 0;//一个人赢也是这个参数
@@ -66,4 +66,3 @@ module mbase.data{
             super();
         }  
     }
-}

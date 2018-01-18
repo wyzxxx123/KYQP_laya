@@ -3,7 +3,7 @@
  * @author none
  *
  */
-class CardLogic {
+export class CardLogic {
     public constructor() {
     }
     /** 花色掩码 **/

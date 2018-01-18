@@ -1,4 +1,6 @@
-module core.net{
+import { CFun } from '../CFun';
+import { AnalyzeData } from './AnalyzeData';
+
     /**
      * @description socket管理类，通过connect可生成多个socket连接
      * @author wangyz
@@ -75,7 +77,7 @@ module core.net{
                 delete this._dic_ws[key];
             }
             else{
-                core.CFun.throw("正在清除不存在的链接");
+                CFun.throw("正在清除不存在的链接");
             }
         }
 
@@ -89,7 +91,7 @@ module core.net{
                 ws.close();
             }
             else{
-                core.CFun.throw("正在关闭不存在的链接");
+                CFun.throw("正在关闭不存在的链接");
             }
         }
 
@@ -106,7 +108,7 @@ module core.net{
             let key = tuple[1];
 
             if(!ws){
-                core.CFun.throw("正在向不存在的" + key +"链接发送消息");
+                CFun.throw("正在向不存在的" + key +"链接发送消息");
             }
 
             let flushData = AnalyzeData.ins.analyzeSend(pac,key);
@@ -156,11 +158,10 @@ module core.net{
         }
 
         private onClose(event: any = null){
-            core.CFun.log("连接关闭："+event);
+            CFun.log("连接关闭："+event);
         }
 
         private onError(event: any = null){
-            core.CFun.log("连接错误："+ event);
+            CFun.log("连接错误："+ event);
         }
     }
-}

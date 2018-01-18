@@ -1,4 +1,8 @@
-module module.hall{
+import { MViewModel } from '../../mbase/base/MViewModel';
+import { Player } from '../../mbase/data/Player';
+import { HallView } from './HallView';
+import { ExUtils } from '../../core/ExUtils';
+import { CFun } from '../../core/CFun';
     /**
      * @description 大厅界面
      * @author wangyz
@@ -6,8 +10,8 @@ module module.hall{
      * @class HallVM
      * @extends {base.MViewModel}
      */
-    export class HallVM extends mbase.base.MViewModel{
-        private onChangeSexFace(recv:mbase.data.Player){
+    export class HallVM extends MViewModel{
+        private onChangeSexFace(recv:Player){
             (this.view as HallView).viewInit(recv);
         }
 
@@ -25,7 +29,7 @@ module module.hall{
         }
 
         public setFullScreen(){
-            core.ExUtils.fullScreen();
+            ExUtils.fullScreen();
         }
 
         //继承的
@@ -40,10 +44,10 @@ module module.hall{
             super.onShow(this.playerData);
 
             this.sendData(16778274,[]);//getGameList 
-            this.sendData(16778269,[mbase.data.Player.HALL]);//changeGameType 
+            this.sendData(16778269,[Player.HALL]);//changeGameType 
             this.sendData(16778275,[]);//getGamePlayer 
 
-            if(core.CFun.DEBUG){
+            if(CFun.DEBUG){
                 if(this.playerData.gold == 0){
                     this.sendData(16778278,[0]);
                 }
@@ -57,4 +61,3 @@ module module.hall{
             this.setClass = HallView;
         }
     }
-}

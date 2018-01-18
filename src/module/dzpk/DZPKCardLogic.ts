@@ -1,4 +1,6 @@
-module module.dzpk{
+import { CardLogic } from '../CardLogic';
+import { CFun } from '../../core/CFun';
+import { DZPKCardType } from './DZPKCardType';
     /**
      * 牌型判断逻辑
      * @author none
@@ -8,8 +10,8 @@ module module.dzpk{
         
         /** 组合自己的牌和公共牌 **/
         private TogetherCardList(myCardList: number[], publicCardList: number[]): number[] {
-            core.CFun.remove(myCardList, 0);
-            core.CFun.remove(publicCardList, 0);
+            CFun.remove(myCardList, 0);
+            CFun.remove(publicCardList, 0);
             return publicCardList.concat(myCardList);
         }
         /**
@@ -151,7 +153,7 @@ module module.dzpk{
             }
             if (result.length > 1 && this.getCardValue(result[0][0]) == 1 && this.getCardValue(result[0][4]) == 2) {
                 var temp = result[0];
-                core.CFun.remove(result, result[0]);
+                CFun.remove(result, result[0]);
                 result.push(temp);
             }
             return result;
@@ -350,8 +352,7 @@ module module.dzpk{
         public constructor() {
             super();
             if(DZPKCardLogic._instance){
-                core.CFun.throw("单例！");
+                CFun.throw("单例！");
             }
         }
     }
-}

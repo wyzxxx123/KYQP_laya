@@ -1,4 +1,3 @@
-module core.comlaya{
     /**
      * @description 有前滚动条，按钮非三态
      * @author wangyz
@@ -55,4 +54,3 @@ module core.comlaya{
             this.on(Laya.Event.CHANGE,this,this.on_slider_change);
         }
     }
-}

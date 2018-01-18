@@ -1,8 +1,8 @@
-module core.model{
+import { CFun } from '../CFun';
     export class ModelManager{
         
         private getModel(model_name:string):boolean{
-            if(!model_name || model_name == "") core.CFun.throw("ModelManager的getModel参数不可为空！");
+            if(!model_name || model_name == "") CFun.throw("ModelManager的getModel参数不可为空！");
             let model = this._dic_model[model_name];
             if(!model){
                 model = laya.utils.ClassUtils.getInstance(model_name);
@@ -20,7 +20,7 @@ module core.model{
 
         public setPro(model_name:string,pros:Object,f_des?:string):any{
             if(this.getModel(model_name)){
-                if(!pros) core.CFun.throw("ModelManager的setPro参数不可为空！");
+                if(!pros) CFun.throw("ModelManager的setPro参数不可为空！");
 
                 let des = f_des;
                 let model = this._dic_model[model_name];
@@ -32,7 +32,7 @@ module core.model{
                         content = "{Byte}";
                     }
                     else{
-                        content = (this.isBaseClass(pros[key])?pros[key]:this.printObject(pros[key]));
+                        content = (this.isBaseClass(pros[key])?pros[key]:this.printObject(model,pros[key]));
                     }
                     model[key] = pros[key];
                     if(des != (f_des)) des += ","
@@ -40,17 +40,17 @@ module core.model{
                 }
                 des += "]";
              
-                core.CFun.log(new Date()["format"]("dd-hh:mm:ss,S") + " "+des);
+                CFun.log(new Date()["format"]("dd-hh:mm:ss,S") + " "+des);
                 return model;
             }
             else{
-                core.CFun.throw(`ModelManager的${model_name}类型不存在！`);
+                CFun.throw(`ModelManager的${model_name}类型不存在！`);
             }
 
             return null;
         }
 
-        private printObject(pros:Object):string{
+        private printObject(model:any,pros:Object):string{
             let des = "{";  
             let content = "";
             for(let key in pros){
@@ -61,7 +61,7 @@ module core.model{
                     content = "{Byte}";
                 }
                 else{
-                    content = (this.isBaseClass(pros[key])?pros[key]:this.printObject(pros[key]));
+                    content = (this.isBaseClass(pros[key])?pros[key]:this.printObject(model,pros[key]));
                 }
                 model[key] = pros[key];
                 if(des !=  "{") des += ","
@@ -115,4 +115,3 @@ module core.model{
             this._dic_model = {};
         }
     }
-}

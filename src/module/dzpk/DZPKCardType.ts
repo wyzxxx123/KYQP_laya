@@ -1,4 +1,3 @@
-module module.dzpk{
     /**
      * 牌型
      * @author none
@@ -28,4 +27,3 @@ module module.dzpk{
         /** 皇家同花顺 **/
         BIGSTRAIGHTLINE,
     }
-}

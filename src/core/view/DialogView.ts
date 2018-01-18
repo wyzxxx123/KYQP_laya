@@ -1,4 +1,3 @@
-module core.view{
     export class DialogView extends laya.ui.Dialog{
 
         constructor(){
@@ -18,4 +17,3 @@ module core.view{
             this.createView(Laya.loader.getRes(this._my_path + ".json"));
         }
     }
-}

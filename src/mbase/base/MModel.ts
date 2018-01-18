@@ -1,11 +1,12 @@
-module mbase.base{
-    export class MModel extends core.model.Model{
+import { Model } from '../../core/model/Model';
+import { SSend } from '../../analyzer/analyzer1/SSend';
+    export class MModel extends Model{
         constructor(){
             super();
         }
 
         protected sendData(method_id:number,args:any[]=[]){
-            let send2 = laya.utils.Pool.getItemByClass("tmpSend",analyzer.analyzer1.SSend);
+            let send2 = laya.utils.Pool.getItemByClass("tmpSend",SSend);
             send2.method_id = method_id;
             send2.args = args;
             send2.e_id = this["e_id"];
@@ -15,4 +16,3 @@ module mbase.base{
 
         public e_id:number;
     }
-}

@@ -1,5 +1,5 @@
-module analyzer.analyzer1
-{
+import { RpcDef } from './RpcDef';
+
     export class SSend{
         private _method_id:number;
 
@@ -29,4 +29,3 @@ module analyzer.analyzer1
 
         }
     }
-}

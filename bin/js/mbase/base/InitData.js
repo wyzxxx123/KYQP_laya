@@ -1,12 +1,10 @@
-var mbase;
-(function (mbase) {
-    var base;
-    (function (base) {
-        class InitData {
-            constructor() {
-            }
+define(["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class InitData {
+        constructor() {
         }
-        base.InitData = InitData;
-    })(base = mbase.base || (mbase.base = {}));
-})(mbase || (mbase = {}));
+    }
+    exports.InitData = InitData;
+});
 //# sourceMappingURL=InitData.js.map

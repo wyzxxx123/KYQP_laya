@@ -1,4 +1,5 @@
-module module.dzpk.cardtype{
+import { ui } from '../../../ui/layaUI.max.all';
+import { CardTypeVM } from './CardTypeVM';
     export class CardTypeView extends ui.game_dzpk.DZPKCardTypeUI{
 
 
@@ -20,4 +21,3 @@ module module.dzpk.cardtype{
             this._vm = vm;
         }
     }
-}

@@ -1,4 +1,5 @@
-module core.event{
+import { CFun } from '../CFun';
+
     /**
      * @description 全局事件管理
      * @author wangyz
@@ -36,7 +37,7 @@ module core.event{
         private _dispatcher: laya.events.EventDispatcher;
         constructor(){
             if(EventManager._instance){
-                core.CFun.throw("单例！");
+                CFun.throw("单例！");
             }
             this._dispatcher = new laya.events.EventDispatcher();
         }
@@ -49,4 +50,3 @@ module core.event{
             return this._instance;
         }
     }
-}

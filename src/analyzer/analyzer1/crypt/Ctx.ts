@@ -1,5 +1,4 @@
-namespace analyzer.analyzer1.crypt
-{
+
 	/**
 	 * 数据包加密模块
 	 * @author	Fictiony
@@ -175,4 +174,3 @@ namespace analyzer.analyzer1.crypt
 		public carry:number = 0;
 		public buffer:number[] = [];
 	}
-}

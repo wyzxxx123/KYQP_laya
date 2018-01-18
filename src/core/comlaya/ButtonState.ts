@@ -1,4 +1,3 @@
-module core.comlaya{
     /**
      * @description 附加按钮皮肤修改
      * @author wangyz
@@ -46,4 +45,3 @@ module core.comlaya{
             this.state = 0;
         }
     }
-}

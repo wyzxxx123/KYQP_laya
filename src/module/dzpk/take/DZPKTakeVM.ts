@@ -1,14 +1,18 @@
-module module.dzpk.take{
-    export class DZPKTakeVM extends mbase.base.MViewModel{
+import { MViewModel } from '../../../mbase/base/MViewModel';
+import { ModelManager } from '../../../core/model/ModelManager';
+import { StorageKeys } from '../../../StorageKeys';
+import { CFun } from '../../../core/CFun';
+import { DZPKTakeView } from './DZPKTakeView';
+    export class DZPKTakeVM extends MViewModel{
 
         private _roomInfo:any = null;
         public updataSetting(data:any){
-            let player = core.model.ModelManager.ins.getInstByClassName("Player");
+            let player = ModelManager.ins.getInstByClassName("Player");
             laya.net.LocalStorage.setJSON(StorageKeys.DZPKTakeScore + player.lastRoomId,data);
         }
 
         public goToGame(){
-            if(!this._roomInfo) core.CFun.throw("DZPKTakeVM加入的游戏不存在");
+            if(!this._roomInfo) CFun.throw("DZPKTakeVM加入的游戏不存在");
             this.closeNow();
             this.showOther("SCENE_DZPKSceneVM",this._roomInfo);
             this._roomInfo = null;
@@ -28,4 +32,3 @@ module module.dzpk.take{
             this.setClass = DZPKTakeView;
         }
     }
-}

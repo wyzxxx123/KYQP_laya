@@ -1,4 +1,5 @@
-module core.view{
+import { ComView } from './ComView';
+import { CFun } from '../CFun';
     export class WinView extends ComView{
 
         constructor(){
@@ -19,14 +20,13 @@ module core.view{
         }
 
         private onWinShow(){
-            core.CFun.playSound("sounds/hall/window_open.mp3");
+            CFun.playSound("sounds/hall/window_open.mp3");
         }
         private onWinHide(){
-            core.CFun.playSound("sounds/hall/window_close.mp3");
+            CFun.playSound("sounds/hall/window_close.mp3");
         }
 
         private onClose(){
             this.vm.closeNow();
         }
     }
-}

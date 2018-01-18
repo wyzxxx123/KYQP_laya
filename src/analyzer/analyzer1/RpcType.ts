@@ -1,5 +1,7 @@
-module analyzer.analyzer1
-{
+import { RpcDef } from './RpcDef';
+import { Struct } from './type/Struct';
+import { TypeArray } from './type/TypeArray';
+
 	/**
 	 * RPC数据类型定义
 	 * @author	Fictiony
@@ -303,4 +305,3 @@ module analyzer.analyzer1
 			this._buffer.clear();
 		}
 	}
-}

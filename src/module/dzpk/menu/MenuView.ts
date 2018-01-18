@@ -1,4 +1,5 @@
-module module.dzpk.menu{
+import { ui } from '../../../ui/layaUI.max.all';
+import { MenuVM } from './MenuVM';
     export class MenuView extends ui.game_dzpk.DZPKMenuUI{
 
         private onOpenCard(){
@@ -21,10 +22,10 @@ module module.dzpk.menu{
         }
 
         protected comInit(){
-            this.btn_card.clickHandler = Handler.create(this,this.onOpenCard,[],false);
-            this.btn_out.clickHandler = Handler.create(this,this.onOut,[],false);
-            this.btn_record.clickHandler = Handler.create(this,this.onRecord,[],false);
-            this.btn_setting.clickHandler = Handler.create(this,this.onSetting,[],false);
+            this.btn_card.clickHandler = laya.utils.Handler.create(this,this.onOpenCard,[],false);
+            this.btn_out.clickHandler = laya.utils.Handler.create(this,this.onOut,[],false);
+            this.btn_record.clickHandler = laya.utils.Handler.create(this,this.onRecord,[],false);
+            this.btn_setting.clickHandler = laya.utils.Handler.create(this,this.onSetting,[],false);
         }
 
         protected layerInit(){
@@ -39,8 +40,5 @@ module module.dzpk.menu{
         constructor(vm:MenuVM){
             super();
             this._vm = vm;
-
-            
         }
     }
-}

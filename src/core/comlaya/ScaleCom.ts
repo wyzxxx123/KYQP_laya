@@ -1,4 +1,3 @@
-module core.comlaya{
     /**
      * @description 附加组件点击缩放
      * @author wangyz
@@ -71,4 +70,3 @@ module core.comlaya{
       constructor(){
       }
     }
-}

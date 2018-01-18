@@ -1,4 +1,6 @@
-module core.model{
+import { SendHandel } from '../SendHandel';
+import { EventManager } from '../event/EventManager';
+
     /**
      * @description MODEL数据层
      * @author wangyz
@@ -6,11 +8,11 @@ module core.model{
      * @class Model
      */
     export class Model extends SendHandel{
-        private _eventManager:core.event.EventManager;
+        private _eventManager:EventManager;
 
         constructor(){
             super();
-            this._eventManager = core.event.EventManager.ins;
+            this._eventManager = EventManager.ins;
             this.recvInit();
         }
         protected regist(type:string,listener:Function):void{
@@ -25,4 +27,3 @@ module core.model{
 
         }
     }
-}

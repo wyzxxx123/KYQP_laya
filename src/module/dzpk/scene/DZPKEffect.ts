@@ -1,4 +1,4 @@
-namespace module.dzpk.scene{
+import { ui } from '../../../ui/layaUI.max.all';
     import Sprite = Laya.Sprite;
     import Point = laya.maths.Point;
     export class DZPKEffect extends laya.ui.Component{
@@ -73,7 +73,7 @@ namespace module.dzpk.scene{
                 this.addChild(chouma);
 
                 Laya.Tween.to(chouma,{x:p_end.x,y:p_end.y},200,null,
-                Handler.create(this,this.choumaComplete,[chouma]),i * 20);
+                laya.utils.Handler.create(this,this.choumaComplete,[chouma]),i * 20);
             }
         }
 
@@ -102,7 +102,7 @@ namespace module.dzpk.scene{
             this.addChild(cards);
 
             Laya.Tween.to(cards,{x:p_end.x,y:p_end.y},400,null,
-                Handler.create(this,this.qipaiComplete,[cards]));
+                laya.utils.Handler.create(this,this.qipaiComplete,[cards]));
         }
 
         private qipaiComplete(cards:ui.game_dzpk.DZPKCardsUI){
@@ -120,7 +120,7 @@ namespace module.dzpk.scene{
             this.addChild(card);
 
             Laya.Tween.to(card,{x:p_pai.x,y:p_pai.y},200,null,
-                Handler.create(this,this.moveComplete,[card,p_pai,back_complete,args,obj]));
+                laya.utils.Handler.create(this,this.moveComplete,[card,p_pai,back_complete,args,obj]));
         }
 
         private moveComplete(card:Laya.Image,p_pai:laya.maths.Point,back_complete:Function,args:any[],obj:any){
@@ -146,7 +146,7 @@ namespace module.dzpk.scene{
             let i = 0,len = arr_p.length;
             for(i = 0;i < len * 2;i++){
                 Laya.Tween.to(card,{x:arr_p[i%len].x,y:arr_p[i%len].y},200,null,
-                Handler.create(this,this.heguanComplete,[card,he_p,me_index,i,len*2,me_complete,args,obj]),
+                laya.utils.Handler.create(this,this.heguanComplete,[card,he_p,me_index,i,len*2,me_complete,args,obj]),
                 i * 250);
             }
         }
@@ -261,4 +261,3 @@ namespace module.dzpk.scene{
             super();
         }
     }
-}

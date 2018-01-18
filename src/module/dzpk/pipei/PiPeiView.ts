@@ -1,4 +1,6 @@
-module module.dzpk.pipei{
+import { ui } from '../../../ui/layaUI.max.all';
+import { PiPeiVM } from './PiPeiVM';
+import { ComView } from '../../../core/view/ComView';
     export class PiPeiView extends ui.pipei.PiPeiViewUI{
 
         private onCancel(){
@@ -13,7 +15,6 @@ module module.dzpk.pipei{
             super();
             this._vm = vm;
 
-            this._view_type = core.view.ComView.WINDOW_NO_CLOSEAUTO;
+            this._view_type = ComView.WINDOW_NO_CLOSEAUTO;
         }
     }
-}

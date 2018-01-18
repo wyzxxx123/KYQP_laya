@@ -1,24 +1,19 @@
-var module;
-(function (module) {
-    var dzpk;
-    (function (dzpk) {
-        var pipei;
-        (function (pipei) {
-            class PiPeiView extends ui.pipei.PiPeiViewUI {
-                constructor(vm) {
-                    super();
-                    this._vm = vm;
-                    this._view_type = core.view.ComView.WINDOW_NO_CLOSEAUTO;
-                }
-                onCancel() {
-                    this.vm.cancelPiPei();
-                }
-                comInit() {
-                    this.btn_close.on(Laya.Event.CLICK, this, this.onCancel);
-                }
-            }
-            pipei.PiPeiView = PiPeiView;
-        })(pipei = dzpk.pipei || (dzpk.pipei = {}));
-    })(dzpk = module.dzpk || (module.dzpk = {}));
-})(module || (module = {}));
+define(["require", "exports", "../../../ui/layaUI.max.all", "../../../core/view/ComView"], function (require, exports, layaUI_max_all_1, ComView_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class PiPeiView extends layaUI_max_all_1.ui.pipei.PiPeiViewUI {
+        onCancel() {
+            this.vm.cancelPiPei();
+        }
+        comInit() {
+            this.btn_close.on(Laya.Event.CLICK, this, this.onCancel);
+        }
+        constructor(vm) {
+            super();
+            this._vm = vm;
+            this._view_type = ComView_1.ComView.WINDOW_NO_CLOSEAUTO;
+        }
+    }
+    exports.PiPeiView = PiPeiView;
+});
 //# sourceMappingURL=PiPeiView.js.map

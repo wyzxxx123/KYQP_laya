@@ -1,5 +1,5 @@
-namespace analyzer.analyzer1
-{
+import { TypeDef } from './TypeDef';
+
 	/**
 	 * 结构体数据
 	 * @author	Fictiony
@@ -38,4 +38,3 @@ namespace analyzer.analyzer1
 			return this._type.defs[name] != null;
 		}
 	}
-}

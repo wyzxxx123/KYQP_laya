@@ -1,6 +1,13 @@
-module mbase.base{
+import { MModel } from './MModel';
+import { ModelManager } from '../../core/model/ModelManager';
+import { Analyzer } from '../../analyzer/analyzer1/Analyzer';
+import { RpcDef } from '../../analyzer/analyzer1/RpcDef';
+import { CFun } from '../../core/CFun';
+import { RpcType } from '../../analyzer/analyzer1/RpcType';
+import { PropDef } from '../../analyzer/analyzer1/PropDef';
+import { EventManager } from '../../core/event/EventManager';
     export class ModelHandle extends MModel{
-        protected _mManager:core.model.ModelManager;
+        protected _mManager:ModelManager;
 
 
         public networkTime:number = 0;
@@ -15,7 +22,7 @@ module mbase.base{
         private _seed:number = 0;
         public set seed(val:number){
             this._seed = val;
-            analyzer.analyzer1.Analyzer.seed = val;
+            Analyzer.seed = val;
         }
 
         public get seed():number{
@@ -39,7 +46,7 @@ module mbase.base{
         constructor(){
             super();
 
-            this._mManager = core.model.ModelManager.ins;
+            this._mManager = ModelManager.ins;
         }
 
         protected recvInit(){
@@ -71,20 +78,20 @@ module mbase.base{
         }
         
         private onSetNetSeed(){
-            this.sendData(4026532846,[analyzer.analyzer1.RpcDef.version]);
+            this.sendData(4026532846,[RpcDef.version]);
         }
 
         private onSyncProperty(){
-            if(!this.data) core.CFun.throw("onSyncProperty中没有需要同步的数据");
+            if(!this.data) CFun.throw("onSyncProperty中没有需要同步的数据");
 
-            this.eid = analyzer.analyzer1.RpcType.int48Reader(this.data);
-            let cName = core.model.ModelManager.ins.getInfoByProValue("e_id",this.eid);
+            this.eid = RpcType.int48Reader(this.data);
+            let cName = ModelManager.ins.getInfoByProValue("e_id",this.eid);
             let dataParams = {"e_id":this.eid};
 
             let proName = "";
             while ( this.data.bytesAvailable > 0 ) {
-                var pid: number = analyzer.analyzer1.RpcType.vintReader(this.data);
-                var def:analyzer.analyzer1.PropDef = analyzer.analyzer1.RpcDef.getProByID(pid);
+                var pid: number = RpcType.vintReader(this.data);
+                var def:PropDef = RpcDef.getProByID(pid);
                 if (!def) {
                     //若读到未定义的属性，则忽略后面所有数据
                     break;
@@ -94,10 +101,10 @@ module mbase.base{
             }
 
             let str_event = "server_Client_syncProperty_" + cName + proName;
-            let aModel = core.model.ModelManager.ins.setPro(cName,dataParams,"更新：" +　cName + " [event:" + str_event + ",");
+            let aModel = ModelManager.ins.setPro(cName,dataParams,"更新：" +　cName + " [event:" + str_event + ",");
             
-            // core.event.EventManager.ins.dispatch("server_Client_syncProperty_" + cName,aModel);
-            core.event.EventManager.ins.dispatch(str_event,aModel);
+            // event.EventManager.ins.dispatch("server_Client_syncProperty_" + cName,aModel);
+            EventManager.ins.dispatch(str_event,aModel);
             this.data = null;
         }
 
@@ -106,18 +113,18 @@ module mbase.base{
 
             let cName = null;
             if(this.tid > 0){
-                cName = analyzer.analyzer1.RpcDef.getModelClassByID(this.tid);
+                cName = RpcDef.getModelClassByID(this.tid);
             }
             else{
-                core.CFun.throw("onCreateModel中需要的类型不存在");
+                CFun.throw("onCreateModel中需要的类型不存在");
             }
             let data_params = {"e_id":this.eid};
             if (this.props) {
                 this.props.pos = 0;
 
 				while ( this.props.bytesAvailable > 0 ) {
-					var pid: number = analyzer.analyzer1.RpcType.vintReader(this.props);
-					var def:analyzer.analyzer1.PropDef = analyzer.analyzer1.RpcDef.getProByID(pid);
+					var pid: number = RpcType.vintReader(this.props);
+					var def:PropDef = RpcDef.getProByID(pid);
 					if (!def) {
 						//若读到未定义的属性，则忽略后面所有数据
 						break;
@@ -127,8 +134,8 @@ module mbase.base{
 			}
 
             let str_event = "server_Client_createEntity_" + cName;
-            let aModel = core.model.ModelManager.ins.setPro(cName,data_params,"创建：" +　cName + "[event:" + str_event + ",");
-            core.event.EventManager.ins.dispatch(str_event,aModel);
+            let aModel = ModelManager.ins.setPro(cName,data_params,"创建：" +　cName + "[event:" + str_event + ",");
+            EventManager.ins.dispatch(str_event,aModel);
             this.eid = 0;
             this.tid = 0;
             this.active = false;
@@ -139,4 +146,3 @@ module mbase.base{
             }
         }
     }
-}

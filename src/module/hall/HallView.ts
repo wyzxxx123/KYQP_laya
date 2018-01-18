@@ -1,4 +1,7 @@
-module module.hall{
+import { ui } from '../../ui/layaUI.max.all';
+import { HallVM } from './HallVM';
+import { Player } from '../../mbase/data/Player';
+import { CFun } from '../../core/CFun';
     export class HallView extends ui.game_hall.GameHallUI{
 
         constructor(vm:HallVM){
@@ -31,9 +34,9 @@ module module.hall{
         }
 
         //继承的
-        public viewInit(recv:mbase.data.Player){
+        public viewInit(recv:Player){
             this.txt_name.text = recv["name"];
-            this.txt_gold.text = core.CFun.formatCurrency(recv["gold"]);
+            this.txt_gold.text = CFun.formatCurrency(recv["gold"]);
             this.btn_header.skin = this.getHeadImage((recv["sex"]),(recv["icon"] || 0));
         }
 
@@ -48,4 +51,3 @@ module module.hall{
             return icon;
         }
     }
-}

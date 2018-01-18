@@ -1,5 +1,6 @@
-var core;
-(function (core) {
+define(["require", "exports", "./md5", "../StorageKeys", "./ExUtils", "../ui/layaUI.max.all"], function (require, exports, md5_1, StorageKeys_1, ExUtils_1, layaUI_max_all_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     class CFun {
         static throw(des) {
             laya.utils.Pool.clearBySign("tmpByte");
@@ -19,20 +20,20 @@ var core;
             let arrBtn = button.split("|");
             let dialog;
             if (arrBtn.length == 2) {
-                dialog = new ui.dialog.TwoButtonUI();
+                dialog = new layaUI_max_all_1.ui.dialog.TwoButtonUI();
                 dialog.getChildByName("cancel")["label"] = arrBtn[1];
                 dialog.getChildByName("ok")["label"] = arrBtn[0];
                 dialog.getChildByName("title")["text"] = title;
                 dialog.getChildByName("content")["text"] = content;
             }
             else if (arrBtn.length == 1) {
-                dialog = new ui.dialog.OneButtonUI();
+                dialog = new layaUI_max_all_1.ui.dialog.OneButtonUI();
                 dialog.getChildByName("ok")["label"] = arrBtn[0];
                 dialog.getChildByName("title")["text"] = title;
                 dialog.getChildByName("content")["text"] = content;
             }
             // dialog.isModal = true;
-            dialog.closeHandler = Handler.create(obj, callback);
+            dialog.closeHandler = laya.utils.Handler.create(obj, callback);
             dialog.popup();
         }
         static getItem(array, property, value) {
@@ -137,7 +138,7 @@ var core;
         * md5方式加密字符串
         */
         static md5(str) {
-            this.md5Object = this.md5Object || new md5();
+            this.md5Object = this.md5Object || new md5_1.md5();
             return this.md5Object.hex_md5(str);
         }
         /**
@@ -179,13 +180,13 @@ var core;
         * @returns 设备唯一号
         */
         static getIMEI() {
-            if (core.ExUtils.IMEI) {
-                return core.ExUtils.IMEI;
+            if (ExUtils_1.ExUtils.IMEI) {
+                return ExUtils_1.ExUtils.IMEI;
             }
-            var result = laya.net.LocalStorage.getItem(StorageKeys.imei_windows);
+            var result = laya.net.LocalStorage.getItem(StorageKeys_1.StorageKeys.imei_windows);
             if (!result) {
-                result = core.CFun.md5(core.CFun.formatDate(new Date(), "qqddMMhhmmS") + Math.random());
-                laya.net.LocalStorage.setItem(StorageKeys.imei_windows, result);
+                result = CFun.md5(CFun.formatDate(new Date(), "qqddMMhhmmS") + Math.random());
+                laya.net.LocalStorage.setItem(StorageKeys_1.StorageKeys.imei_windows, result);
             }
             return result;
         }
@@ -232,6 +233,6 @@ var core;
     }
     CFun.SCREEN_PRINT = true;
     CFun.DEBUG = true;
-    core.CFun = CFun;
-})(core || (core = {}));
+    exports.CFun = CFun;
+});
 //# sourceMappingURL=CFun.js.map

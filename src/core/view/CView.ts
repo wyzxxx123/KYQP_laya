@@ -1,12 +1,17 @@
-module core.view{
+import { CFun } from '../CFun';
+import { ComView } from './ComView';
+import { Layer } from './Layer';
+import { EventManager } from '../event/EventManager';
+import { ViewModel } from '../viewmodel/ViewModel';
+
     /*
     可显示对象
     */
     export class CView{
         // private static _dic_show:{[key:string]:{[key:string]:any}} = {};
-        private _event_manager:core.event.EventManager;
-        constructor(vm:core.viewmodel.ViewModel){
-            this._event_manager = core.event.EventManager.ins;
+        private _event_manager:EventManager;
+        constructor(vm:ViewModel){
+            this._event_manager = EventManager.ins;
             this._vm = vm;
         }
 
@@ -14,7 +19,7 @@ module core.view{
             this._event_manager.on(type,listener,this);
         }
 
-        protected  _vm:core.viewmodel.ViewModel;
+        protected  _vm:ViewModel;
         protected  _parent:laya.display.Node = null;
         protected  _class:any = null;
         protected  _atlas_url:string = null;//需要多个不同资源，用逗号隔开
@@ -22,7 +27,7 @@ module core.view{
         protected  _is_need_show:boolean = false;
         protected  _is_on_parent:boolean = false;
         protected  _is_load_complete:boolean = false;
-        protected  _display:core.view.ComView;
+        protected  _display:ComView;
         /*
             设置资源路径
         */
@@ -34,8 +39,8 @@ module core.view{
             this._parent = val;
         }
 
-        public get vm():core.viewmodel.ViewModel{
-            if(!this._vm) core.CFun.throw("CView中_vm还未初始化！");
+        public get vm():ViewModel{
+            if(!this._vm) CFun.throw("CView中_vm还未初始化！");
             return this._vm;
         }
 
@@ -50,7 +55,7 @@ module core.view{
             this._is_load_complete = true;   
 
             if(!this._class) {
-                core.CFun.throw("VisibleView的_class为空！");
+                CFun.throw("VisibleView的_class为空！");
             }
 
             this._display = new (this._class)(this.vm);
@@ -76,7 +81,7 @@ module core.view{
 
         protected onLoadResource(){
             if(!this._atlas_url) {
-                core.CFun.throw("VisibleView的_atlas_url为空！");
+                CFun.throw("VisibleView的_atlas_url为空！");
             }
             let tmp_arrAtlas = [];
             let arr_atlas = this._atlas_url.split(",");
@@ -84,11 +89,11 @@ module core.view{
             
             for(let i = 0;i < len;i++){
                 if(arr_atlas[i] == "") continue;
-                tmp_arrAtlas.push({url:arr_atlas[i],type:Loader.ATLAS});
+                tmp_arrAtlas.push({url:arr_atlas[i],type:laya.net.Loader.ATLAS});
             }
-            tmp_arrAtlas.push({url:this.parsingPath(),type:Loader.JSON});
+            tmp_arrAtlas.push({url:this.parsingPath(),type:laya.net.Loader.JSON});
             if(tmp_arrAtlas.length > 0){
-                Laya.loader.load(tmp_arrAtlas, Handler.create(this, this.onLoaded));
+                Laya.loader.load(tmp_arrAtlas, laya.utils.Handler.create(this, this.onLoaded));
             }
         }
 
@@ -109,7 +114,7 @@ module core.view{
 
         protected addToParent(){
             if(!this._parent) {
-                core.CFun.throw("VisibleView的addToParent中的_parent为空！");
+                CFun.throw("VisibleView的addToParent中的_parent为空！");
             }
             
             this._parent.addChild(this.display);
@@ -125,7 +130,7 @@ module core.view{
 
         protected removeFromParent(){
             if(!this._parent) {
-                core.CFun.throw("VisibleView的removeFromParent中的_parent为空！");
+                CFun.throw("VisibleView的removeFromParent中的_parent为空！");
             }
             this._parent.removeChild(this.display);
             if(this._parent.numChildren <= 0){
@@ -141,9 +146,9 @@ module core.view{
             this._is_show = false;
         }
 
-        public get display():core.view.ComView{
+        public get display():ComView{
             if(!this._display) {
-                core.CFun.throw("VisibleView的_display为空！");
+                CFun.throw("VisibleView的_display为空！");
             }
             return this._display;
         }
@@ -208,4 +213,3 @@ module core.view{
             if(this.isOnParent()) this._is_show = visible;
         }
     }
-}

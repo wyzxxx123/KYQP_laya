@@ -1,4 +1,3 @@
-module core.comlaya{
     /**
      * @description 实现的一个自定义的checkbox
      * @author wangyz
@@ -33,4 +32,3 @@ module core.comlaya{
             this.selected = false;
         }
     }
-}

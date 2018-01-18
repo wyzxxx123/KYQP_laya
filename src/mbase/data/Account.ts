@@ -1,5 +1,7 @@
-module mbase.data{
-    export class Accounts extends base.MModel{
+import { MModel } from '../base/MModel';
+import { GameConfig } from '../../GameConfig';
+import { CFun } from '../../core/CFun';
+    export class Accounts extends MModel{
         public code:number;
 
         public timeStamp:number;
@@ -15,7 +17,7 @@ module mbase.data{
 
         private onCreateMe(){
             if(GameConfig.LoginType == 1){
-                var testAccount = core.CFun.getQueryString("name") ? core.CFun.getQueryString("name") : core.CFun.getIMEI();
+                var testAccount = CFun.getQueryString("name") ? CFun.getQueryString("name") : CFun.getIMEI();
                 this.checkAccount(testAccount, "123465");
             }else{
                 // this.login();
@@ -30,4 +32,3 @@ module mbase.data{
             super();
         }
     }
-}

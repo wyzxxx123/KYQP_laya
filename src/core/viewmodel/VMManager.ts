@@ -1,11 +1,15 @@
-module core.viewmodel{
+import { ViewModel } from './ViewModel';
+import { ComView } from '../view/ComView';
+import { EventManager } from '../event/EventManager';
+import { InitData } from '../../mbase/base/InitData';
+
     export class VMManager{
         public static SHOW_VIEW:string = "SHOW_VIEW"; //显示头像选择面板
-        public static static_dic_vm:{[key:string]:core.viewmodel.ViewModel} = {};
+        public static static_dic_vm:{[key:string]:ViewModel} = {};
 
-        private _event_manager:core.event.EventManager;
+        private _event_manager:EventManager;
         constructor(){
-            this._event_manager = core.event.EventManager.ins;
+            this._event_manager = EventManager.ins;
 
             this._event_manager.on(VMManager.SHOW_VIEW,this.onInitAndShow,this);
 
@@ -21,8 +25,8 @@ module core.viewmodel{
         }
         
         //初始化显示对象并显示
-        protected onInitAndShow(data:mbase.base.InitData){
-            let model:core.viewmodel.ViewModel = VMManager.static_dic_vm[data.className];//laya.utils.ClassUtils.getInstance(data.className);
+        protected onInitAndShow(data:InitData){
+            let model:ViewModel = VMManager.static_dic_vm[data.className];//laya.utils.ClassUtils.getInstance(data.className);
             if(!model){
                 model = laya.utils.ClassUtils.getInstance(data.className);
                 VMManager.static_dic_vm[data.className] = model;
@@ -34,7 +38,7 @@ module core.viewmodel{
         }
 
         public closeAll(){
-            let model:core.viewmodel.ViewModel = null;
+            let model:ViewModel = null;
             for(let key in VMManager.static_dic_vm){
                 model = VMManager.static_dic_vm[key];
                 model.closeNow();
@@ -42,23 +46,22 @@ module core.viewmodel{
         }
 
         public closeScene(){
-            let model:core.viewmodel.ViewModel = null;
+            let model:ViewModel = null;
             for(let key in VMManager.static_dic_vm){
                 model = VMManager.static_dic_vm[key];
-                if(model.getViewType() == view.ComView.SCENE){
+                if(model.getViewType() == ComView.SCENE){
                     model.closeNow();
                 }
             }
         }
 
         public closeWindow(){
-            let model:core.viewmodel.ViewModel = null;
+            let model:ViewModel = null;
             for(let key in VMManager.static_dic_vm){
                 model = VMManager.static_dic_vm[key];
-                if(model.getViewType() == view.ComView.WINDOW){
+                if(model.getViewType() == ComView.WINDOW){
                     model.closeNow();
                 }
             }
         }
     }
-}

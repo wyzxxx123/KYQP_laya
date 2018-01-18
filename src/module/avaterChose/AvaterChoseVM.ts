@@ -1,4 +1,6 @@
-module module.avaterChose{
+import { MViewModel } from '../../mbase/base/MViewModel';
+import { AvaterChoseView } from './AvaterChoseView';
+
     /**
      * @description 头像选择界面
      * @author wangyz
@@ -6,7 +8,7 @@ module module.avaterChose{
      * @class AvaterChoseVM
      * @extends {module.base.MViewModel}
      */
-    export class AvaterChoseVM extends mbase.base.MViewModel{
+    export class AvaterChoseVM extends MViewModel{
 
         public saveHead(sex:number,index:number){
             this.sendData(16778272,[sex]);
@@ -20,4 +22,3 @@ module module.avaterChose{
             this.setClass = AvaterChoseView;
         }
     } 
-}

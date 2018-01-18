@@ -1,5 +1,6 @@
-module module.dzpk.cardtype{
-    export class CardTypeVM extends mbase.base.MViewModel{
+import { MViewModel } from '../../../mbase/base/MViewModel';
+import { CardTypeView } from './CardTypeView';
+    export class CardTypeVM extends MViewModel{
 
 
         
@@ -11,4 +12,3 @@ module module.dzpk.cardtype{
             this.setClass = CardTypeView;
         }
     }
-}

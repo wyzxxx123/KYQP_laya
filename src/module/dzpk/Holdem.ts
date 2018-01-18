@@ -1,4 +1,3 @@
-module module.dzpk{
     /**
     * 用户状态枚举
     * @author none
@@ -45,5 +44,4 @@ module module.dzpk{
         ROYAL_STRAIGHT_FLUSH = 10,
 
     }
-}
  

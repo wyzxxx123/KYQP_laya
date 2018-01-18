@@ -1,1 +1,1 @@
-{"version":3,"file":"InitData.js","sourceRoot":"","sources":["../../../../src/mbase/base/InitData.ts"],"names":[],"mappings":"AAAA,IAAO,KAAK,CAQX;AARD,WAAO,KAAK;IAAC,IAAA,IAAI,CAQhB;IARY,WAAA,IAAI;QACb;YAII;YACA,CAAC;SACJ;QANY,aAAQ,WAMpB,CAAA;IACL,CAAC,EARY,IAAI,GAAJ,UAAI,KAAJ,UAAI,QAQhB;AAAD,CAAC,EARM,KAAK,KAAL,KAAK,QAQX"}
+{"version":3,"file":"InitData.js","sourceRoot":"","sources":["../../../../src/mbase/base/InitData.ts"],"names":[],"mappings":";;;IAAI;QAII;QACA,CAAC;KACJ;IAND,4BAMC"}

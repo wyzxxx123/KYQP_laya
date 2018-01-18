@@ -1,10 +1,12 @@
-module mbase.base{
-    export class MEffectView extends core.view.EffectView{
+import { EffectView } from '../../core/view/EffectView';
+import { CFun } from '../../core/CFun';
+import { DZPKEffect } from '../../module/dzpk/scene/DZPKEffect';
+    export class MEffectView extends EffectView{
 
-        private _dzpk:module.dzpk.scene.DZPKEffect;
-        public get dzpk():module.dzpk.scene.DZPKEffect{
+        private _dzpk:DZPKEffect;
+        public get dzpk():DZPKEffect{
             if(!this._dzpk){
-                this._dzpk = new module.dzpk.scene.DZPKEffect();
+                this._dzpk = new DZPKEffect();
                 this._effectLayer.addChild(this._dzpk);
             }
             return this._dzpk;
@@ -13,7 +15,7 @@ module mbase.base{
         constructor(){
             super();
             if(MEffectView._instance){
-                core.CFun.throw("单例！");
+                CFun.throw("单例！");
             }
         }
 
@@ -25,4 +27,3 @@ module mbase.base{
             return this._instance;
         }
     }
-}

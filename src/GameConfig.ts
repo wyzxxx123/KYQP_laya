@@ -3,7 +3,7 @@
  * @author	Fictiony
  * @version	2017/7/11
  */
-class GameConfig {
+export class GameConfig {
 	/**
 	* 游戏版本默认1.0.0
 	* */

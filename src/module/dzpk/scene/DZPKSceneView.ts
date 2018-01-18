@@ -1,4 +1,11 @@
-module module.dzpk.scene{
+import { ui } from '../../../ui/layaUI.max.all';
+import { TEXAS_HOLDEM_ACTION } from '../Holdem';
+import { CFun } from '../../../core/CFun';
+import { DZPKCardLogic } from '../DZPKCardLogic';
+import { MsgData } from '../../../mbase/base/MsgData';
+import { DZPKSceneVM } from './DZPKSceneVM';
+import { DZPKEffect } from './DZPKEffect';
+import { MEffectView } from '../../../mbase/base/MEffectView';
     import Point = laya.maths.Point;
     export class DZPKSceneView extends ui.game_dzpk.DZPKSceneUI{
 
@@ -64,12 +71,12 @@ module module.dzpk.scene{
                 box_card.getChildByName("img_chose")["visible"] = true;
                 box_card.getChildByName("img_chose")["skin"] = "dzpk/cards/cardTypeTip2.png";
 
-                Laya.Tween.to(box_card,{y:10},200,null,Handler.create(this,this.onComCardsUP,[winner["seatNO"],box_card,winners,obj_count]));
+                Laya.Tween.to(box_card,{y:10},200,null,laya.utils.Handler.create(this,this.onComCardsUP,[winner["seatNO"],box_card,winners,obj_count]));
             }
         }
 
         private onComCardsUP(seat:number,box_card:Laya.Box,winners:any[],obj_count:any){
-            Laya.Tween.to(box_card,{y:30},200,null,Handler.create(this,this.onComCardsDown,[seat,box_card,winners,obj_count]),1000);
+            Laya.Tween.to(box_card,{y:30},200,null,laya.utils.Handler.create(this,this.onComCardsDown,[seat,box_card,winners,obj_count]),1000);
         }
 
         private onComCardsDown(seat:number,box_card:Laya.Box,winners:any[],obj_count:any){
@@ -239,8 +246,8 @@ module module.dzpk.scene{
         public updatePlayerCards(card0:number,card1:number,seat:number,showall:boolean = true){
             let box_player = this.getPlayerSeat(seat);
             
-            box_player.getChildByName("box_cards").getChildByName("box_lcard").getChildByName("img_card")["skin"] = core.CFun.format("dzpk/cards/card_{0}.png", DZPKCardLogic.ins.cardValuetToClient(card0));
-            box_player.getChildByName("box_cards").getChildByName("box_rcard").getChildByName("img_card")["skin"] = core.CFun.format("dzpk/cards/card_{0}.png", DZPKCardLogic.ins.cardValuetToClient(card1));
+            box_player.getChildByName("box_cards").getChildByName("box_lcard").getChildByName("img_card")["skin"] = CFun.format("dzpk/cards/card_{0}.png", DZPKCardLogic.ins.cardValuetToClient(card0));
+            box_player.getChildByName("box_cards").getChildByName("box_rcard").getChildByName("img_card")["skin"] = CFun.format("dzpk/cards/card_{0}.png", DZPKCardLogic.ins.cardValuetToClient(card1));
             if(seat != this._my_seat){
                 box_player.getChildByName("box_cards")["x"] = box_player.getChildByName("box_fan")["x"];
                 box_player.getChildByName("box_cards")["y"] = box_player.getChildByName("box_fan")["y"];
@@ -266,7 +273,7 @@ module module.dzpk.scene{
          */
         public updateTablePool(pot){
             this.box_dichi.visible = true;
-            this.txt_dichi.text = core.CFun.formatCurrency(pot);
+            this.txt_dichi.text = CFun.formatCurrency(pot);
         }
 
         /**
@@ -305,7 +312,7 @@ module module.dzpk.scene{
             var cardData: number = DZPKCardLogic.ins.cardValuetToClient(cards[start]);
             if (cardData > 0) {
                 box_card = this.box_common_cards.getChildByName("box_card" + start);
-                box_card.getChildByName("img_card").skin = core.CFun.format("dzpk/cards/card_{0}.png", cardData);
+                box_card.getChildByName("img_card").skin = CFun.format("dzpk/cards/card_{0}.png", cardData);
 
                 let p = box_card.localToGlobal(new laya.maths.Point(0,0));
                 let p_he = new laya.maths.Point(this.img_heguan.x + this.img_heguan.width * 0.5,this.img_heguan.y + this.img_heguan.height * 0.5);
@@ -343,12 +350,12 @@ module module.dzpk.scene{
             let mini_bet = (obj_oper["miniBet"] - obj_oper["bet"]);
             if (mini_bet > 0) {//如果超过自己跟注额度
                 if (mini_bet < obj_oper["chip"]) {//如果没有超过自己的最大下注金额
-                    this.cb_gen.label = core.CFun.format(core.CFun.getItem(Data.MsgData, "id", 4032)["msg"],core.CFun.formatCurrency(mini_bet - obj_oper["stageBet"]));
+                    this.cb_gen.label = CFun.format(CFun.getItem(MsgData, "id", 4032)["msg"],CFun.formatCurrency(mini_bet - obj_oper["stageBet"]));
                 } else {
-                    this.cb_gen.label = core.CFun.getItem(Data.MsgData, "id", 4033)["msg"];
+                    this.cb_gen.label = CFun.getItem(MsgData, "id", 4033)["msg"];
                 }
             } else if (mini_bet <= 0) {//如果小于自己下金额
-                this.cb_gen.label = core.CFun.getItem(Data.MsgData, "id", 4019)["msg"];
+                this.cb_gen.label = CFun.getItem(MsgData, "id", 4019)["msg"];
             }
         }
 
@@ -363,17 +370,17 @@ module module.dzpk.scene{
             this.box_slid.visible = false;//加注面板隐藏
             this.btn_allin["money"] = obj_oper["chip"];
             this.btn_mu10["money"] = Math.floor(obj_oper["pot"]);
-            this.btn_mu10.label = core.CFun.formatCurrency(this.btn_mu10["money"]);
+            this.btn_mu10.label = CFun.formatCurrency(this.btn_mu10["money"]);
             this.btn_mu5["money"] = Math.floor(obj_oper["pot"] * 0.67);
-            this.btn_mu5.label = core.CFun.formatCurrency(this.btn_mu5["money"]);
+            this.btn_mu5.label = CFun.formatCurrency(this.btn_mu5["money"]);
             this.btn_mu3["money"] = Math.floor(obj_oper["pot"] * 0.5);
-            this.btn_mu3.label = core.CFun.formatCurrency(this.btn_mu3["money"]);
+            this.btn_mu3.label = CFun.formatCurrency(this.btn_mu3["money"]);
 
             this.btn_mu3.mouseEnabled = this.btn_mu3["money"] <= obj_oper["chip"] && this.btn_mu3["money"] >= miniRaise;
             this.btn_mu5.mouseEnabled = this.btn_mu5["money"] <= obj_oper["chip"] && this.btn_mu5["money"] >= miniRaise;
             this.btn_mu10.mouseEnabled = this.btn_mu10["money"] <= obj_oper["chip"] && this.btn_mu10["money"] >= miniRaise;
 
-            // this.txt_money.text = core.CFun.formatCurrency(miniRaise);
+            // this.txt_money.text = CFun.formatCurrency(miniRaise);
             this.sid_money.min = miniRaise;
             this.sid_money.max = obj_oper["chip"];
             this.sid_money.value = this.sid_money.min;
@@ -398,7 +405,7 @@ module module.dzpk.scene{
                 } else if (mini_bet >= obj_oper["chip"]) {
                     this.btn_follow.getChildByName("img_type")["skin"] = "dzpk/zh-cn/font/buttonFont/allInFont.png";
                 } else {
-                    this.btn_follow.label = core.CFun.formatCurrency(mini_bet);
+                    this.btn_follow.label = CFun.formatCurrency(mini_bet);
                 }
 
                 this.btn_follow["money"] = mini_bet;
@@ -424,7 +431,7 @@ module module.dzpk.scene{
             let box_player = this.getPlayerSeat(seat);
 
             this.updatePlayerAmount(box_player.getChildByName("box_blind") as Laya.Box,player["amount"]);
-            box_player.getChildByName("ui_player").getChildByName("box_info").getChildByName("box_name").getChildByName("txt_money")["text"] = core.CFun.formatCurrency(player["chip"]);
+            box_player.getChildByName("ui_player").getChildByName("box_info").getChildByName("box_name").getChildByName("txt_money")["text"] = CFun.formatCurrency(player["chip"]);
 
             let box_operator = box_player.getChildByName("ui_player").getChildByName("box_operator");
             box_operator["visible"] = action != 0;
@@ -432,8 +439,8 @@ module module.dzpk.scene{
 
             if(player.chip == 0){ //全下
                 img_operate["skin"] = "dzpk/zh-cn/font/operateActionFont/operateAction_AllIn.png";
-                // uiCore.SoundManager.playEffect("effect_allin_mp3");
-                // uiCore.SoundManager.playEffect(gender + "_" + this.data.icon + "_" + "allin_mp3");
+                // uiSoundManager.playEffect("effect_allin_mp3");
+                // uiSoundManager.playEffect(gender + "_" + this.data.icon + "_" + "allin_mp3");
             }
             else{
                 let p_end,p_start;
@@ -458,11 +465,11 @@ module module.dzpk.scene{
                         break;
                     case TEXAS_HOLDEM_ACTION.PASS://过牌
                         img_operate["skin"] = "dzpk/zh-cn/font/operateActionFont/operateAction_guopai.png";
-                        // uiCore.SoundManager.playEffect("effect_newpass_mp3");
+                        // uiSoundManager.playEffect("effect_newpass_mp3");
                         break;
                     case TEXAS_HOLDEM_ACTION.FOLD://弃牌
                         img_operate["skin"] = "dzpk/zh-cn/font/operateActionFont/operateAction_qipai.png";
-                        // uiCore.SoundManager.playEffect(gender + "_" + this.data.icon + "_" + "fold_mp3");
+                        // uiSoundManager.playEffect(gender + "_" + this.data.icon + "_" + "fold_mp3");
                         this.eff.stopCircleEffect();
                         box_player.alpha = 0.5;
                         p_start = box_player.localToGlobal(new Point(box_player.getChildByName("ui_player")["width"]*0.5,box_player.getChildByName("ui_player")["height"]*0.5));
@@ -489,7 +496,7 @@ module module.dzpk.scene{
             n_text = n_text > 0?n_text:0;
             if(n_text > 0 || add > 0){
                 box_text["visible"] = true;
-                box_text.getChildByName("txt_blind")["text"] = core.CFun.formatCurrency(n_text + add);
+                box_text.getChildByName("txt_blind")["text"] = CFun.formatCurrency(n_text + add);
             }
         }
         /**
@@ -499,10 +506,10 @@ module module.dzpk.scene{
          * @param gameNo 
          */
         public showGameInfo(blink:number,ante:number){
-            this.txt_blind.text = core.CFun.format(core.CFun.getItem(Data.MsgData, "id", 4026)["msg"], core.CFun.formatCurrency(blink),core.CFun.formatCurrency(blink * 2));//盲注;
+            this.txt_blind.text = CFun.format(CFun.getItem(MsgData, "id", 4026)["msg"], CFun.formatCurrency(blink),CFun.formatCurrency(blink * 2));//盲注;
            
             if(ante > 0){
-                this.txt_blind.text = this.txt_blind.text + core.CFun.format(core.CFun.getItem(Data.MsgData, "id", 4005)["msg"],core.CFun.formatCurrency(ante));
+                this.txt_blind.text = this.txt_blind.text + CFun.format(CFun.getItem(MsgData, "id", 4005)["msg"],CFun.formatCurrency(ante));
             }
         }
 
@@ -517,7 +524,7 @@ module module.dzpk.scene{
         public showPlayerChip(chip:number,seat:number){
             let box_player = this.getPlayerSeat(seat);
 
-            box_player.getChildByName("ui_player").getChildByName("box_info").getChildByName("box_name").getChildByName("txt_money")["text"] = core.CFun.formatCurrency(chip);
+            box_player.getChildByName("ui_player").getChildByName("box_info").getChildByName("box_name").getChildByName("txt_money")["text"] = CFun.formatCurrency(chip);
 
             // this["box_player" + v_index].visible = true;
         }
@@ -540,7 +547,7 @@ module module.dzpk.scene{
         }
 
         private getPlayerSeat(seat:number):Laya.Box{
-            if(this._my_seat == -1) core.CFun.throw("DZPKSceneView中玩家的索引this._my_index还未确定");
+            if(this._my_seat == -1) CFun.throw("DZPKSceneView中玩家的索引this._my_index还未确定");
             let v_index = (seat + this._PLAYER_NUM - this._my_seat) % this._PLAYER_NUM;
             // let t_i = seat - this._my_seat;
             // let v_index = t_i >= 0?t_i:((this._PLAYER_NUM - 1) + t_i);
@@ -615,7 +622,7 @@ module module.dzpk.scene{
 
         //加注数量改变
         private onAddChange(){
-            this.txt_money.text = core.CFun.formatCurrency(this.sid_money.value);
+            this.txt_money.text = CFun.formatCurrency(this.sid_money.value);
         }
         //显示加注面板 或 直接加注
         private onShowAddPanel(){
@@ -683,11 +690,11 @@ module module.dzpk.scene{
 
         //获取特效对象
         private get eff():DZPKEffect{
-            return mbase.base.MEffectView.ins.dzpk;
+            return MEffectView.ins.dzpk;
         }
 
         public get vm():DZPKSceneVM{
-            if(!this._vm) core.CFun.throw("ComView中_vm还未初始化！");
+            if(!this._vm) CFun.throw("ComView中_vm还未初始化！");
             return this._vm as DZPKSceneVM;
         }
 
@@ -700,14 +707,13 @@ module module.dzpk.scene{
 
         // constructor(){ super()}
         // createChildren():void {
-        // 			View.regComponent("core.comlaya.ScaleCom",core.comlaya.ScaleCom);
+        // 			View.regComponent("comlaya.ScaleCom",comlaya.ScaleCom);
 		// 	View.regComponent("ui.game_dzpk.DZPKHeadUI",ui.game_dzpk.DZPKHeadUI);
 		// 	View.regComponent("ui.game_dzpk.DZPKCardsUI",ui.game_dzpk.DZPKCardsUI);
-		// 	View.regComponent("core.comlaya.CheckState",core.comlaya.CheckState);
+		// 	View.regComponent("comlaya.CheckState",comlaya.CheckState);
 
         //     super.createChildren();
         //     this.createView(ui.game_dzpk.DZPKSceneUI.uiView);
 
         // }
     }
-}

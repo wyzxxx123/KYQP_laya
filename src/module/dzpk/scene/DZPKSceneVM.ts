@@ -1,5 +1,14 @@
-module module.dzpk.scene{
-    export class DZPKSceneVM extends mbase.base.MViewModel{
+import { MViewModel } from '../../../mbase/base/MViewModel';
+import { CFun } from '../../../core/CFun';
+import { DZPKCardLogic } from '../DZPKCardLogic';
+import { DZPKCardType } from '../DZPKCardType';
+import { TEXAS_HOLDEM_ACTION } from '../Holdem';
+import { StorageKeys } from '../../../StorageKeys';
+import { HoldemDeck } from '../../../mbase/data/HoldemDeck';
+import { ModelManager } from '../../../core/model/ModelManager';
+import { HoldemAgent } from '../../../mbase/data/HoldemAgent';
+import { DZPKSceneView } from './DZPKSceneView';
+    export class DZPKSceneVM extends MViewModel{
 
         //一个人赢
         private onEarlyWin(){
@@ -31,15 +40,15 @@ module module.dzpk.scene{
             let i = 0,len = this.deckData.holeCards.length,c_data,hole_card,winner,bestHand,arr_win = [];
             for(i = 0;i < len;i++){
                 hole_card = this.deckData.holeCards[i];
-                c_data = core.CFun.getItem(this._player_list, "seatNO", hole_card.seatNO);
+                c_data = CFun.getItem(this._player_list, "seatNO", hole_card.seatNO);
                 if (!!c_data) {//如果该玩家有手牌，则亮牌
                     c_data.hole1 = hole_card.cards[0];
                     c_data.hole2 = hole_card.cards[1];
 
                     let card_info = this.getCardTypeByIndex(c_data);
 
-                    winner = core.CFun.getItem(this.deckData.winner, "seatNO", c_data.seatNO);
-                    bestHand = core.CFun.getItem(this.deckData.bestHands, "seatNO", c_data.seatNO);
+                    winner = CFun.getItem(this.deckData.winner, "seatNO", c_data.seatNO);
+                    bestHand = CFun.getItem(this.deckData.bestHands, "seatNO", c_data.seatNO);
 
                     if (!!winner) {//如果该玩家在胜利玩家列表中
                         //赢得金币数
@@ -108,7 +117,7 @@ module module.dzpk.scene{
             let i = 0,len = this.deckData.holeCards.length,c_data,hole_card,winner,bestHand;
             for(i = 0;i < len;i++){
                 hole_card = this.deckData.holeCards[i];
-                c_data = core.CFun.getItem(this._player_list, "seatNO", hole_card.seatNO);
+                c_data = CFun.getItem(this._player_list, "seatNO", hole_card.seatNO);
                 if (!!c_data) {//如果该玩家有手牌，则亮牌
                     c_data.hole1 = hole_card.cards[0];
                     c_data.hole2 = hole_card.cards[1];
@@ -186,7 +195,7 @@ module module.dzpk.scene{
 
             //显示玩家的操作面板
             let me_info = this.getMeInfo();
-            if(!me_info) core.CFun.throw("seatWait中无法获取自己的信息");
+            if(!me_info) CFun.throw("seatWait中无法获取自己的信息");
             let state = -1;
             if(player["rid"] == me_info["rid"]){
                 state = 1;
@@ -263,7 +272,7 @@ module module.dzpk.scene{
                 }
             }
             return null;
-            // core.CFun.throw("getPlayerBySeat中不存在该位置：" + seat + " 长度：" + len);
+            // CFun.throw("getPlayerBySeat中不存在该位置：" + seat + " 长度：" + len);
         }
 
         private showPlayers(){
@@ -406,19 +415,19 @@ module module.dzpk.scene{
 
         //发送携带筹码
         public sendTakein() {
-            let storage_data = core.CFun.getLSItem(StorageKeys.DZPKTakeScore + this.playerData.lastRoomId, "Object");
+            let storage_data = CFun.getLSItem(StorageKeys.DZPKTakeScore + this.playerData.lastRoomId, "Object");
             if (JSON.stringify(storage_data) == "{}") {
                 this.sendData(16778283,[this.playerData.roomSN,this.getTakeScore()]);
-                // uiCore.Banner.show("请开放本地存储权限");
+                // uiBanner.show("请开放本地存储权限");
                 return;
             }
             let takeScore = this.playerData.gold >= storage_data.takeScore ? storage_data.takeScore : this.playerData.gold;
             if (storage_data.isautoTakeScore) {//如果是自动带入
                 this.sendData(16778283,[this.playerData.roomSN,takeScore]);
-                // uiCore.Banner.show(core.CFun.format(core.CFun.getItem(Data.MsgData, "id", 4054)["msg"], core.CFun.formatCurrency(takeScore)));
+                // uiBanner.show(CFun.format(CFun.getItem(Data.MsgData, "id", 4054)["msg"], CFun.formatCurrency(takeScore)));
             } else if (storage_data.isfirstGame) {//不是自动带入则只有第一局发送带入
                 this.sendData(16778283,[this.playerData.roomSN,takeScore]);
-                // uiCore.Banner.show(core.CFun.format(core.CFun.getItem(Data.MsgData, "id", 4054)["msg"], core.CFun.formatCurrency(takeScore)));
+                // uiBanner.show(CFun.format(CFun.getItem(Data.MsgData, "id", 4054)["msg"], CFun.formatCurrency(takeScore)));
                 storage_data.isfirstGame = false;
                 laya.net.LocalStorage.setItem(StorageKeys.DZPKTakeScore + this.playerData.lastRoomId,JSON.stringify(storage_data));
             } else {
@@ -429,10 +438,10 @@ module module.dzpk.scene{
                 //判断最大携带，提醒用户当前为房间最大携带
                 if (takeScore > maxchip) {
                     // takeScore = maxchip;
-                    // uiCore.Banner.show(uiCore.Utils.getItem(Data.MsgData, "id", 4052)["msg"]);
+                    // uiBanner.show(uiUtils.getItem(Data.MsgData, "id", 4052)["msg"]);
                 } else if (takeScore < minTakeIn) {
                     takeScore = minTakeIn;
-                    // uiCore.Banner.show(core.CFun.format(core.CFun.getItem(Data.MsgData, "id", 4055)["msg"], core.CFun.formatCurrency(takeScore)));
+                    // uiBanner.show(CFun.format(CFun.getItem(Data.MsgData, "id", 4055)["msg"], CFun.formatCurrency(takeScore)));
                 }
                 this.sendData(16778283,[this.playerData.roomSN,takeScore]);
             }
@@ -522,9 +531,9 @@ module module.dzpk.scene{
 
         //添加某个玩家到玩家列表
         private addPlayerTo_player_list(data: any): void {
-            var playerData = core.CFun.getItem(this._player_list, "rid", data.rid);
+            var playerData = CFun.getItem(this._player_list, "rid", data.rid);
             if (!!playerData) {
-                core.CFun.remove(this._player_list, playerData);
+                CFun.remove(this._player_list, playerData);
             }
             var name = data.name;
             if (data.rid != this.playerData["rid"]) {
@@ -560,18 +569,18 @@ module module.dzpk.scene{
             }
         }
 
-        public get deckData():mbase.data.HoldemDeck{
-            if(!core.model.ModelManager.ins.getInstByClassName("HoldemDeck")){
-                core.CFun.throw("DZPKSceneVM中使用的HoldemDeck数据还未初始化");
+        public get deckData():HoldemDeck{
+            if(!ModelManager.ins.getInstByClassName("HoldemDeck")){
+                CFun.throw("DZPKSceneVM中使用的HoldemDeck数据还未初始化");
             }
-            return core.model.ModelManager.ins.getInstByClassName("HoldemDeck");
+            return ModelManager.ins.getInstByClassName("HoldemDeck");
         }
 
-        public get agentData():mbase.data.HoldemAgent{
-            if(!core.model.ModelManager.ins.getInstByClassName("HoldemAgent")){
-                core.CFun.throw("DZPKSceneVM中使用的HoldemAgent数据还未初始化");
+        public get agentData():HoldemAgent{
+            if(!ModelManager.ins.getInstByClassName("HoldemAgent")){
+                CFun.throw("DZPKSceneVM中使用的HoldemAgent数据还未初始化");
             }
-            return core.model.ModelManager.ins.getInstByClassName("HoldemAgent");
+            return ModelManager.ins.getInstByClassName("HoldemAgent");
         }
 
         //场景上的玩家
@@ -592,4 +601,3 @@ module module.dzpk.scene{
             this.setClass = DZPKSceneView;
         }
     }
-}

@@ -1,4 +1,3 @@
-module core.net{
     export class ClassPro{
         constructor(){}
 
@@ -11,4 +10,3 @@ module core.net{
             return "收到：" + this.className + " [f_id:"+ this.recv_id + ",event:" + this.event_id + ",";
         }
     }
-}

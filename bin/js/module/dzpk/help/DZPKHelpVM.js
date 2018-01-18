@@ -1,18 +1,13 @@
-var module;
-(function (module) {
-    var dzpk;
-    (function (dzpk) {
-        var help;
-        (function (help) {
-            class DZPKHelpVM extends mbase.base.MViewModel {
-                constructor() {
-                    super();
-                    this.setAtlasName = "res/atlas/dzpk/helpWindow.atlas,res/atlas/dzpk/zh-cn/helpWindow.atlas";
-                    this.setClass = help.DZPKHelpView;
-                }
-            }
-            help.DZPKHelpVM = DZPKHelpVM;
-        })(help = dzpk.help || (dzpk.help = {}));
-    })(dzpk = module.dzpk || (module.dzpk = {}));
-})(module || (module = {}));
+define(["require", "exports", "../../../mbase/base/MViewModel", "./DZPKHelpView"], function (require, exports, MViewModel_1, DZPKHelpView_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class DZPKHelpVM extends MViewModel_1.MViewModel {
+        constructor() {
+            super();
+            this.setAtlasName = "res/atlas/dzpk/helpWindow.atlas,res/atlas/dzpk/zh-cn/helpWindow.atlas";
+            this.setClass = DZPKHelpView_1.DZPKHelpView;
+        }
+    }
+    exports.DZPKHelpVM = DZPKHelpVM;
+});
 //# sourceMappingURL=DZPKHelpVM.js.map

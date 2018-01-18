@@ -1,4 +1,7 @@
-module module.dzpk{
+import { ui } from '../../ui/layaUI.max.all';
+import { DZPKRoomsVM } from './DZPKRoomsVM';
+import { Player } from '../../mbase/data/Player';
+import { CFun } from '../../core/CFun';
     export class DZPKRoomsView extends ui.game_dzpk.DZPKRoomUI{
         private getHeadImage(sex:number,index:number):string{
             let icon:string = "";
@@ -37,12 +40,12 @@ module module.dzpk{
         }
 
         //继承的
-        public viewInit(recv:mbase.data.Player){
+        public viewInit(recv:Player){
             this.txt_name.text = recv["name"];
-            this.txt_gold.text = core.CFun.formatCurrency(recv["gold"]);
+            this.txt_gold.text = CFun.formatCurrency(recv["gold"]);
             this.btn_header.skin = this.getHeadImage((recv["sex"]),(recv["icon"] || 0));
 
-            let arr = recv.roomDataList[mbase.data.Player.HOLDEM];
+            let arr = recv.roomDataList[Player.HOLDEM];
             let i = 0,len = arr.length,list = [];
             for(i = 0;i < len;i++){
                 list.push({ box_scale:{txt_blind:{value:arr[i]["blink"] * 0.01 + "/" + (arr[i]["blink"] * 0.02)},
@@ -59,7 +62,7 @@ module module.dzpk{
         protected comInit(){
             this.list_rooms.vScrollBarSkin = "";
             this.list_rooms.selectEnable = true;
-            this.list_rooms.mouseHandler = Handler.create(this,this.onChoseRoom,[],false);
+            this.list_rooms.mouseHandler = laya.utils.Handler.create(this,this.onChoseRoom,[],false);
             this.btn_back.on(Laya.Event.CLICK,this,this.onBack);
             this.btn_help.on(Laya.Event.CLICK,this,this.onShowHelp);
             this.btn_record.on(Laya.Event.CLICK,this,this.onShowRecord);
@@ -70,4 +73,3 @@ module module.dzpk{
             this._vm = vm;
         }
     }
-}

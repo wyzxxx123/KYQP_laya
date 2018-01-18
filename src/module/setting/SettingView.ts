@@ -1,4 +1,6 @@
-module module.setting{
+import { CFun } from '../../core/CFun';
+import { SettingVM } from './SettingVM';
+import { ui } from '../../ui/layaUI.max.all';
     /**
      * @description 设置面板
      * @author wangyz
@@ -15,7 +17,7 @@ module module.setting{
                 this.music_switch.selected = false;
             }
 
-            core.CFun.musicV = this.slider_music.value * 0.01;
+            CFun.musicV = this.slider_music.value * 0.01;
         }
 
         private onSoundChange(){
@@ -26,7 +28,7 @@ module module.setting{
                 this.sound_switch.selected = false;
             }
 
-            core.CFun.musicV = this.slider_music.value * 0.01;
+            CFun.musicV = this.slider_music.value * 0.01;
         }
 
         private onMusicClick(){
@@ -66,8 +68,8 @@ module module.setting{
         }
         //继承的
         protected comInit(){
-            this.slider_music.changeHandler = new Handler(this, this.onMusicChange);
-            this.slider_sound.changeHandler = new Handler(this, this.onSoundChange);
+            this.slider_music.changeHandler = new laya.utils.Handler(this, this.onMusicChange);
+            this.slider_sound.changeHandler = new laya.utils.Handler(this, this.onSoundChange);
             this.music_switch.on(Laya.Event.CLICK,this,this.onMusicClick);
             this.sound_switch.on(Laya.Event.CLICK,this,this.onSoundClick);
         }
@@ -77,4 +79,3 @@ module module.setting{
             this._vm = vm;
         }
     }
-}

@@ -1,4 +1,3 @@
-module core.comlaya{
     /**
      * @description 设置面板中的Slider
      * @author wangyz
@@ -37,4 +36,3 @@ module core.comlaya{
             this.on(Laya.Event.CHANGE,this,this.onChange);
         }
     }
-}

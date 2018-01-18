@@ -1,5 +1,6 @@
-module module.dzpk.help{
-    export class DZPKHelpVM extends mbase.base.MViewModel{
+import { MViewModel } from '../../../mbase/base/MViewModel';
+import { DZPKHelpView } from './DZPKHelpView';
+    export class DZPKHelpVM extends MViewModel{
 
         constructor(){
             super();
@@ -8,4 +9,3 @@ module module.dzpk.help{
             this.setClass = DZPKHelpView;
         }
     }
-}

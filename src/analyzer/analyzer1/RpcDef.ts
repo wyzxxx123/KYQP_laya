@@ -1,10 +1,15 @@
-module analyzer.analyzer1{
+import { CFun } from '../../core/CFun';
+import { PropDef } from './PropDef';
+import { RpcType } from './RpcType';
+import { TypeDef } from './type/TypeDef';
+import { TypeArray } from './type/TypeArray';
+import { Struct } from './type/Struct';
     export class RpcDef{
 
         public static getTypeReader( type:number|string ):Function
 		{
 			let f = this._type_readers[type];
-			if(!f) core.CFun.throw("getTypeReader的"+type+"不存在");
+			if(!f) CFun.throw("getTypeReader的"+type+"不存在");
 			return f;
 		}
 
@@ -16,26 +21,26 @@ module analyzer.analyzer1{
 		public static getTypeWriter( type:number|string ):Function
 		{
 			let f = this._type_writers[type];
-			if(!f) core.CFun.throw("getTypeWriter的"+type+"不存在");
+			if(!f) CFun.throw("getTypeWriter的"+type+"不存在");
 			return f;
 		}
 
         public static getMethodByID(id:number):Object{
             let o = this._method_id[id];
-            if(!o) core.CFun.throw("getMethodByID的"+id+"不存在");
+            if(!o) CFun.throw("getMethodByID的"+id+"不存在");
             return o;
         }
 
 		public static getModelClassByID(id:number):any{
 			let m = this._class_id[id];
-            if(!m) core.CFun.throw("getModelClassByID的"+id+"不存在");
+            if(!m) CFun.throw("getModelClassByID的"+id+"不存在");
             return m;
 		}
 
 		public static getProByID(id:number):any{
 			let p = this._pro_id[id];
             if(!p) {
-				core.CFun.log("getProByID的"+id+"不存在");//core.CFun.throw("getProByID的"+id+"不存在");
+				CFun.log("getProByID的"+id+"不存在");//CFun.throw("getProByID的"+id+"不存在");
 			}
             return p;
 		}
@@ -107,7 +112,7 @@ module analyzer.analyzer1{
 
         private initDump(){
             let arr_method = this._dump["MethodList"];
-            if(!arr_method) core.CFun.throw("dump中的MethodList不存在");
+            if(!arr_method) CFun.throw("dump中的MethodList不存在");
 			let i,tobj,len = arr_method.length;
 			for(i = 0;i < len;i++){
 				tobj = arr_method[i];
@@ -115,15 +120,15 @@ module analyzer.analyzer1{
 			}
 
             let arr_type = this._dump["TypeList"];
-            if(!arr_type) core.CFun.throw("dump中的TypeList不存在");
+            if(!arr_type) CFun.throw("dump中的TypeList不存在");
 			len = arr_type.length;
 			for(i = 0;i < len;i++){
 				let def:TypeDef = new TypeDef(arr_type[i]);
 				RpcDef._type_defs[def.id] = RpcDef._type_defs[def.name] = def;
 
 				var type:string = def.id < RpcDef.STRUCT_BASE_ID ? def.name : "struct";
-				var writer:Function = (analyzer.analyzer1.RpcType[type + "Writer"] as Function).bind(analyzer.analyzer1.RpcType);
-				var reader:Function = (analyzer.analyzer1.RpcType[type + "Reader"] as Function).bind(analyzer.analyzer1.RpcType);
+				var writer:Function = (RpcType[type + "Writer"] as Function).bind(RpcType);
+				var reader:Function = (RpcType[type + "Reader"] as Function).bind(RpcType);
 				RpcDef._type_writers[def.id] = writer;
 				RpcDef._type_writers[def.name] = writer;
 				RpcDef._type_readers[def.id] = reader;
@@ -131,7 +136,7 @@ module analyzer.analyzer1{
 			}
 
 			let arr_enter = this._dump["EntityList"];
-			if(!arr_enter) core.CFun.throw("dump中的EntityList不存在");
+			if(!arr_enter) CFun.throw("dump中的EntityList不存在");
 			len = arr_enter.length;
 			for(i = 0;i < len;i++){
 				tobj = arr_enter[i];
@@ -139,7 +144,7 @@ module analyzer.analyzer1{
 			}
 
 			let arr_pros = this._dump["PropList"];
-			if(!arr_pros) core.CFun.throw("dump中的PropList不存在");
+			if(!arr_pros) CFun.throw("dump中的PropList不存在");
 			len = arr_pros.length;
 			for(i = 0;i < len;i++){
 				tobj = arr_pros[i];
@@ -155,4 +160,3 @@ module analyzer.analyzer1{
 			}
 		}
     }
-}

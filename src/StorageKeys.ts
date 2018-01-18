@@ -1,9 +1,11 @@
+import { GameMain } from './KYQP_laya';
+import { Player } from './mbase/data/Player';
 /**
  * 本地存储键配置
  * @author none
  *
  */
-class StorageKeys {
+export class StorageKeys {
     public constructor() {
     }
 
@@ -38,6 +40,6 @@ class StorageKeys {
         return GameMain.appName + "autoLogin";
     }
     public static get DZPKTakeScore(): string {
-        return GameMain.appName + mbase.data.Player.accountId + "DZPKTakeScore";
+        return GameMain.appName + Player.accountId + "DZPKTakeScore";
     }
 }

@@ -1,5 +1,4 @@
-namespace analyzer.analyzer1
-{
+
 	/**
 	 * 类型定义
 	 * @author	Fictiony
@@ -43,4 +42,3 @@ namespace analyzer.analyzer1
 			return this._info;
 		}
 	}
-}

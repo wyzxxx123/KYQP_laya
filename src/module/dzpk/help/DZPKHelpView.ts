@@ -1,4 +1,5 @@
-module module.dzpk.help{
+import { ui } from '../../../ui/layaUI.max.all';
+import { DZPKHelpVM } from './DZPKHelpVM';
     export class DZPKHelpView extends ui.game_dzpk.DZPKHelpUI{
 
         private onSelecte(index:number){
@@ -16,7 +17,7 @@ module module.dzpk.help{
 
         protected comInit(){
             this.on(Laya.Event.DISPLAY,this,this.initSelect);
-            this.tab_chose.selectHandler = Handler.create(this,this.onSelecte,[],false);
+            this.tab_chose.selectHandler = laya.utils.Handler.create(this,this.onSelecte,[],false);
             this.tab_chose.selectedIndex = -1;
         }
 
@@ -25,4 +26,3 @@ module module.dzpk.help{
             this._vm = vm;
         }
     }
-}

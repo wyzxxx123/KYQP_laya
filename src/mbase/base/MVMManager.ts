@@ -1,5 +1,10 @@
-module mbase.base{
-    export class MVMManager extends core.viewmodel.VMManager{
+import { CFun } from '../../core/CFun';
+import { ModelManager } from '../../core/model/ModelManager';
+import { Player } from '../data/Player';
+import { VMManager } from '../../core/viewmodel/VMManager';
+import { InitData } from './InitData';
+import { MsgData } from './MsgData';
+    export class MVMManager extends VMManager{
 
         //收到服务器消息才打开的界面
         protected eventInit(){
@@ -12,27 +17,27 @@ module mbase.base{
 
         private onReconnect(){
             if(this.playerData.roomSN > 0){
-                if(this.playerData.gameType == mbase.data.Player.HOLDEM){
+                if(this.playerData.gameType == Player.HOLDEM){
                     this.showOther("SCENE_DZPKSceneVM",this.playerData.roomData);
                 }
             }
         }
 
-        private onEnterError(player:data.Player){
+        private onEnterError(player:Player){
             if(player.ret != 0){
-                core.CFun.dialog(core.CFun.getItem(Data.MsgData, "id", player.ret)["msg"],null,null,"确 定");
+                CFun.dialog(CFun.getItem(MsgData, "id", player.ret)["msg"],null,null,"确 定");
 
-                if(player.gameType == data.Player.HOLDEM){
+                if(player.gameType == Player.HOLDEM){
                     this.showOther("SCENE_scene_620");
                 }
             }
         }
 
-        private onPlayError(player:data.Player){
+        private onPlayError(player:Player){
             if(player.ret != 0){
-                core.CFun.dialog(core.CFun.getItem(Data.MsgData, "id", player.ret)["msg"],null,null,"确 定");
+                CFun.dialog(CFun.getItem(MsgData, "id", player.ret)["msg"],null,null,"确 定");
 
-                if(player.gameType == data.Player.HOLDEM){
+                if(player.gameType == Player.HOLDEM){
                     this.showOther("SCENE_scene_620");
                 }
             }
@@ -44,18 +49,18 @@ module mbase.base{
             }
         }
 
-        private onShowRoom(data:data.Player){
+        private onShowRoom(data:Player){
             this.showOther("SCENE_scene_" + data.gameid,data);//620\720\820
         }
 
         private showOther(className:string,exData?:any){
-            let initData = laya.utils.Pool.getItemByClass("InitData",base.InitData);
-            initData.className = className;
-            initData.exData = exData;
+            let initData = laya.utils.Pool.getItemByClass("InitData",InitData);
+            initData.initclassName = className;
+            initData.initexData = exData;
             this.onInitAndShow(initData);
         }
 
-        protected onInitAndShow(data:mbase.base.InitData){
+        protected onInitAndShow(data:InitData){
             if(data.className.indexOf("SCENE_") == 0){//如果是场景则关闭所有
                 this.closeAll();
             }
@@ -63,13 +68,12 @@ module mbase.base{
             super.onInitAndShow(data);
         }
 
-        public get playerData():data.Player{
-            if(!core.model.ModelManager.ins.getInstByClassName("Player")){
-                core.CFun.throw("MVMManager中使用的Player数据还未初始化");
+        public get playerData():Player{
+            if(!ModelManager.ins.getInstByClassName("Player")){
+                CFun.throw("MVMManager中使用的Player数据还未初始化");
             }
-            return core.model.ModelManager.ins.getInstByClassName("Player");
+            return ModelManager.ins.getInstByClassName("Player");
         }
 
         constructor(){super();}
     }
-}

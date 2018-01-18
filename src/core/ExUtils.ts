@@ -1,4 +1,4 @@
-module core {
+import { CFun } from './CFun';
 	/**
 	 * 和容器的通讯工具
 	 * @author none
@@ -105,7 +105,6 @@ module core {
             alert(data);
         }
     }
-}
 function setupWebViewJavascriptBridge(callback) {
     if (window["WebViewJavascriptBridge"]) { return callback(window["WebViewJavascriptBridge"]); }
     if (window["WVJBCallbacks"]) { return window["WVJBCallbacks"].push(callback); }

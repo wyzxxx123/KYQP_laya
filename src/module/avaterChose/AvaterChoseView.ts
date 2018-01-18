@@ -1,4 +1,6 @@
-module module.avaterChose{
+import { ui } from '../../ui/layaUI.max.all';
+import { Player } from '../../mbase/data/Player';
+import { AvaterChoseVM } from './AvaterChoseVM';
     /**
      * @description 头像选择界面
      * @author wangyz
@@ -66,13 +68,13 @@ module module.avaterChose{
 
         //继承的
         protected comInit(){
-            this.man_list.selectHandler = Handler.create(this,this.onManChose,[],false);
-            this.woman_list.selectHandler = Handler.create(this,this.onWomenChose,[],false);
+            this.man_list.selectHandler = laya.utils.Handler.create(this,this.onManChose,[],false);
+            this.woman_list.selectHandler = laya.utils.Handler.create(this,this.onWomenChose,[],false);
             this.btn_save.on(Laya.Event.CLICK,this,this.onSaveHead);
         }
 
         //继承的
-        public viewInit(recv:mbase.data.Player){
+        public viewInit(recv:Player){
             var manList = [], womenList = [], icon0 = recv["icon"] || 0;
             this._sex_index = this._chose_sex = recv["sex"];
             this._icon_index = this._chose_index = parseInt(icon0);
@@ -114,4 +116,3 @@ module module.avaterChose{
             this.woman_list.scrollBar.elasticDistance = 200;
         }
     }
-}

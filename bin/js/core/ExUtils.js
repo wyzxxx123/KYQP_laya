@@ -1,5 +1,6 @@
-var core;
-(function (core) {
+define(["require", "exports", "./CFun"], function (require, exports, CFun_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     /**
      * 和容器的通讯工具
      * @author none
@@ -63,15 +64,15 @@ var core;
         }
         static getIMEI(data) {
             ExUtils._IMEI = data;
-            core.CFun.log("获取到设备唯一序列号：" + data);
+            CFun_1.CFun.log("获取到设备唯一序列号：" + data);
         }
         static getMAC(data) {
             ExUtils._MACAddress = data;
-            core.CFun.log("获取到设备MAC地址：" + data);
+            CFun_1.CFun.log("获取到设备MAC地址：" + data);
         }
         static getVersion(data) {
             ExUtils._version = data;
-            core.CFun.log("获取到应用版本号：" + data);
+            CFun_1.CFun.log("获取到应用版本号：" + data);
         }
         static onWebViewJavascriptBridgeReady(bridge) {
             bridge.registerHandler("texttext", this.ontext.bind(this));
@@ -92,28 +93,28 @@ var core;
      */
     ExUtils.packageName = "null";
     ExUtils._is_full = false;
-    core.ExUtils = ExUtils;
-})(core || (core = {}));
-function setupWebViewJavascriptBridge(callback) {
-    if (window["WebViewJavascriptBridge"]) {
-        return callback(window["WebViewJavascriptBridge"]);
+    exports.ExUtils = ExUtils;
+    function setupWebViewJavascriptBridge(callback) {
+        if (window["WebViewJavascriptBridge"]) {
+            return callback(window["WebViewJavascriptBridge"]);
+        }
+        if (window["WVJBCallbacks"]) {
+            return window["WVJBCallbacks"].push(callback);
+        }
+        window["WVJBCallbacks"] = [callback];
+        var WVJBIframe = document.createElement('iframe');
+        WVJBIframe.style.display = 'none';
+        WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+        document.documentElement.appendChild(WVJBIframe);
+        setTimeout(function () { document.documentElement.removeChild(WVJBIframe); }, 0);
     }
-    if (window["WVJBCallbacks"]) {
-        return window["WVJBCallbacks"].push(callback);
-    }
-    window["WVJBCallbacks"] = [callback];
-    var WVJBIframe = document.createElement('iframe');
-    WVJBIframe.style.display = 'none';
-    WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
-    document.documentElement.appendChild(WVJBIframe);
-    setTimeout(function () { document.documentElement.removeChild(WVJBIframe); }, 0);
-}
-if (window && window.navigator && navigator.userAgent == "ios_miq") {
-    setupWebViewJavascriptBridge(function (bridge) {
-        bridge.registerHandler('texttext', function (data, responseCallback) {
-            alert("JS Echo called with:" + data);
-            responseCallback(data);
+    if (window && window.navigator && navigator.userAgent == "ios_miq") {
+        setupWebViewJavascriptBridge(function (bridge) {
+            bridge.registerHandler('texttext', function (data, responseCallback) {
+                alert("JS Echo called with:" + data);
+                responseCallback(data);
+            });
         });
-    });
-}
+    }
+});
 //# sourceMappingURL=ExUtils.js.map

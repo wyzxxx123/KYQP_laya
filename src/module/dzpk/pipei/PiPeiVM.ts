@@ -1,4 +1,5 @@
-module module.dzpk.pipei{
+import { MViewModel } from '../../../mbase/base/MViewModel';
+import { PiPeiView } from './PiPeiView';
     /**
      * @description 匹配界面
      * @author wangyz
@@ -6,7 +7,7 @@ module module.dzpk.pipei{
      * @class PiPeiVM
      * @extends {base.MViewModel}
      */
-    export class PiPeiVM extends mbase.base.MViewModel{
+    export class PiPeiVM extends MViewModel{
 
         public cancelPiPei(){
             this.sendData(16778282,[0]);
@@ -31,4 +32,3 @@ module module.dzpk.pipei{
             this.setClass = PiPeiView;
         }
     }
-}

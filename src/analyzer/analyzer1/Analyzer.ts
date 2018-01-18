@@ -1,4 +1,9 @@
-module analyzer.analyzer1{
+import { RpcDef } from './RpcDef';
+import { RpcType } from './RpcType';
+import { Ctx } from './crypt/Ctx';
+import { CFun } from '../../core/CFun';
+import { SSend } from './SSend';
+import { ClassPro } from '../../core/net/ClassPro';
     /**
 	 * @description 解析具体数据
 	 * @author wangyz
@@ -6,7 +11,7 @@ module analyzer.analyzer1{
 	 * @class Analyzer
 	 */
 	export class Analyzer{
-        public analyzeRecv(data:any):core.net.ClassPro{
+        public analyzeRecv(data:any):ClassPro{
 			// console.log("前：" + this._byte.length + "_" + this._byte.pos + "_" + this._byte.bytesAvailable);
             this._byte.writeArrayBuffer(data);//把接收到的二进制数据读进byte数组便于解析。
 			// console.log("中：" + this._byte.length + "_" + this._byte.pos + "_" + this._byte.bytesAvailable);
@@ -16,8 +21,8 @@ module analyzer.analyzer1{
 				if(this._byte.bytesAvailable >= this.INT_SIZE){
 					if(Analyzer.seed > 0 ){
 						if(this._encrypter == undefined){
-							this._encrypter = new crypt.Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
-							this._decrypter = new crypt.Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
+							this._encrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
+							this._decrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
 						}
 
 						this._decrypter.encode(this._byte, this.INT_SIZE, this._byte.pos);
@@ -28,12 +33,12 @@ module analyzer.analyzer1{
 					len &= 0xFFFFFF;
 					if (len == 0 || len > this.BAD_LEN || flag != (len % 255))	//数据包长度非法
 					{
-						core.CFun.throw("Invalid packet size: " + len);
+						CFun.throw("Invalid packet size: " + len);
 						return null;
 					}
 					if (len > this.MAX_LEN)		//数据包过长
 					{
-						core.CFun.throw("packet size exceed: " + len);
+						CFun.throw("packet size exceed: " + len);
 						return null;
 					}
 
@@ -46,8 +51,8 @@ module analyzer.analyzer1{
 
 				if(Analyzer.seed > 0 ){
 					if(this._encrypter == undefined){
-						this._encrypter = new crypt.Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
-						this._decrypter = new crypt.Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
+						this._encrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
+						this._decrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
 					}
 
 					this._decrypter.encode(this._byte, len, this._byte.pos);
@@ -70,7 +75,7 @@ module analyzer.analyzer1{
 					data_params[tname] = reader(this._byte);
 				}
 				
-				let cPro = new core.net.ClassPro();
+				let cPro = new ClassPro();
 				cPro.recv_id = data_obj["id"];
 				cPro.className = cName;
 				cPro.event_id = data_obj["server"] +"_"+ data_obj["className"]  +"_"+ data_obj["name"];
@@ -85,13 +90,13 @@ module analyzer.analyzer1{
 			return null;
         }
 
-		public analyzeSend(data:analyzer.analyzer1.SSend):any{
+		public analyzeSend(data:SSend):any{
 			let tmp_byte:laya.utils.Byte = laya.utils.Pool.getItemByClass("tmpByte",laya.utils.Byte);
 			tmp_byte.endian = laya.utils.Byte.LITTLE_ENDIAN;
 			tmp_byte.clear();
 			tmp_byte.pos = 0;
 			let data_obj = data.method;
-			if (!data_obj) core.CFun.throw("RPC method not found: " + data_obj["id"]);
+			if (!data_obj) CFun.throw("RPC method not found: " + data_obj["id"]);
 
 			RpcType.uintWriter(tmp_byte, data_obj["id"]);
 			if (!data_obj["isStatic"]){
@@ -103,7 +108,7 @@ module analyzer.analyzer1{
 				targ = args[i];
 				var writer:Function = RpcDef.getTypeWriter(targ.type);
 				if (writer == null){
-					core.CFun.throw("Type writer not found: " + targ.type);
+					CFun.throw("Type writer not found: " + targ.type);
 				}
 				writer(tmp_byte,data.args[i]);
 			}
@@ -111,7 +116,7 @@ module analyzer.analyzer1{
 			var len: number = tmp_byte.length;
 			if (!len) return;
 			if (len > this.BAD_LEN)	{//数据包长度非法
-				core.CFun.throw("Invalid packet size: " + len);
+				CFun.throw("Invalid packet size: " + len);
 			}
 			// SocketInterface.debugLog && SocketInterface.debugLog("Sending packet: " + packet);
 
@@ -128,24 +133,24 @@ module analyzer.analyzer1{
 			
 			if(Analyzer.seed > 0 ){
 				if(this._encrypter == undefined){
-					this._encrypter = new crypt.Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
-					this._decrypter = new crypt.Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
+					this._encrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
+					this._decrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
 				}
 
 				this._encrypter.encode(write_byte, write_byte.length);
 			}
 
-			// let t_encrypter = new crypt.Ctx(1 ^ this.GENIUS_NUMBER);
+			// let t_encrypter = new Ctx(1 ^ this.GENIUS_NUMBER);
 			// t_encrypter.encode(write_byte, write_byte.length);
-			core.CFun.log(data.toString());
+			CFun.log(data.toString());
 			laya.utils.Pool.recover("tmpSend",data);
 			laya.utils.Pool.recover("tmpByte",tmp_byte);
 
 			return [write_byte,write_byte.buffer];
 		}
 		
-		private _encrypter: crypt.Ctx;					//数据流加密算法对象
-		private _decrypter: crypt.Ctx;					//数据流解密算法对象
+		private _encrypter: Ctx;					//数据流加密算法对象
+		private _decrypter: Ctx;					//数据流解密算法对象
 		private _byte:laya.utils.Byte;
         constructor(){
             this._byte = new laya.utils.Byte();
@@ -163,4 +168,3 @@ module analyzer.analyzer1{
         private INT_SIZE:number = 4;
         private _packetLen:number = 0;
     }
-}

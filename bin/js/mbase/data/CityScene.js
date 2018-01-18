@@ -1,18 +1,16 @@
-var mbase;
-(function (mbase) {
-    var data;
-    (function (data) {
-        class CityScene extends mbase.base.MModel {
-            constructor() {
-                super();
-            }
-            recvInit() {
-                this.regist("server_Client_createEntity_CityScene", this.onCreateMe);
-            }
-            onCreateMe() {
-            }
+define(["require", "exports", "../base/MModel"], function (require, exports, MModel_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class CityScene extends MModel_1.MModel {
+        recvInit() {
+            this.regist("server_Client_createEntity_CityScene", this.onCreateMe);
         }
-        data.CityScene = CityScene;
-    })(data = mbase.data || (mbase.data = {}));
-})(mbase || (mbase = {}));
+        onCreateMe() {
+        }
+        constructor() {
+            super();
+        }
+    }
+    exports.CityScene = CityScene;
+});
 //# sourceMappingURL=CityScene.js.map

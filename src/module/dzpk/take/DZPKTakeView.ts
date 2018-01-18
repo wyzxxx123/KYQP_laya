@@ -1,4 +1,6 @@
-module module.dzpk.take{
+import { ui } from '../../../ui/layaUI.max.all';
+import { DZPKTakeVM } from './DZPKTakeVM';
+import { CFun } from '../../../core/CFun';
     export class DZPKTakeView extends ui.game_dzpk.DZPKTakeUI{
 
         private _isClick:boolean = false;
@@ -24,24 +26,24 @@ module module.dzpk.take{
 
             let txtMoney = sprMoney.getChildByName("txt_money");
             let imgMoney = sprMoney.getChildByName("img_money");
-            txtMoney["text"] = core.CFun.formatCurrency(this.sid_take.value);
+            txtMoney["text"] = CFun.formatCurrency(this.sid_take.value);
             if(txtMoney["width"] > 174) imgMoney["width"] = txtMoney["width"] + 20;
         }
 
         public viewInit(recv:any){
             // let data = {playerMoney:this._data["gold"],max:0,min:0,take:0};
-            this.txt_all.text = core.CFun.formatCurrency(recv.playerMoney);
-            this.txt_min.text = core.CFun.formatCurrency(recv.min);
-            this.txt_max.text = core.CFun.formatCurrency(recv.max);
+            this.txt_all.text = CFun.formatCurrency(recv.playerMoney);
+            this.txt_min.text = CFun.formatCurrency(recv.min);
+            this.txt_max.text = CFun.formatCurrency(recv.max);
             this.sid_take.setSlider(recv.min,recv.max,recv.take);
             this.sid_take.bar.y = -8;
             this.chk_chose.selected = recv.isAuto;
 
-            this.btn_ok.clickHandler = Handler.create(this,this.onOK);
+            this.btn_ok.clickHandler = laya.utils.Handler.create(this,this.onOK);
         }
 
         protected comInit(){
-            this.sid_take.changeHandler = new Handler(this, this.onChange,[],false);
+            this.sid_take.changeHandler = new laya.utils.Handler(this, this.onChange,[],false);
         }
 
         constructor(vm:DZPKTakeVM){
@@ -49,4 +51,3 @@ module module.dzpk.take{
             this._vm = vm;
         }
     }
-}

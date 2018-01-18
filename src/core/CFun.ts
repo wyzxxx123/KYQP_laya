@@ -1,5 +1,9 @@
-module core{
-    export class CFun {
+import { md5 } from './md5';
+import { StorageKeys } from '../StorageKeys';
+import { ExUtils } from './ExUtils';
+import { ui } from '../ui/layaUI.max.all';
+import { DialogView } from './view/DialogView';
+export class CFun {
         public static SCREEN_PRINT:boolean = true;
         public static DEBUG:boolean = true;
 
@@ -21,7 +25,7 @@ module core{
 
         public static dialog(content:string="确定要退出游戏？",callback:Function=null,obj:any = this,button:string="确 定|取 消",title="提 示"){
             let arrBtn = button.split("|");
-            let dialog:view.DialogView;
+            let dialog:DialogView;
             if(arrBtn.length == 2){
                 dialog= new ui.dialog.TwoButtonUI();
                 dialog.getChildByName("cancel")["label"] = arrBtn[1];
@@ -35,9 +39,9 @@ module core{
                 dialog.getChildByName("title")["text"] = title;
                 dialog.getChildByName("content")["text"] = content;
             }
-
+            
             // dialog.isModal = true;
-            dialog.closeHandler = Handler.create(obj,callback);
+            dialog.closeHandler = laya.utils.Handler.create(obj,callback);
             dialog.popup();
         }
 
@@ -195,12 +199,12 @@ module core{
         * @returns 设备唯一号
         */
         public static getIMEI(): string {
-            if (core.ExUtils.IMEI) {
-                return core.ExUtils.IMEI;
+            if (ExUtils.IMEI) {
+                return ExUtils.IMEI;
             }
             var result = laya.net.LocalStorage.getItem(StorageKeys.imei_windows);
             if (!result) {
-                result = core.CFun.md5(core.CFun.formatDate(new Date(), "qqddMMhhmmS") + Math.random());
+                result = CFun.md5(CFun.formatDate(new Date(), "qqddMMhhmmS") + Math.random());
                 laya.net.LocalStorage.setItem(StorageKeys.imei_windows, result);
             }
             return result;
@@ -247,4 +251,3 @@ module core{
             }
         }
     }
-}

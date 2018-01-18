@@ -1,4 +1,5 @@
-module core.view{
+import { ViewModel } from '../viewmodel/ViewModel';
+import { CFun } from '../CFun';
     export class ComView extends laya.ui.View{
         public static TOP:string = "top";
         public static WINDOW:string = "window";
@@ -8,7 +9,7 @@ module core.view{
         public static WINDOW_NO_CLOSEAUTO:string = "window_no_closeauto";
         public static SCENE:string = "scene";
 
-        protected _vm:core.viewmodel.ViewModel;
+        protected _vm:ViewModel;
 
         public c_name:string;
         protected _view_type:string = "other";
@@ -16,8 +17,8 @@ module core.view{
             return this._view_type;
         }
 
-        public get vm():core.viewmodel.ViewModel{
-            if(!this._vm) core.CFun.throw("ComView中_vm还未初始化！");
+        public get vm():ViewModel{
+            if(!this._vm) CFun.throw("ComView中_vm还未初始化！");
             return this._vm;
         }
 
@@ -74,4 +75,3 @@ module core.view{
             return t_c + ".json";
         }
     }
-}

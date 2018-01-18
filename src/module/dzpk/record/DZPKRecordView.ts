@@ -1,11 +1,14 @@
-module module.dzpk.record{
+import { ui } from '../../../ui/layaUI.max.all';
+import { Player } from '../../../mbase/data/Player';
+import { CFun } from '../../../core/CFun';
+import { DZPKRecordVM } from './DZPKRecordVM';
     export class DZPKRecordView extends ui.game_dzpk.DZPKRecordUI{
 
-        public viewInit(data:mbase.data.Player){
+        public viewInit(data:Player){
             let arr = data.holdemRecords,tarr = [],i = 0,len = data.holdemRecords.length;
             for(i = 0;i < len;i++){
-                tarr.push({img_bg:{visible:i%2==0},txt_num:i + 1,txt_id:arr[i].gameNo,txt_room_name:data.getRoomDataById(mbase.data.Player.HOLDEM,arr[i].roomType).name,
-                    txt_score:core.CFun.formatCurrency(arr[i].win - arr[i].deduct),txt_end_time:arr[i].time});
+                tarr.push({img_bg:{visible:i%2==0},txt_num:i + 1,txt_id:arr[i].gameNo,txt_room_name:data.getRoomDataById(Player.HOLDEM,arr[i].roomType).name,
+                    txt_score:CFun.formatCurrency(arr[i].win - arr[i].deduct),txt_end_time:arr[i].time});
             }
 
             if(arr.length <= 0){
@@ -29,4 +32,3 @@ module module.dzpk.record{
             this._vm = vm;
         }
     }
-}

@@ -1,5 +1,5 @@
-module mbase.data{
-    export class CityScene extends base.MModel{
+import { MModel } from '../base/MModel';
+    export class CityScene extends MModel{
 
         protected recvInit(){
             this.regist("server_Client_createEntity_CityScene",this.onCreateMe);
@@ -14,4 +14,3 @@ module mbase.data{
         }  
 
     }
-}

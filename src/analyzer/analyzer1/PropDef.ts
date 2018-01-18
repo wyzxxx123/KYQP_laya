@@ -1,5 +1,5 @@
-module analyzer.analyzer1
-{
+import { RpcDef } from './RpcDef';
+
 	/**
 	 * 属性定义
 	 * @author	Fictiony
@@ -86,4 +86,3 @@ module analyzer.analyzer1
 			return this._info;
 		}
 	}
-}

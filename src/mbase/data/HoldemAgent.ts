@@ -1,5 +1,5 @@
-module mbase.data{
-    export class HoldemAgent extends base.MModel{
+import { MModel } from '../base/MModel';
+    export class HoldemAgent extends MModel{
 
         //enterDeck
         public pokers:any[] = [];
@@ -39,4 +39,3 @@ module mbase.data{
             super();
         }  
     }
-}
