@@ -14,7 +14,7 @@ class GameMain {
         Laya.stage.scaleMode = "exactfit";
         Laya.stage.mouseEnabled = false;
         //调用DebugPanel调试面板
-        Laya.DebugPanel.init();
+        // Laya.DebugPanel.init();
         //调用DebugTool调试面板
         // Laya.DebugTool.init();
         new RegistClass();

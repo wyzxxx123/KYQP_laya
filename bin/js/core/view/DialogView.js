@@ -6,6 +6,14 @@ var core;
             constructor() {
                 super();
             }
+            loadUI(path) {
+                super.loadUI(path);
+                this._my_path = path;
+            }
+            createChildren() {
+                super.createChildren();
+                this.createView(Laya.loader.getRes(this._my_path + ".json"));
+            }
         }
         view.DialogView = DialogView;
     })(view = core.view || (core.view = {}));

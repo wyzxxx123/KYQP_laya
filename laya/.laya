@@ -1,6 +1,6 @@
 <project version="0.9.8">
-   <asynRes>img,temp,sound         </asynRes>
-   <unDealRes>embed         </unDealRes>
+   <asynRes>img,temp,sound            </asynRes>
+   <unDealRes>embed            </unDealRes>
    <resTypes>png,jpg   </resTypes>
    <resExportPath>bin/res/atlas   </resExportPath>
    <asynResExportPath>bin   </asynResExportPath>
@@ -8,14 +8,14 @@
    <codeImports><![CDATA[import laya.ui.*;]]>   </codeImports>
    <codeImportsJS><![CDATA[var View=laya.ui.View;
 var Dialog=laya.ui.Dialog;]]>   </codeImportsJS>
-   <uiType>0   </uiType>
+   <uiType>2   </uiType>
    <uiExportPath>bin/ui.json   </uiExportPath>
    <boxTypes>Box,List,Tab,RadioGroup,ViewStack,Panel,HBox,VBox,Tree,Sprite   </boxTypes>
    <pageTypes>Scenes,Dialogs,Windows,View   </pageTypes>
    <shareResPath/>
    <codeType>1   </codeType>
    <resCanCompress/>
-   <resPublishQuality>80         </resPublishQuality>
+   <resPublishQuality>80            </resPublishQuality>
    <langPath/>
    <defaultFont/>
    <codeImportsTS><![CDATA[import View=core.view.ComView;
@@ -33,4 +33,5 @@ import Windows=core.view.WinView;]]>   </codeImportsTS>
    <copyRes>true   </copyRes>
    <dataCompact>true   </dataCompact>
    <ver>0.9.9 beta   </ver>
+   <atlasScale/>
 </project>

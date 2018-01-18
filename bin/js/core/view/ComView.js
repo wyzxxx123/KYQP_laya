@@ -33,6 +33,23 @@ var core;
             }
             layerInit() {
             }
+            createChildren() {
+                super.createChildren();
+                let path = this.parsingPath();
+                this.createView(Laya.loader.getRes(path));
+            }
+            parsingPath() {
+                let c = this.constructor.toString();
+                let c_s = this.constructor.name + " extends ui.";
+                let s_i = c.indexOf(c_s) + c_s.length;
+                let e_i = c.indexOf(this.constructor.__proto__.name) + this.constructor.__proto__.name.length - 2;
+                let t_c = c.substring(s_i, e_i);
+                let d_i = t_c.indexOf(".");
+                if (d_i != -1) {
+                    t_c = t_c.split(".").join("/");
+                }
+                return t_c + ".json";
+            }
         }
         ComView.TOP = "top";
         ComView.WINDOW = "window";

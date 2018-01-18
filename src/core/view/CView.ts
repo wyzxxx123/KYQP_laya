@@ -80,14 +80,31 @@ module core.view{
             }
             let tmp_arrAtlas = [];
             let arr_atlas = this._atlas_url.split(",");
-            let len = this._atlas_url.length;
+            let len = arr_atlas.length;
+            
             for(let i = 0;i < len;i++){
                 if(arr_atlas[i] == "") continue;
                 tmp_arrAtlas.push({url:arr_atlas[i],type:Loader.ATLAS});
             }
+            tmp_arrAtlas.push({url:this.parsingPath(),type:Loader.JSON});
             if(tmp_arrAtlas.length > 0){
-                Laya.loader.load(arr_atlas, Handler.create(this, this.onLoaded));
+                Laya.loader.load(tmp_arrAtlas, Handler.create(this, this.onLoaded));
             }
+        }
+
+        private parsingPath(){
+            let c:string = this._class.toString();
+            let c_s = this._class.name + " extends ui.";
+            let s_i = c.indexOf(c_s) + c_s.length;
+            let e_i = c.indexOf(this._class.__proto__.name) + this._class.__proto__.name.length - 2;
+            let t_c = c.substring(s_i,e_i);
+
+            let d_i = t_c.indexOf(".");
+            if(d_i != -1){
+                t_c = t_c.replace(".","/")
+            }
+
+            return t_c + ".json";
         }
 
         protected addToParent(){
