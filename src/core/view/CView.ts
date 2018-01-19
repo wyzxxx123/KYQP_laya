@@ -91,25 +91,11 @@ import { ViewModel } from '../viewmodel/ViewModel';
                 if(arr_atlas[i] == "") continue;
                 tmp_arrAtlas.push({url:arr_atlas[i],type:laya.net.Loader.ATLAS});
             }
-            tmp_arrAtlas.push({url:this.parsingPath(),type:laya.net.Loader.JSON});
+            let path = CFun.parsingPath(this._class.prototype.constructor.__proto__);
+            tmp_arrAtlas.push({url:path,type:laya.net.Loader.JSON});
             if(tmp_arrAtlas.length > 0){
                 Laya.loader.load(tmp_arrAtlas, laya.utils.Handler.create(this, this.onLoaded));
             }
-        }
-
-        private parsingPath(){
-            let c:string = this._class.toString();
-            let c_s = this._class.name + " extends layaUI_max_all_1.ui.";
-            let s_i = c.indexOf(c_s) + c_s.length;
-            let e_i = c.indexOf(this._class.__proto__.name) + this._class.__proto__.name.length - 2;
-            let t_c = c.substring(s_i,e_i);
-
-            let d_i = t_c.indexOf(".");
-            if(d_i != -1){
-                t_c = t_c.replace(".","/")
-            }
-
-            return t_c + ".json";
         }
 
         protected addToParent(){

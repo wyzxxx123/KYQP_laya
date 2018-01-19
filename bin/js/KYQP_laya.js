@@ -35,8 +35,12 @@ define(["require", "exports", "./StorageKeys", "./module/RegistClass", "./GameCo
             CFun_1.CFun.playMusic("sounds/hall/hall_bg.mp3");
             let music = CFun_1.CFun.getLSItem(StorageKeys_1.StorageKeys.musicValue + "last", "Number");
             let sound = CFun_1.CFun.getLSItem(StorageKeys_1.StorageKeys.soundValue + "last", "Number");
-            CFun_1.CFun.musicV = music * 0.01;
-            CFun_1.CFun.soundV = sound * 0.01;
+            if (music >= 0) {
+                CFun_1.CFun.musicV = music * 0.01;
+            }
+            if (sound >= 0) {
+                CFun_1.CFun.soundV = sound * 0.01;
+            }
         }
     }
     exports.GameMain = GameMain;

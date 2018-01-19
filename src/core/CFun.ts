@@ -23,7 +23,31 @@ export class CFun {
             }
         }
 
-        public static dialog(content:string="确定要退出游戏？",callback:Function=null,obj:any = this,button:string="确 定|取 消",title="提 示"){
+/////////////////////////////////弹框
+        public static dialog(content:string="确定要退出游戏？",callback:Function=null,obj:any = this,button:string="确 定|取 消",title:string="提 示"){
+            let arrBtn = button.split("|");
+            let m_class;
+            if(arrBtn.length == 2){
+                m_class = ui.dialog.TwoButtonUI;
+            }
+            else if(arrBtn.length == 1){
+                m_class = ui.dialog.OneButtonUI;
+            }
+            let path = this.parsingPath(m_class);
+            Laya.loader.load([{url:path,type:laya.net.Loader.JSON}], laya.utils.Handler.create(this, this.onDialogLoaded,[content,callback,obj,button,title]));
+        }
+
+        public static parsingPath(m_class:any):string{
+            let c:string = m_class.toString();
+            let c_s = "this.loadUI(\"";
+            let s_i = c.indexOf(c_s) + c_s.length;
+            let e_i = c.indexOf("\");",s_i);
+            let t_c = c.substring(s_i,e_i);
+
+            return t_c + ".json";
+        }
+
+        private static onDialogLoaded(content:string,callback:Function,obj:any,button:string,title:string){
             let arrBtn = button.split("|");
             let dialog:DialogView;
             if(arrBtn.length == 2){
@@ -42,8 +66,11 @@ export class CFun {
             
             // dialog.isModal = true;
             dialog.closeHandler = laya.utils.Handler.create(obj,callback);
+
             dialog.popup();
         }
+/////////////////////////////////弹框///////////////////////////////
+
 
         public static getItem(array: Array<any>, property: string, value: any): any {
             for (var i: number = 0; i < array.length; i++) {

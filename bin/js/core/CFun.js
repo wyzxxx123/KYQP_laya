@@ -16,7 +16,28 @@ define(["require", "exports", "./md5", "../StorageKeys", "./ExUtils", "../ui/lay
                 }
             }
         }
+        /////////////////////////////////弹框
         static dialog(content = "确定要退出游戏？", callback = null, obj = this, button = "确 定|取 消", title = "提 示") {
+            let arrBtn = button.split("|");
+            let m_class;
+            if (arrBtn.length == 2) {
+                m_class = layaUI_max_all_1.ui.dialog.TwoButtonUI;
+            }
+            else if (arrBtn.length == 1) {
+                m_class = layaUI_max_all_1.ui.dialog.OneButtonUI;
+            }
+            let path = this.parsingPath(m_class);
+            Laya.loader.load([{ url: path, type: laya.net.Loader.JSON }], laya.utils.Handler.create(this, this.onDialogLoaded, [content, callback, obj, button, title]));
+        }
+        static parsingPath(m_class) {
+            let c = m_class.toString();
+            let c_s = "this.loadUI(\"";
+            let s_i = c.indexOf(c_s) + c_s.length;
+            let e_i = c.indexOf("\");", s_i);
+            let t_c = c.substring(s_i, e_i);
+            return t_c + ".json";
+        }
+        static onDialogLoaded(content, callback, obj, button, title) {
             let arrBtn = button.split("|");
             let dialog;
             if (arrBtn.length == 2) {
@@ -36,6 +57,7 @@ define(["require", "exports", "./md5", "../StorageKeys", "./ExUtils", "../ui/lay
             dialog.closeHandler = laya.utils.Handler.create(obj, callback);
             dialog.popup();
         }
+        /////////////////////////////////弹框///////////////////////////////
         static getItem(array, property, value) {
             for (var i = 0; i < array.length; i++) {
                 if (array[i][property] == value) {

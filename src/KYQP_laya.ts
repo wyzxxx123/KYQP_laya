@@ -48,8 +48,12 @@ export class GameMain {
         CFun.playMusic("sounds/hall/hall_bg.mp3");
         let music = CFun.getLSItem(StorageKeys.musicValue + "last", "Number");
         let sound = CFun.getLSItem(StorageKeys.soundValue + "last", "Number");
-        CFun.musicV = music * 0.01;
-        CFun.soundV = sound * 0.01;
+        if(music >= 0){
+            CFun.musicV = music * 0.01;
+        }
+        if(sound >= 0){
+            CFun.soundV = sound * 0.01;
+        }
     }
 }
 new GameMain();
