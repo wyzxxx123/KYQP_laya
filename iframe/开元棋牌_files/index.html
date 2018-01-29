@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!-- saved from url=(0295)https://exp.ky508.com:189/game/index.html?account=21002_wangyuanzhi147&token=eyJkYXRhIjoiMjEwMDJfd2FuZ3l1YW56aGkxNDciLCJjcmVhdGVkIjoxNTE3MTk1NDA1LCJleHAiOjE1MH0=.0tNMa2dUioiR4YxByLrskS1DL/Oq1q5bSMRIN+I4DVA=&lang=zh-CN&gameId=undefined&time=1517195444514&returnUrl=http://test.ky608.com/denglu.do -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script>
+        var jsVersion="1.3.0";
+	</script>
+	
+	<title>开元棋牌</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="full-screen" content="true">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="360-fullscreen" content="true">
+    <style>
+        html, body {
+            -ms-touch-action: none;
+            background: #1F1F1F;
+            padding: 0;
+            border: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+        #loading{
+            text-align: center;
+            margin-top:auto;
+            margin-bottom:auto;
+                -webkit-animation:circle 1s infinite linear;/*匀速 循环*/
+            }
+            @-webkit-keyframes circle{
+            0%{ transform:rotate(0deg); }
+            100%{ transform:rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <div style="margin: auto; width: 100%; height: 100%; overflow: hidden; position: absolute;" class="egret-player" data-entry-class="Main" data-orientation="landscape" data-scale-mode="fixedNarrow" data-resolution-mode="retina" data-frame-rate="60" data-show-paint-rect="false" data-multi-fingered="2" data-show-fps="false" data-show-log="false" data-log-filter="" data-show-fps-style="x:0,y:0,size:12,textColor:0xFFFFFF,bgAlpha:0.4">
+	<canvas width="1458" height="922" style="cursor: inherit; position: absolute; top: 0px; bottom: 0px; left: -0.5px; right: 0px; transform-origin: 0% 0% 0px; transform: matrix(1, 0, 0, 1, 0, 0);"></canvas><div id="StageDelegateDiv" style="position: absolute; left: -0.5px; top: 0px; border: none; padding: 0px; transform: matrix(1, 0, 0, 1, 0, 0); transform-origin: 0% 0% 0px;"><div style="position: absolute; left: 0px; top: -100px; border: none; padding: 0px; width: 0px; height: 0px; transform-origin: 0% 0% 0px;"><textarea id="egretTextarea" tabindex="-1" style="resize: none; width: 1px; height: 12px; position: absolute; left: 0px; top: 0px; border: none; padding: 0px; outline: thin; background: none; overflow: hidden; word-break: break-all; opacity: 0;"></textarea><input id="egretInput" type="text" tabindex="-1" style="width: 1px; height: 12px; position: absolute; left: 0px; top: 0px; border: none; padding: 0px; outline: thin; background: none; overflow: hidden; word-break: break-all; opacity: 0;"></div></div></div>
+	<div id="loadingDiv" style="margin: -40px 0px 0px -40px; position: absolute; width: 80px; height: 80px; top: 50%; left: 50%; display: none;">
+		<img id="loading" src="./loading.png">
+	</div>
+	<div id="no_canvasTip" style="margin: -150px 0 0 -475px;position:absolute;width: 1080px;height: 300px;top: 50%;left: 50%;display:none">
+		<p style="color: #ffffff;font-size: 26px;text-align: center;">您的当前浏览器无法打开该游戏！</p>
+		<p style="color: #ffffff;font-size: 26px;text-align: center;">如果您使用的是IE浏览器，请升级至<span style="color: red">IE10</span>及以上版本。</p>
+		<p style="color: #ffffff;font-size: 26px;text-align: center;">如果您使用的是QQ浏览器、360浏览器、猎豹浏览器等浏览器，请切换至<span style="color: red">极速模式</span>。</p>
+		<br>
+		<p style="color: #ffffff;font-size: 26px;text-align: center;">如果以上方法仍无法解决，请下载<span style="color: red">谷歌浏览器</span>，然后重试！</p>
+	</div>
+	<div id="no_egretTip" style="margin: -50px 0 0 -300px;position:absolute;width: 600px;height: 50px;top: 50%;left: 50%;display:none">
+		<p style="color: #ffffff;font-size: 40px;text-align: center;">资源下载失败，请刷新后重试   :（</p>
+	</div>
+<script>
+    var loadScript = function (list, callback) {
+        var loaded = 0;
+        var loadNext = function () {
+            loadSingleScript(list[loaded], function () {
+                loaded++;
+                if (loaded >= list.length) {
+                    callback();
+                }
+                else {
+                    loadNext();
+                }
+            })
+        };
+        loadNext();
+    };
+
+    var loadSingleScript = function (src, callback) {
+        var s = document.createElement('script');
+        s.async = false;
+        s.src = src + "?v=" + jsVersion;
+        s.addEventListener('load', function () {
+            s.parentNode.removeChild(s);
+            s.removeEventListener('load', arguments.callee, false);
+            callback();
+        }, false);
+        document.body.appendChild(s);
+    };
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', './manifest.json?v=' + Math.random(), true);
+    xhr.addEventListener("load", function () {
+        var manifest = JSON.parse(xhr.response);
+        var list = manifest.initial.concat(manifest.game);
+        loadScript(list, function () {
+            /**判断浏览器是否支持canvas**/  
+            try{  
+                document.createElement('canvas').getContext('2d');  
+            }catch(e){  
+                document.getElementById("loadingDiv").style.display="none";
+                document.getElementById("no_canvasTip").style.display = "block";
+                return 
+            } 
+            try{
+                /**
+                 * {
+                 * "renderMode":, //引擎渲染模式，"canvas" 或者 "webgl"
+                 * "audioType": 0 //使用的音频类型，0:默认，2:web audio，3:audio
+                 * "antialias": //WebGL模式下是否开启抗锯齿，true:开启，false:关闭，默认为false
+                 * "retina": //是否基于devicePixelRatio缩放画布
+                 * }
+                 **/
+                egret.runEgret({ renderMode: "webgl", audioType: 0 });
+			}catch(e){
+				document.getElementById("loadingDiv").style.display="none";
+				document.getElementById("no_egretTip").style.display = "block";
+			}
+        });
+    });
+    xhr.send(null);
+</script>
+
+
+
+</body></html>

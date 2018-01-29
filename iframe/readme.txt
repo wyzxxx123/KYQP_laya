@@ -1,0 +1,1 @@
+在刷新时会导致iframe中的数据不同步，所以用了windows.load
