@@ -54,10 +54,15 @@ import { CFun } from '../CFun';
             this.layerInit();
         }
 
-        createChildren():void {
-            super.createChildren();
+        // createChildren():void {
+        //     super.createChildren();
 
-            let path = CFun.parsingPath(this.constructor.prototype.constructor.__proto__);
-            this.createView(Laya.loader.getRes(path));
+        //     let path = CFun.parsingPath(this.constructor.prototype.constructor.__proto__);
+        //     this.createView(Laya.loader.getRes(path));
+        // }
+
+        loadUI(path:string):void{
+            this.createView(Laya.loader.getRes(path + ".json"));
+            super.loadUI(path);
         }
     }

@@ -1,3 +1,13 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -8,30 +18,33 @@ define(["require", "exports"], function (require, exports) {
      * @class SettingSlider
      * @extends {laya.ui.HSlider}
      */
-    class SettingSlider extends laya.ui.HSlider {
-        onChange() {
-            let front = this.getChildByName("front");
-            front["width"] = this.bar.x + 5;
+    var SettingSlider = /** @class */ (function (_super) {
+        __extends(SettingSlider, _super);
+        function SettingSlider() {
+            var _this = _super.call(this) || this;
+            _this.showLabel = false;
+            _this.on(Laya.Event.DISPLAY, _this, _this.onAddStage);
+            _this.on(Laya.Event.CHANGE, _this, _this.onChange);
+            return _this;
         }
-        onAddStage() {
+        SettingSlider.prototype.onChange = function () {
+            var front = this.getChildByName("front");
+            front["width"] = this.bar.x + 5;
+        };
+        SettingSlider.prototype.onAddStage = function () {
             // this.skin = this["back"];
             // this.bar.skin = val;
-            let front = this.getChildByName("front");
-            let thumb = this.getChildByName("thumb");
+            var front = this.getChildByName("front");
+            var thumb = this.getChildByName("thumb");
             thumb["visible"] = false;
             this.bar.stateNum = 1;
             this.bar.skin = thumb["skin"];
             this.bar.y = thumb["y"];
             this.addChild(this.bar);
             front["width"] = this.bar.x + 5;
-        }
-        constructor() {
-            super();
-            this.showLabel = false;
-            this.on(Laya.Event.DISPLAY, this, this.onAddStage);
-            this.on(Laya.Event.CHANGE, this, this.onChange);
-        }
-    }
+        };
+        return SettingSlider;
+    }(laya.ui.HSlider));
     exports.SettingSlider = SettingSlider;
 });
 //# sourceMappingURL=SettingSlider.js.map

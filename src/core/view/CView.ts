@@ -23,6 +23,7 @@ import { ViewModel } from '../viewmodel/ViewModel';
         protected  _parent:laya.display.Node = null;
         protected  _class:any = null;
         protected  _atlas_url:string = null;//需要多个不同资源，用逗号隔开
+        protected  _view_path:string = null;//排版路径
         protected  _is_show:boolean = false;
         protected  _is_need_show:boolean = false;
         protected  _is_on_parent:boolean = false;
@@ -33,6 +34,13 @@ import { ViewModel } from '../viewmodel/ViewModel';
         */
         public setAtlasName(arg_params:string) {
             this._atlas_url = arg_params;
+        }
+
+         /*
+            设置资源路径
+        */
+        public setViewPath(arg_params:string) {
+            this._view_path = arg_params;
         }
 
         public setParent(val:laya.display.Node){
@@ -91,8 +99,8 @@ import { ViewModel } from '../viewmodel/ViewModel';
                 if(arr_atlas[i] == "") continue;
                 tmp_arrAtlas.push({url:arr_atlas[i],type:laya.net.Loader.ATLAS});
             }
-            let path = CFun.parsingPath(this._class.prototype.constructor.__proto__);
-            tmp_arrAtlas.push({url:path,type:laya.net.Loader.JSON});
+            // let path = CFun.parsingPath(this._class.prototype.constructor.__proto__);
+            tmp_arrAtlas.push({url:this._view_path +".json",type:laya.net.Loader.JSON});
             if(tmp_arrAtlas.length > 0){
                 Laya.loader.load(tmp_arrAtlas, laya.utils.Handler.create(this, this.onLoaded));
             }

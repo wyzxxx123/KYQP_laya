@@ -101,10 +101,12 @@ import { EventManager } from '../../core/event/EventManager';
             }
 
             let str_event = "server_Client_syncProperty_" + cName + proName;
-            let aModel = ModelManager.ins.setPro(cName,dataParams,"更新：" +　cName + " [event:" + str_event + ",");
+            ModelManager.ins.setPro(cName,dataParams,function(aModel){
+                    EventManager.ins.dispatch(str_event,aModel);
+                },this,"更新：" +　cName + " [event:" + str_event + ",");
             
             // event.EventManager.ins.dispatch("server_Client_syncProperty_" + cName,aModel);
-            EventManager.ins.dispatch(str_event,aModel);
+            
             this.data = null;
         }
 
@@ -134,8 +136,10 @@ import { EventManager } from '../../core/event/EventManager';
 			}
 
             let str_event = "server_Client_createEntity_" + cName;
-            let aModel = ModelManager.ins.setPro(cName,data_params,"创建：" +　cName + "[event:" + str_event + ",");
-            EventManager.ins.dispatch(str_event,aModel);
+            ModelManager.ins.setPro(cName,data_params,function(aModel){
+                    EventManager.ins.dispatch(str_event,aModel);
+                },this,"创建：" +　cName + "[event:" + str_event + ",");
+            
             this.eid = 0;
             this.tid = 0;
             this.active = false;

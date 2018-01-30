@@ -1,7 +1,7 @@
-import { ui } from '../../ui/layaUI.max.all';
 import { HallVM } from './HallVM';
 import { Player } from '../../mbase/data/Player';
 import { CFun } from '../../core/CFun';
+import { ui } from '../../ui/layaUI.max.all';
     export class HallView extends ui.game_hall.GameHallUI{
 
         constructor(vm:HallVM){

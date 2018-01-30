@@ -1,58 +1,93 @@
 define(["require", "exports", "../CFun"], function (require, exports, CFun_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class ModelManager {
-        getModel(model_name) {
+    var ModelManager = /** @class */ (function () {
+        function ModelManager() {
+            this._dic_model = {};
+            this._self = this;
+        }
+        ModelManager.prototype.getModel = function (model_name, callBack) {
+            var myself = this._self;
             if (!model_name || model_name == "")
                 CFun_1.CFun.throw("ModelManager的getModel参数不可为空！");
-            let model = this._dic_model[model_name];
+            var model = this._dic_model[model_name];
             if (!model) {
-                model = laya.utils.ClassUtils.getInstance(model_name);
-                if (model) {
-                    this._dic_model[model_name] = model;
-                    model["wyz_class_name"] = model_name;
+                var path_1 = laya.utils.ClassUtils.getRegClass(model_name);
+                if (typeof path_1 == "string") {
+                    require([path_1], function (mod) {
+                        var name = path_1.substr(path_1.lastIndexOf("/") + 1);
+                        model = new (mod[name])();
+                        if (model) {
+                            myself._dic_model[model_name] = model;
+                            model["wyz_class_name"] = model_name;
+                            callBack.call(myself, true);
+                        }
+                        else {
+                            callBack.call(myself, false);
+                        }
+                    });
                 }
                 else {
-                    return false;
-                }
-            }
-            return true;
-        }
-        setPro(model_name, pros, f_des) {
-            if (this.getModel(model_name)) {
-                if (!pros)
-                    CFun_1.CFun.throw("ModelManager的setPro参数不可为空！");
-                let des = f_des;
-                let model = this._dic_model[model_name];
-                let content = "";
-                for (let key in pros) {
-                    if (key[0] == "_")
-                        continue;
-                    if (pros[key]["__className"] == "laya.utils.Byte") {
-                        content = "{Byte}";
+                    model = laya.utils.ClassUtils.getInstance(model_name);
+                    if (model) {
+                        this._dic_model[model_name] = model;
+                        model["wyz_class_name"] = model_name;
+                        callBack.call(myself, true);
                     }
                     else {
-                        content = (this.isBaseClass(pros[key]) ? pros[key] : this.printObject(model, pros[key]));
+                        callBack.call(myself, false);
                     }
-                    model[key] = pros[key];
-                    if (des != (f_des))
-                        des += ",";
-                    if (key != "e_id")
-                        des += key + ":" + content;
                 }
-                des += "]";
-                CFun_1.CFun.log(new Date()["format"]("dd-hh:mm:ss,S") + " " + des);
-                return model;
             }
             else {
-                CFun_1.CFun.throw(`ModelManager的${model_name}类型不存在！`);
+                callBack.call(myself, true);
             }
-            return null;
-        }
-        printObject(model, pros) {
-            let des = "{";
-            let content = "";
-            for (let key in pros) {
+        };
+        // private async getClassByPath(path:string){
+        //     return await new Promise(function(resolve, reject) {
+        //             require([path],function(mod){
+        //                 let name = path.substr(path.lastIndexOf("/") + 1);
+        //                 resolve(mod[name]);
+        //             });
+        //         });
+        // }
+        ModelManager.prototype.setPro = function (model_name, pros, callBack, obj, f_des) {
+            var myself = this._self;
+            this.getModel(model_name, function (isReady) {
+                if (isReady) {
+                    if (!pros)
+                        CFun_1.CFun.throw("ModelManager的setPro参数不可为空！");
+                    var des = f_des;
+                    var model = myself._dic_model[model_name];
+                    var content = "";
+                    for (var key in pros) {
+                        if (key[0] == "_")
+                            continue;
+                        if (pros[key]["__className"] == "laya.utils.Byte") {
+                            content = "{Byte}";
+                        }
+                        else {
+                            content = (myself.isBaseClass(pros[key]) ? pros[key] : myself.printObject(model, pros[key]));
+                        }
+                        model[key] = pros[key];
+                        if (des != (f_des))
+                            des += ",";
+                        if (key != "e_id")
+                            des += key + ":" + content;
+                    }
+                    des += "]";
+                    CFun_1.CFun.log(new Date()["format"]("dd-hh:mm:ss,S") + " " + des);
+                    callBack.call(obj, model);
+                }
+                else {
+                    CFun_1.CFun.throw("ModelManager\u7684" + model_name + "\u7C7B\u578B\u4E0D\u5B58\u5728\uFF01");
+                }
+            });
+        };
+        ModelManager.prototype.printObject = function (model, pros) {
+            var des = "{";
+            var content = "";
+            for (var key in pros) {
                 if (key[0] == "_") {
                     continue;
                 }
@@ -69,13 +104,13 @@ define(["require", "exports", "../CFun"], function (require, exports, CFun_1) {
             }
             des += "}";
             return des;
-        }
-        isBaseClass(obj) {
+        };
+        ModelManager.prototype.isBaseClass = function (obj) {
             if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean') {
                 return true;
             }
             return false;
-        }
+        };
         /**
          * @description 为了用e_id查找类名用
          * @author wangyz
@@ -84,30 +119,32 @@ define(["require", "exports", "../CFun"], function (require, exports, CFun_1) {
          * @returns {*}
          * @memberof ModelManager
          */
-        getInfoByProValue(p_name, val) {
-            for (let key in this._dic_model) {
+        ModelManager.prototype.getInfoByProValue = function (p_name, val) {
+            for (var key in this._dic_model) {
                 if (this._dic_model[key] && this._dic_model[key][p_name] == val) {
                     return key;
                 }
             }
             return null;
-        }
-        getInstByClassName(p_name) {
-            let inst = this._dic_model[p_name];
+        };
+        ModelManager.prototype.getInstByClassName = function (p_name) {
+            var inst = this._dic_model[p_name];
             if (!inst)
                 return null;
             return inst;
-        }
-        static get ins() {
-            if (!this._instance) {
-                this._instance = new ModelManager();
-            }
-            return this._instance;
-        }
-        constructor() {
-            this._dic_model = {};
-        }
-    }
+        };
+        Object.defineProperty(ModelManager, "ins", {
+            get: function () {
+                if (!this._instance) {
+                    this._instance = new ModelManager();
+                }
+                return this._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return ModelManager;
+    }());
     exports.ModelManager = ModelManager;
 });
 //# sourceMappingURL=ModelManager.js.map

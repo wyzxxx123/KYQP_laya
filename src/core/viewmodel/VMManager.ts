@@ -1,3 +1,4 @@
+declare let require;
 import { ViewModel } from './ViewModel';
 import { ComView } from '../view/ComView';
 import { EventManager } from '../event/EventManager';
@@ -30,12 +31,40 @@ import { InitData } from '../../mbase/base/InitData';
             if(!model){
                 model = laya.utils.ClassUtils.getInstance(data.className);
                 VMManager.static_dic_vm[data.className] = model;
+
+                let path = laya.utils.ClassUtils.getRegClass(data.className);
+                if(typeof path == "string"){
+                    require([path],function(mod){
+                        let name = path.substr(path.lastIndexOf("/") + 1);
+                        model = new (mod[name])();
+                        if(model){
+                            VMManager.static_dic_vm[data.className] = model;
+                            model.onShow(data.exData);
+                            laya.utils.Pool.recover("InitData",data);
+                        }
+                        else{
+                        }
+                    });
+                }
+                else{
+                    model = laya.utils.ClassUtils.getInstance(data.className);
+                    if(model){
+                        VMManager.static_dic_vm[data.className] = model;
+                        model.onShow(data.exData);
+                        laya.utils.Pool.recover("InitData",data);
+                    }
+                    else{
+                    }
+                }
             }
+            else{
+                model.onShow(data.exData);
 
-            model.onShow(data.exData);
-
-            laya.utils.Pool.recover("InitData",data);
+                laya.utils.Pool.recover("InitData",data);
+            }
         }
+
+        
 
         public closeAll(){
             let model:ViewModel = null;

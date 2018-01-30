@@ -1,31 +1,32 @@
-define(["require", "exports", "../mbase/base/ModelHandle", "../mbase/data/Player", "../mbase/data/Account", "../mbase/data/CityScene", "../mbase/data/HoldemAgent", "../mbase/data/HoldemDeck", "./hall/HallVM", "./dzpk/scene/DZPKSceneVM", "./dzpk/DZPKRoomsVM", "./avaterChose/AvaterChoseVM", "./setting/SettingVM", "./dzpk/help/DZPKHelpVM", "./dzpk/record/DZPKRecordVM", "./dzpk/take/DZPKTakeVM", "./dzpk/pipei/PiPeiVM", "./dzpk/menu/MenuVM", "./dzpk/cardtype/CardTypeVM"], function (require, exports, ModelHandle_1, Player_1, Account_1, CityScene_1, HoldemAgent_1, HoldemDeck_1, HallVM_1, DZPKSceneVM_1, DZPKRoomsVM_1, AvaterChoseVM_1, SettingVM_1, DZPKHelpVM_1, DZPKRecordVM_1, DZPKTakeVM_1, PiPeiVM_1, MenuVM_1, CardTypeVM_1) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class RegistClass {
-        constructor() {
-            this.registClass("ModelHandle", ModelHandle_1.ModelHandle);
-            this.registClass("Player", Player_1.Player);
-            this.registClass("Account", Account_1.Accounts);
-            this.registClass("CityScene", CityScene_1.CityScene);
-            this.registClass("HoldemAgent", HoldemAgent_1.HoldemAgent);
-            this.registClass("HoldemDeck", HoldemDeck_1.HoldemDeck);
+    var RegistClass = /** @class */ (function () {
+        function RegistClass() {
+            this.registClass("ModelHandle", "js/mbase/base/ModelHandle");
+            this.registClass("Player", "js/mbase/data/Player");
+            this.registClass("Account", "js/mbase/data/Account");
+            this.registClass("CityScene", "js/mbase/data/CityScene");
+            this.registClass("HoldemAgent", "js/mbase/data/HoldemAgent");
+            this.registClass("HoldemDeck", "js/mbase/data/HoldemDeck");
             //显示对象
-            this.registClass("SCENE_HallVM", HallVM_1.HallVM);
-            this.registClass("SCENE_DZPKSceneVM", DZPKSceneVM_1.DZPKSceneVM);
-            this.registClass("SCENE_scene_620", DZPKRoomsVM_1.DZPKRoomsVM);
-            this.registClass("avaterChose", AvaterChoseVM_1.AvaterChoseVM);
-            this.registClass("setting", SettingVM_1.SettingVM);
-            this.registClass("DZPKHelpVM", DZPKHelpVM_1.DZPKHelpVM);
-            this.registClass("DZPKRecordVM", DZPKRecordVM_1.DZPKRecordVM);
-            this.registClass("DZPKTakeVM", DZPKTakeVM_1.DZPKTakeVM);
-            this.registClass("PiPeiVM", PiPeiVM_1.PiPeiVM);
-            this.registClass("MenuVM", MenuVM_1.MenuVM);
-            this.registClass("CardTypeVM", CardTypeVM_1.CardTypeVM);
+            this.registClass("SCENE_HallVM", "js/module/hall/HallVM");
+            this.registClass("SCENE_DZPKSceneVM", "js/module/dzpk/scene/DZPKSceneVM");
+            this.registClass("SCENE_scene_620", "js/module/dzpk/DZPKRoomsVM");
+            this.registClass("avaterChose", "js/module/avaterChose/AvaterChoseVM");
+            this.registClass("setting", "js/module/setting/SettingVM");
+            this.registClass("DZPKHelpVM", "module/dzpk/help/DZPKHelpVM");
+            this.registClass("DZPKRecordVM", "js/module/dzpk/record/DZPKRecordVM");
+            this.registClass("DZPKTakeVM", "js/module/dzpk/take/DZPKTakeVM");
+            this.registClass("PiPeiVM", "js/module/dzpk/pipei/PiPeiVM");
+            this.registClass("MenuVM", "js/module/dzpk/menu/MenuVM");
+            this.registClass("CardTypeVM", "js/module/dzpk/cardtype/CardTypeVM");
         }
-        registClass(cname, cclass) {
+        RegistClass.prototype.registClass = function (cname, cclass) {
             laya.utils.ClassUtils.regClass(cname, cclass);
-        }
-    }
+        };
+        return RegistClass;
+    }());
     exports.RegistClass = RegistClass;
     Date.prototype["format"] = function (format) {
         var o = {

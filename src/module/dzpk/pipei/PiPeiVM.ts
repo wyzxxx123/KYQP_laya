@@ -30,5 +30,6 @@ import { PiPeiView } from './PiPeiView';
 
             this.setAtlasName = "1";
             this.setClass = PiPeiView;
+            this.setViewPath = "pipei/PiPeiView";
         }
     }

@@ -3,6 +3,7 @@ import { StorageKeys } from '../StorageKeys';
 import { ExUtils } from './ExUtils';
 import { ui } from '../ui/layaUI.max.all';
 import { DialogView } from './view/DialogView';
+
 export class CFun {
         public static SCREEN_PRINT:boolean = true;
         public static DEBUG:boolean = true;
@@ -27,13 +28,16 @@ export class CFun {
         public static dialog(content:string="确定要退出游戏？",callback:Function=null,obj:any = this,button:string="确 定|取 消",title:string="提 示"){
             let arrBtn = button.split("|");
             let m_class;
+            let path = "";
             if(arrBtn.length == 2){
                 m_class = ui.dialog.TwoButtonUI;
+                path = "dialog/TwoButton.json"
             }
             else if(arrBtn.length == 1){
                 m_class = ui.dialog.OneButtonUI;
+                path = "dialog/OneButton.json"
             }
-            let path = this.parsingPath(m_class);
+            //this.parsingPath(m_class);
             Laya.loader.load([{url:path,type:laya.net.Loader.JSON}], laya.utils.Handler.create(this, this.onDialogLoaded,[content,callback,obj,button,title]));
         }
 

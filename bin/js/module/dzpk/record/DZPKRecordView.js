@@ -1,9 +1,25 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 define(["require", "exports", "../../../ui/layaUI.max.all", "../../../mbase/data/Player", "../../../core/CFun"], function (require, exports, layaUI_max_all_1, Player_1, CFun_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class DZPKRecordView extends layaUI_max_all_1.ui.game_dzpk.DZPKRecordUI {
-        viewInit(data) {
-            let arr = data.holdemRecords, tarr = [], i = 0, len = data.holdemRecords.length;
+    var DZPKRecordView = /** @class */ (function (_super) {
+        __extends(DZPKRecordView, _super);
+        function DZPKRecordView(vm) {
+            var _this = _super.call(this) || this;
+            _this._vm = vm;
+            return _this;
+        }
+        DZPKRecordView.prototype.viewInit = function (data) {
+            var arr = data.holdemRecords, tarr = [], i = 0, len = data.holdemRecords.length;
             for (i = 0; i < len; i++) {
                 tarr.push({ img_bg: { visible: i % 2 == 0 }, txt_num: i + 1, txt_id: arr[i].gameNo, txt_room_name: data.getRoomDataById(Player_1.Player.HOLDEM, arr[i].roomType).name,
                     txt_score: CFun_1.CFun.formatCurrency(arr[i].win - arr[i].deduct), txt_end_time: arr[i].time });
@@ -17,15 +33,12 @@ define(["require", "exports", "../../../ui/layaUI.max.all", "../../../mbase/data
                 this.box_label.visible = true;
             }
             this.list_record.array = tarr;
-        }
-        comInit() {
+        };
+        DZPKRecordView.prototype.comInit = function () {
             this.list_record.vScrollBarSkin = "";
-        }
-        constructor(vm) {
-            super();
-            this._vm = vm;
-        }
-    }
+        };
+        return DZPKRecordView;
+    }(layaUI_max_all_1.ui.game_dzpk.DZPKRecordUI));
     exports.DZPKRecordView = DZPKRecordView;
 });
 //# sourceMappingURL=DZPKRecordView.js.map

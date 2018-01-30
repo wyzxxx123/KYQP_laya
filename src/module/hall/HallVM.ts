@@ -58,6 +58,7 @@ import { CFun } from '../../core/CFun';
             super();
 
             this.setAtlasName = "res/atlas/gamehall/mainScene.atlas";
+            this.setViewPath = "game_hall/GameHall";
             this.setClass = HallView;
         }
     }

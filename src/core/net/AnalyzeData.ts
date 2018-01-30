@@ -33,8 +33,9 @@ import { AnalyzerManager } from './AnalyzerManager';
 
             let a_data:ClassPro = AnalyzerManager.ins.getAnalyzed(data);
             if(a_data){
-                let a_model = ModelManager.ins.setPro(a_data.className,a_data.params,a_data.toString());
-                EventManager.ins.dispatch(a_data.event_id,a_model);
+                ModelManager.ins.setPro(a_data.className,a_data.params,function(a_model){
+                    EventManager.ins.dispatch(a_data.event_id,a_model);
+                },this,a_data.toString());
             }
         }
 

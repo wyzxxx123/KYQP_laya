@@ -6,13 +6,13 @@ define(["require", "exports"], function (require, exports) {
      * @author	Fictiony
      * @version	2017/7/8
      */
-    class Ctx {
+    var Ctx = /** @class */ (function () {
         /**
          * 构造函数
          * @param sd	加密种子
          * @param mask	加密种子蒙板
          */
-        constructor(sd) {
+        function Ctx(sd) {
             this._index = 0;
             this._addikey = [];
             this._buffer = new laya.utils.Byte();
@@ -44,7 +44,7 @@ define(["require", "exports"], function (require, exports) {
             this._buffer.length = 4096;
             this._bufferBytes = this.getBytes(this._buffer);
         }
-        linearity(key) {
+        Ctx.prototype.linearity = function (key) {
             var n = ((((key >>> 31)
                 ^ (key >>> 6)
                 ^ (key >>> 4)
@@ -54,16 +54,16 @@ define(["require", "exports"], function (require, exports) {
                 & 0x00000001) << 31)
                 | (key >>> 1);
             return n < 0 ? 0x100000000 + n : n;
-        }
-        addikeyNext(addikey) {
+        };
+        Ctx.prototype.addikeyNext = function (addikey) {
             ++addikey.index;
             addikey.index &= 0x3F;
             var i1 = ((addikey.index | 0x40) - addikey.dis1) & 0x3F;
             var i2 = ((addikey.index | 0x40) - addikey.dis2) & 0x3F;
             addikey.buffer[addikey.index] = (addikey.buffer[i1] + addikey.buffer[i2]) % 0x100000000;
             addikey.carry = addikey.buffer[addikey.index] < addikey.buffer[i1] || addikey.buffer[addikey.index] < addikey.buffer[i2] ? 1 : 0;
-        }
-        generate() {
+        };
+        Ctx.prototype.generate = function () {
             this._buffer.pos = 0;
             this._index = 0;
             for (var i = 0; i < 1024; ++i) {
@@ -88,14 +88,15 @@ define(["require", "exports"], function (require, exports) {
                     ^ this._addikey[1].buffer[this._addikey[1].index]
                     ^ this._addikey[2].buffer[this._addikey[2].index]);
             }
-        }
+        };
         /**
          * 数据流编码（加密解密对称）
          * @param data	数据流
          * @param len	数据字节数
          * @param start	起始字节序号
          */
-        encode(data, len, start = 0) {
+        Ctx.prototype.encode = function (data, len, start) {
+            if (start === void 0) { start = 0; }
             if (!data)
                 return;
             if (len <= 0)
@@ -114,18 +115,19 @@ define(["require", "exports"], function (require, exports) {
                     data_bytes[start] ^= this._bufferBytes[this._index];
                 }
             } while (len > 0);
-        }
-        getBytes(bytes) {
+        };
+        Ctx.prototype.getBytes = function (bytes) {
             // 新的版本用bytes代替只读
             if (bytes['bytes']) {
                 return bytes["bytes"];
             }
             return new Uint8Array(bytes.buffer);
-        }
-    }
+        };
+        return Ctx;
+    }());
     exports.Ctx = Ctx;
-    class AddiKey {
-        constructor() {
+    var AddiKey = /** @class */ (function () {
+        function AddiKey() {
             this.sd = 0;
             this.dis1 = 0;
             this.dis2 = 0;
@@ -133,6 +135,7 @@ define(["require", "exports"], function (require, exports) {
             this.carry = 0;
             this.buffer = [];
         }
-    }
+        return AddiKey;
+    }());
 });
 //# sourceMappingURL=Ctx.js.map

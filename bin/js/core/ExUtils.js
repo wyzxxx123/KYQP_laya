@@ -6,41 +6,55 @@ define(["require", "exports", "./CFun"], function (require, exports, CFun_1) {
      * @author none
      *
      */
-    class ExUtils {
-        /**
-         * 手机设备唯一序列号
-         */
-        static get IMEI() {
-            return this._IMEI;
+    var ExUtils = /** @class */ (function () {
+        function ExUtils() {
         }
-        /**
-         * 应用版本号
-         */
-        static get version() {
-            return this._version;
-        }
-        /**
-         * 设备MAC地址
-         */
-        static get MACAddress() {
-            return this._MACAddress;
-        }
+        Object.defineProperty(ExUtils, "IMEI", {
+            /**
+             * 手机设备唯一序列号
+             */
+            get: function () {
+                return this._IMEI;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ExUtils, "version", {
+            /**
+             * 应用版本号
+             */
+            get: function () {
+                return this._version;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ExUtils, "MACAddress", {
+            /**
+             * 设备MAC地址
+             */
+            get: function () {
+                return this._MACAddress;
+            },
+            enumerable: true,
+            configurable: true
+        });
         /**
          * 获取手机卡运营商
          * 参数：回调方法，0：无卡，1：无法判断 ，2：电信，3：联通 ，4 ：移动
          */
-        static getCardProvidersName() {
+        ExUtils.getCardProvidersName = function () {
             return 0;
-        }
+        };
         /**
          * 获取联通渠道号
          */
-        static GetUnipayId() {
+        ExUtils.GetUnipayId = function () {
             return 0;
-        }
-        static init() {
-        }
-        static fullScreen() {
+        };
+        ExUtils.init = function () {
+        };
+        ExUtils.fullScreen = function () {
             if (!this._is_full) {
                 Laya.stage.fullScreenEnabled = true;
                 this._is_full = true;
@@ -50,49 +64,50 @@ define(["require", "exports", "./CFun"], function (require, exports, CFun_1) {
                 Laya.stage.exitFullscreen();
                 this._is_full = false;
             }
-        }
-        static getPackageName(data) {
+        };
+        ExUtils.getPackageName = function (data) {
             ExUtils.packageName = data;
-        }
-        static onKeyDown(event) {
-        }
-        static onResume(data) {
-        }
-        static onPause(data) {
-        }
-        static onBack(data) {
-        }
-        static getIMEI(data) {
+        };
+        ExUtils.onKeyDown = function (event) {
+        };
+        ExUtils.onResume = function (data) {
+        };
+        ExUtils.onPause = function (data) {
+        };
+        ExUtils.onBack = function (data) {
+        };
+        ExUtils.getIMEI = function (data) {
             ExUtils._IMEI = data;
             CFun_1.CFun.log("获取到设备唯一序列号：" + data);
-        }
-        static getMAC(data) {
+        };
+        ExUtils.getMAC = function (data) {
             ExUtils._MACAddress = data;
             CFun_1.CFun.log("获取到设备MAC地址：" + data);
-        }
-        static getVersion(data) {
+        };
+        ExUtils.getVersion = function (data) {
             ExUtils._version = data;
             CFun_1.CFun.log("获取到应用版本号：" + data);
-        }
-        static onWebViewJavascriptBridgeReady(bridge) {
+        };
+        ExUtils.onWebViewJavascriptBridgeReady = function (bridge) {
             bridge.registerHandler("texttext", this.ontext.bind(this));
-        }
-        static ontext(data) {
+        };
+        ExUtils.ontext = function (data) {
             alert(data);
-        }
-    }
-    ExUtils._IMEI = "";
-    ExUtils._version = "0.0.0.0";
-    ExUtils._MACAddress = "0:0:0:0";
-    /*
-     *当前界面上是否显示loading
-     * */
-    ExUtils.isShowLoading = false;
-    /**
-     * 获取包名
-     */
-    ExUtils.packageName = "null";
-    ExUtils._is_full = false;
+        };
+        ExUtils._IMEI = "";
+        ExUtils._version = "0.0.0.0";
+        ExUtils._MACAddress = "0:0:0:0";
+        /*
+         *当前界面上是否显示loading
+         * */
+        ExUtils.isShowLoading = false;
+        /**
+         * 获取包名
+         */
+        ExUtils.packageName = "null";
+        ExUtils._is_full = false;
+        return ExUtils;
+    }());
     exports.ExUtils = ExUtils;
     function setupWebViewJavascriptBridge(callback) {
         if (window["WebViewJavascriptBridge"]) {

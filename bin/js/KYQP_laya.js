@@ -1,11 +1,11 @@
-define(["require", "exports", "./StorageKeys", "./module/RegistClass", "./GameConfig", "./core/net/SocketManager", "./mbase/base/MLayer", "./core/CFun"], function (require, exports, StorageKeys_1, RegistClass_1, GameConfig_1, SocketManager_1, MLayer_1, CFun_1) {
+define(["require", "exports", "./StorageKeys", "./GameConfig", "./core/net/SocketManager", "./mbase/base/MLayer", "./core/CFun", "./core/model/RegistClass"], function (require, exports, StorageKeys_1, GameConfig_1, SocketManager_1, MLayer_1, CFun_1, RegistClass_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     // 程序入口
     var Handler = laya.utils.Handler;
     var Loader = laya.net.Loader;
-    class GameMain {
-        constructor() {
+    var GameMain = /** @class */ (function () {
+        function GameMain() {
             // if(CFun.SCREEN_PRINT){
             //     Laya.init(600,400,Laya.Log);
             // }
@@ -29,20 +29,24 @@ define(["require", "exports", "./StorageKeys", "./module/RegistClass", "./GameCo
                 { url: "res/atlas/bitmapFont.atlas", type: Loader.ATLAS }
             ], Handler.create(this, this.onLoadComplete));
         }
-        onLoadComplete() {
-        }
-        localInit() {
+        GameMain.prototype.onLoadComplete = function () {
+            // let m = require(["js/module/dzpk/help/DZPKHelpVM"]);
+            // let c = new m();
+            // console.log("");
+        };
+        GameMain.prototype.localInit = function () {
             CFun_1.CFun.playMusic("sounds/hall/hall_bg.mp3");
-            let music = CFun_1.CFun.getLSItem(StorageKeys_1.StorageKeys.musicValue + "last", "Number");
-            let sound = CFun_1.CFun.getLSItem(StorageKeys_1.StorageKeys.soundValue + "last", "Number");
+            var music = CFun_1.CFun.getLSItem(StorageKeys_1.StorageKeys.musicValue + "last", "Number");
+            var sound = CFun_1.CFun.getLSItem(StorageKeys_1.StorageKeys.soundValue + "last", "Number");
             if (music >= 0) {
                 CFun_1.CFun.musicV = music * 0.01;
             }
             if (sound >= 0) {
                 CFun_1.CFun.soundV = sound * 0.01;
             }
-        }
-    }
+        };
+        return GameMain;
+    }());
     exports.GameMain = GameMain;
     new GameMain();
 });

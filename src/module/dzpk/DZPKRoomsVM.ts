@@ -74,6 +74,7 @@ import { DZPKRoomsView } from './DZPKRoomsView';
             super();
 
             this.setClass = DZPKRoomsView;
+            this.setViewPath = "game_dzpk/DZPKRoom";
             this.setAtlasName = "res/atlas/dzpk/roomHallScene.atlas,res/atlas/dzpk/zh-cn/roomHallScene.atlas";
         }
     }

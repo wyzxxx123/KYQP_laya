@@ -1,6 +1,7 @@
 import { CFun } from '../../core/CFun';
 import { SettingVM } from './SettingVM';
 import { ui } from '../../ui/layaUI.max.all';
+
     /**
      * @description 设置面板
      * @author wangyz

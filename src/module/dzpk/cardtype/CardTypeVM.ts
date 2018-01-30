@@ -10,5 +10,6 @@ import { CardTypeView } from './CardTypeView';
 
             this.setAtlasName = "1";
             this.setClass = CardTypeView;
+            this.setViewPath = "game_dzpk/DZPKCardType";
         }
     }

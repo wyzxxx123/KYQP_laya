@@ -7,5 +7,6 @@ import { DZPKHelpView } from './DZPKHelpView';
 
             this.setAtlasName = "res/atlas/dzpk/helpWindow.atlas,res/atlas/dzpk/zh-cn/helpWindow.atlas";
             this.setClass = DZPKHelpView;
+            this.setViewPath = "game_dzpk/DZPKHelp";
         }
     }

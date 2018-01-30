@@ -78,6 +78,6 @@ import { MsgData } from '../../../mbase/base/MsgData';
 
             this.setAtlasName = "res/atlas/dzpk/zh-cn/font/menuPanelFont.atlas";
             this.setClass = MenuView;
-            
+            this.setViewPath = "game_dzpk/DZPKMenu";
         }
     }

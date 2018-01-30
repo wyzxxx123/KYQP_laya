@@ -1,3 +1,13 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -8,31 +18,37 @@ define(["require", "exports"], function (require, exports) {
      * @class SliderCustomer
      * @extends {laya.ui.HSlider}
      */
-    class SliderCustomer extends laya.ui.Slider {
-        constructor(skin) {
-            super(skin);
-            this._beginOff = -999;
-            this.on(Laya.Event.CHANGE, this, this.on_slider_change);
+    var SliderCustomer = /** @class */ (function (_super) {
+        __extends(SliderCustomer, _super);
+        function SliderCustomer(skin) {
+            var _this = _super.call(this, skin) || this;
+            _this._beginOff = -999;
+            _this.on(Laya.Event.CHANGE, _this, _this.on_slider_change);
+            return _this;
         }
-        set is_v(val) {
-            this.isVertical = val;
-        }
-        on_slider_change() {
-            let front = this.getChildByName("cfront");
+        Object.defineProperty(SliderCustomer.prototype, "is_v", {
+            set: function (val) {
+                this.isVertical = val;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        SliderCustomer.prototype.on_slider_change = function () {
+            var front = this.getChildByName("cfront");
             if (this.isVertical) {
                 front["height"] = this.bar.y + 6;
             }
             else {
                 front["width"] = this.bar.x + 5;
             }
-        }
-        changeValue() {
-            super.changeValue();
+        };
+        SliderCustomer.prototype.changeValue = function () {
+            _super.prototype.changeValue.call(this);
             this.on_slider_change();
-        }
-        addChild(node) {
-            let s_node = super.addChild(node);
-            let front = this.getChildByName("cfront");
+        };
+        SliderCustomer.prototype.addChild = function (node) {
+            var s_node = _super.prototype.addChild.call(this, node);
+            var front = this.getChildByName("cfront");
             if (front && this._beginOff == -999) {
                 if (this.isVertical) {
                     this._beginOff = front["y"];
@@ -44,8 +60,9 @@ define(["require", "exports"], function (require, exports) {
                 this.bar.stateNum = 1;
             }
             return s_node;
-        }
-    }
+        };
+        return SliderCustomer;
+    }(laya.ui.Slider));
     exports.SliderCustomer = SliderCustomer;
 });
 //# sourceMappingURL=SliderCustomer.js.map

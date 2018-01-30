@@ -1,89 +1,105 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 define(["require", "exports", "../base/MModel", "../../core/CFun"], function (require, exports, MModel_1, CFun_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class Player extends MModel_1.MModel {
-        constructor() {
-            super();
-            this.lockGold = 0;
-            this.gold = 0;
-            this.code = 0; //enterSceneOK
-            this.recordList = []; //onLoadRecords
-            this.holdemRecords = [];
-            this.erbaRecords = [];
-            this.noticeMsg = []; //onAllNoticeMsg 广播
-            this.lastRoomId = 0; //前端自用
-            this.curDeck = 0; //当前桌子
-            this.roomSN = 0;
-            this.roomDataList = [];
-            this.gameList = {}; //onGetGameList
-            this.arr_gameList = [];
-            this.roomDict = {};
-            this.gamePlayer = []; //onGetGamePlayer
-            this.gameid = 0;
-            this.errorCode = 0;
-            this.sceneEid = 0; //openScene
+    var Player = /** @class */ (function (_super) {
+        __extends(Player, _super);
+        function Player() {
+            var _this = _super.call(this) || this;
+            _this.lockGold = 0;
+            _this.gold = 0;
+            _this.code = 0; //enterSceneOK
+            _this.recordList = []; //onLoadRecords
+            _this.holdemRecords = [];
+            _this.erbaRecords = [];
+            _this.noticeMsg = []; //onAllNoticeMsg 广播
+            _this.lastRoomId = 0; //前端自用
+            _this.curDeck = 0; //当前桌子
+            _this.roomSN = 0;
+            _this.roomDataList = [];
+            _this.gameList = {}; //onGetGameList
+            _this.arr_gameList = [];
+            _this.roomDict = {};
+            _this.gamePlayer = []; //onGetGamePlayer
+            _this.gameid = 0;
+            _this.errorCode = 0;
+            _this.sceneEid = 0; //openScene
             //匹配的房间
-            this.queueRoomType = 0;
+            _this.queueRoomType = 0;
             //发生的游戏
-            this.sn = 0;
+            _this.sn = 0;
             //takemoney
-            this.amount = 0;
-            this.ret = 0; //onJoinRoom  @ret: 返回值 0 表示成功，其他表示错误 ,@sn: 赌桌号 = this._roomSN
+            _this.amount = 0;
+            _this.ret = 0; //onJoinRoom  @ret: 返回值 0 表示成功，其他表示错误 ,@sn: 赌桌号 = this._roomSN
+            return _this;
         }
-        getShowGold() {
+        Player.prototype.getShowGold = function () {
             return this.gold * 0.01;
-        }
-        set roomData(val) {
-            this._roomData = val;
-            var games = JSON.parse(val);
-            games.sort(function (a, b) {
-                return a.id > b.id ? 1 : -1;
-            });
-            this.roomDataList = {};
-            this.roomDict = {};
-            for (var i in games) {
-                var gameType = games[i].gameType;
-                var roomType = games[i].id;
-                if (!this.roomDataList[gameType]) {
-                    this.roomDataList[gameType] = [];
+        };
+        Object.defineProperty(Player.prototype, "roomData", {
+            get: function () {
+                return this._roomData;
+            },
+            set: function (val) {
+                this._roomData = val;
+                var games = JSON.parse(val);
+                games.sort(function (a, b) {
+                    return a.id > b.id ? 1 : -1;
+                });
+                this.roomDataList = {};
+                this.roomDict = {};
+                for (var i in games) {
+                    var gameType = games[i].gameType;
+                    var roomType = games[i].id;
+                    if (!this.roomDataList[gameType]) {
+                        this.roomDataList[gameType] = [];
+                    }
+                    this.roomDict[roomType] = games[i];
+                    this.roomDataList[gameType].push(games[i]);
                 }
-                this.roomDict[roomType] = games[i];
-                this.roomDataList[gameType].push(games[i]);
-            }
-            if (this.roomSN != 0) {
-                this.gameType = this.getGameTypeBySN(this.roomSN);
-                //进入德州
-                this.lastRoomId = this.getRoomTypeBySN(this.roomSN);
-                this.curDeck = this.roomSN;
-            }
-        }
-        get roomData() {
-            return this._roomData;
-        }
-        getRoomTypeBySN(sn) {
+                if (this.roomSN != 0) {
+                    this.gameType = this.getGameTypeBySN(this.roomSN);
+                    //进入德州
+                    this.lastRoomId = this.getRoomTypeBySN(this.roomSN);
+                    this.curDeck = this.roomSN;
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Player.prototype.getRoomTypeBySN = function (sn) {
             return Math.floor(sn / Player.SNRoomType);
-        }
-        getGameTypeBySN(sn) {
+        };
+        Player.prototype.getGameTypeBySN = function (sn) {
             if (sn <= 0)
                 return 0;
             var roomType = this.getRoomTypeBySN(sn);
             return this.roomDict[roomType].gameType;
-        }
-        recvInit() {
+        };
+        Player.prototype.recvInit = function () {
             this.regist("client_Player_onLoadRecords", this.onLoadRecords);
             this.regist("client_Player_onGetGameList", this.onGetGameList);
-        }
-        onGetGameList() {
+        };
+        Player.prototype.onGetGameList = function () {
             for (var key in this.gameList) {
                 this.arr_gameList.push(this.gameList[key]);
             }
-        }
-        onLoadRecords() {
+        };
+        Player.prototype.onLoadRecords = function () {
             this.holdemRecords = [];
             this.erbaRecords = [];
-            for (let len = this.recordList.length, i = len - 1; i >= 0; i--) {
-                let gameType = this.recordList[i].gameType;
-                let records = [];
+            for (var len = this.recordList.length, i = len - 1; i >= 0; i--) {
+                var gameType = this.recordList[i].gameType;
+                var records = [];
                 switch (gameType) {
                     case Player.HOLDEM:
                         records = this.holdemRecords;
@@ -106,9 +122,9 @@ define(["require", "exports", "../base/MModel", "../../core/CFun"], function (re
                     });
                 }
             }
-        }
+        };
         //获取当前房间信息
-        getRoomDataById(type, id) {
+        Player.prototype.getRoomDataById = function (type, id) {
             if (this.roomDataList[type].length == 0) {
                 return;
             }
@@ -118,15 +134,16 @@ define(["require", "exports", "../base/MModel", "../../core/CFun"], function (re
                     return list[i];
                 }
             }
-        }
-    }
-    Player.accountId = 0;
-    /*****************************************工具信息************************************************/
-    /** 登陆类型 */
-    Player.HALL = ""; //大厅
-    Player.HOLDEM = "holdem"; //德州
-    Player.ERBA = "erba"; //二八杠
-    Player.SNRoomType = 200000;
+        };
+        Player.accountId = 0;
+        /*****************************************工具信息************************************************/
+        /** 登陆类型 */
+        Player.HALL = ""; //大厅
+        Player.HOLDEM = "holdem"; //德州
+        Player.ERBA = "erba"; //二八杠
+        Player.SNRoomType = 200000;
+        return Player;
+    }(MModel_1.MModel));
     exports.Player = Player;
 });
 //# sourceMappingURL=Player.js.map

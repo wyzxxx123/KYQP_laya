@@ -7,8 +7,8 @@ define(["require", "exports", "./RpcDef", "./RpcType", "./crypt/Ctx", "../../cor
      * @export
      * @class Analyzer
      */
-    class Analyzer {
-        constructor() {
+    var Analyzer = /** @class */ (function () {
+        function Analyzer() {
             this.GENIUS_NUMBER = 0x05027919; //加密蒙板数字
             this.MAX_LEN = 0xFFFF; //最大数据包体长度
             this.BAD_LEN = 0xFFFF00; //异常数据包体长度
@@ -20,11 +20,11 @@ define(["require", "exports", "./RpcDef", "./RpcType", "./crypt/Ctx", "../../cor
             new RpcDef_1.RpcDef();
             new RpcType_1.RpcType();
         }
-        analyzeRecv(data) {
+        Analyzer.prototype.analyzeRecv = function (data) {
             // console.log("前：" + this._byte.length + "_" + this._byte.pos + "_" + this._byte.bytesAvailable);
             this._byte.writeArrayBuffer(data); //把接收到的二进制数据读进byte数组便于解析。
             // console.log("中：" + this._byte.length + "_" + this._byte.pos + "_" + this._byte.bytesAvailable);
-            let len = this._packetLen;
+            var len = this._packetLen;
             if (len == 0) {
                 this._byte.pos = 0;
                 if (this._byte.bytesAvailable >= this.INT_SIZE) {
@@ -36,7 +36,7 @@ define(["require", "exports", "./RpcDef", "./RpcType", "./crypt/Ctx", "../../cor
                         this._decrypter.encode(this._byte, this.INT_SIZE, this._byte.pos);
                     }
                     len = this._byte.getUint32();
-                    let flag = (len >> 24) & 0xFF;
+                    var flag = (len >> 24) & 0xFF;
                     len &= 0xFFFFFF;
                     if (len == 0 || len > this.BAD_LEN || flag != (len % 255)) {
                         CFun_1.CFun.throw("Invalid packet size: " + len);
@@ -59,13 +59,13 @@ define(["require", "exports", "./RpcDef", "./RpcType", "./crypt/Ctx", "../../cor
                     }
                     this._decrypter.encode(this._byte, len, this._byte.pos);
                 }
-                let data_id = this._byte.getUint32();
-                let data_obj = RpcDef_1.RpcDef.getMethodByID(data_id);
-                let data_eid = data_obj["isStatic"] ? 0 : (this._byte.getUint32() + 4294967296 * this._byte.getInt16());
-                let data_params = { "e_id": data_eid };
-                let cName = data_obj["isStatic"] ? "ModelHandle" : data_obj["className"];
-                let args = data_obj["args"], ilen = args.length, targ, tname;
-                for (let i = 0; i < ilen; i++) {
+                var data_id = this._byte.getUint32();
+                var data_obj = RpcDef_1.RpcDef.getMethodByID(data_id);
+                var data_eid = data_obj["isStatic"] ? 0 : (this._byte.getUint32() + 4294967296 * this._byte.getInt16());
+                var data_params = { "e_id": data_eid };
+                var cName = data_obj["isStatic"] ? "ModelHandle" : data_obj["className"];
+                var args = data_obj["args"], ilen = args.length, targ = void 0, tname = void 0;
+                for (var i = 0; i < ilen; i++) {
                     targ = args[i];
                     tname = targ["name"];
                     // if(tname == "props"){
@@ -74,7 +74,7 @@ define(["require", "exports", "./RpcDef", "./RpcType", "./crypt/Ctx", "../../cor
                     var reader = RpcDef_1.RpcDef.getTypeReader(targ.type);
                     data_params[tname] = reader(this._byte);
                 }
-                let cPro = new ClassPro_1.ClassPro();
+                var cPro = new ClassPro_1.ClassPro();
                 cPro.recv_id = data_obj["id"];
                 cPro.className = cName;
                 cPro.event_id = data_obj["server"] + "_" + data_obj["className"] + "_" + data_obj["name"];
@@ -84,21 +84,21 @@ define(["require", "exports", "./RpcDef", "./RpcType", "./crypt/Ctx", "../../cor
                 return cPro;
             }
             return null;
-        }
-        analyzeSend(data) {
-            let tmp_byte = laya.utils.Pool.getItemByClass("tmpByte", laya.utils.Byte);
+        };
+        Analyzer.prototype.analyzeSend = function (data) {
+            var tmp_byte = laya.utils.Pool.getItemByClass("tmpByte", laya.utils.Byte);
             tmp_byte.endian = laya.utils.Byte.LITTLE_ENDIAN;
             tmp_byte.clear();
             tmp_byte.pos = 0;
-            let data_obj = data.method;
+            var data_obj = data.method;
             if (!data_obj)
                 CFun_1.CFun.throw("RPC method not found: " + data_obj["id"]);
             RpcType_1.RpcType.uintWriter(tmp_byte, data_obj["id"]);
             if (!data_obj["isStatic"]) {
                 RpcType_1.RpcType.int48Writer(tmp_byte, data.e_id);
             }
-            let args = data_obj["args"], ilen = args.length, targ, tname;
-            for (let i = 0; i < ilen; i++) {
+            var args = data_obj["args"], ilen = args.length, targ, tname;
+            for (var i = 0; i < ilen; i++) {
                 targ = args[i];
                 var writer = RpcDef_1.RpcDef.getTypeWriter(targ.type);
                 if (writer == null) {
@@ -113,12 +113,12 @@ define(["require", "exports", "./RpcDef", "./RpcType", "./crypt/Ctx", "../../cor
                 CFun_1.CFun.throw("Invalid packet size: " + len);
             }
             // SocketInterface.debugLog && SocketInterface.debugLog("Sending packet: " + packet);
-            let write_byte = laya.utils.Pool.getItemByClass("tmpByte", laya.utils.Byte);
+            var write_byte = laya.utils.Pool.getItemByClass("tmpByte", laya.utils.Byte);
             write_byte.endian = laya.utils.Byte.LITTLE_ENDIAN;
             write_byte.clear();
             write_byte.pos = 0;
             //写入数据包
-            let flag = ((len % 255) << 24) | len;
+            var flag = ((len % 255) << 24) | len;
             write_byte.length = len + this.INT_SIZE;
             write_byte.writeUint32(flag);
             write_byte.writeArrayBuffer(tmp_byte.buffer);
@@ -135,9 +135,10 @@ define(["require", "exports", "./RpcDef", "./RpcType", "./crypt/Ctx", "../../cor
             laya.utils.Pool.recover("tmpSend", data);
             laya.utils.Pool.recover("tmpByte", tmp_byte);
             return [write_byte, write_byte.buffer];
-        }
-    }
-    Analyzer.seed = 0;
+        };
+        Analyzer.seed = 0;
+        return Analyzer;
+    }());
     exports.Analyzer = Analyzer;
 });
 //# sourceMappingURL=Analyzer.js.map

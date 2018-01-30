@@ -1,9 +1,9 @@
 import { StorageKeys } from './StorageKeys';
-import { RegistClass } from './module/RegistClass';
 import { GameConfig } from './GameConfig';
 import { SocketManager } from './core/net/SocketManager';
 import { MLayer } from './mbase/base/MLayer';
 import { CFun } from './core/CFun';
+import { RegistClass } from './core/model/RegistClass';
 // 程序入口
 import Handler = laya.utils.Handler;
 import Loader = laya.net.Loader;
@@ -42,6 +42,9 @@ export class GameMain {
     }
     private onLoadComplete() {
 
+        // let m = require(["js/module/dzpk/help/DZPKHelpVM"]);
+        // let c = new m();
+        // console.log("");
     }
 
     private localInit() {

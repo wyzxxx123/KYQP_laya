@@ -34,6 +34,7 @@ import { SettingView } from './SettingView';
             super();
 
             this.setAtlasName = "res/atlas/settingWindow.atlas";
+            this.setViewPath = "setting/SettingWindow";
             this.setClass = SettingView;
         }
     }

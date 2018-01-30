@@ -5,10 +5,15 @@ import { CFun } from '../CFun';
             super();
         }
 
-        createChildren():void {
-            super.createChildren();
-            let path = CFun.parsingPath(this.constructor);
-            console.log(path);
-            this.createView(Laya.loader.getRes(path));
+        // createChildren():void {
+        //     super.createChildren();
+        //     let path = CFun.parsingPath(this.constructor);
+        //     console.log(path);
+        //     this.createView(Laya.loader.getRes(path));
+        // }
+
+        loadUI(path:string):void{
+            this.createView(Laya.loader.getRes(path + ".json"));
+            super.loadUI(path);
         }
     }
