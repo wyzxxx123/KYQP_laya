@@ -19,10 +19,10 @@ import { ClassPro } from '../../core/net/ClassPro';
 			if(len == 0){
 				this._byte.pos = 0;
 				if(this._byte.bytesAvailable >= this.INT_SIZE){
-					if(Analyzer.seed > 0 ){
+					if(StaticData.seed > 0 ){
 						if(this._encrypter == undefined){
-							this._encrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
-							this._decrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
+							this._encrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
+							this._decrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
 						}
 
 						this._decrypter.encode(this._byte, this.INT_SIZE, this._byte.pos);
@@ -49,10 +49,10 @@ import { ClassPro } from '../../core/net/ClassPro';
 			if(len > 0 && this._byte.bytesAvailable >= len){ //读到足够的数据
 				this._packetLen = 0;
 
-				if(Analyzer.seed > 0 ){
+				if(StaticData.seed > 0 ){
 					if(this._encrypter == undefined){
-						this._encrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
-						this._decrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
+						this._encrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
+						this._decrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
 					}
 
 					this._decrypter.encode(this._byte, len, this._byte.pos);
@@ -102,7 +102,7 @@ import { ClassPro } from '../../core/net/ClassPro';
 			if (!data_obj["isStatic"]){
 				RpcType.int48Writer(tmp_byte, data.e_id);
 			}
-
+ 
 			let args:Object[] = data_obj["args"],ilen=args.length,targ,tname;
 			for (let i:number = 0; i < ilen; i++){
 				targ = args[i];
@@ -131,10 +131,10 @@ import { ClassPro } from '../../core/net/ClassPro';
 			write_byte.writeUint32(flag);
 			write_byte.writeArrayBuffer(tmp_byte.buffer);
 			
-			if(Analyzer.seed > 0 ){
+			if(StaticData.seed > 0 ){
 				if(this._encrypter == undefined){
-					this._encrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
-					this._decrypter = new Ctx(Analyzer.seed ^ this.GENIUS_NUMBER);
+					this._encrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
+					this._decrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
 				}
 
 				this._encrypter.encode(write_byte, write_byte.length);

@@ -1,13 +1,3 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -17,17 +7,10 @@ define(["require", "exports"], function (require, exports) {
      * @export
      * @class ScaleComponent
      */
-    var ButtonState = /** @class */ (function (_super) {
-        __extends(ButtonState, _super);
-        function ButtonState(skin, label) {
-            var _this = _super.call(this, skin, label) || this;
-            _this.state = -1;
-            _this.state = 0;
-            return _this;
-        }
-        ButtonState.prototype.changeState = function () {
-            _super.prototype.changeState.call(this);
-            var com = null;
+    class ButtonState extends laya.ui.Button {
+        changeState() {
+            super.changeState();
+            let com = null;
             if (this.state == 0) {
                 com = this.getChildByName("up");
                 if (com)
@@ -61,9 +44,13 @@ define(["require", "exports"], function (require, exports) {
                 if (com)
                     com["visible"] = false;
             }
-        };
-        return ButtonState;
-    }(laya.ui.Button));
+        }
+        constructor(skin, label) {
+            super(skin, label);
+            this.state = -1;
+            this.state = 0;
+        }
+    }
     exports.ButtonState = ButtonState;
 });
 //# sourceMappingURL=ButtonState.js.map

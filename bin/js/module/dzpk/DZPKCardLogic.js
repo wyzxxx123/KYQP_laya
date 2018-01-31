@@ -1,13 +1,3 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType"], function (require, exports, CardLogic_1, CFun_1, DZPKCardType_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -16,25 +6,17 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
      * @author none
      *
      */
-    var DZPKCardLogic = /** @class */ (function (_super) {
-        __extends(DZPKCardLogic, _super);
-        function DZPKCardLogic() {
-            var _this = _super.call(this) || this;
-            if (DZPKCardLogic._instance) {
-                CFun_1.CFun.throw("单例！");
-            }
-            return _this;
-        }
+    class DZPKCardLogic extends CardLogic_1.CardLogic {
         /** 组合自己的牌和公共牌 **/
-        DZPKCardLogic.prototype.TogetherCardList = function (myCardList, publicCardList) {
+        TogetherCardList(myCardList, publicCardList) {
             CFun_1.CFun.remove(myCardList, 0);
             CFun_1.CFun.remove(publicCardList, 0);
             return publicCardList.concat(myCardList);
-        };
+        }
         /**
          * 获取牌型
          */
-        DZPKCardLogic.prototype.getDZPKCardType = function (myCardList, publicCardList) {
+        getDZPKCardType(myCardList, publicCardList) {
             if (myCardList.length == 0) {
                 return DZPKCardType_1.DZPKCardType.ERROR;
             }
@@ -66,11 +48,11 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
                 return DZPKCardType_1.DZPKCardType.DOUBLE;
             }
             return DZPKCardType_1.DZPKCardType.SINGLE;
-        };
+        }
         /**
         * 获取最大牌型的牌
         */
-        DZPKCardLogic.prototype.getCardTypeCards = function (myCardList, publicCardList) {
+        getCardTypeCards(myCardList, publicCardList) {
             if (myCardList.length == 0) {
                 return { cards: [], cardType: DZPKCardType_1.DZPKCardType.ERROR };
             }
@@ -92,7 +74,7 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
             cards = this.findFullHouse(myCardList, publicCardList);
             if (cards.length > 0) {
                 //this.print(cards + " 葫芦");
-                return { cards: cards[0], myCardList: myCardList, publicCardList: publicCardList, cardType: DZPKCardType_1.DZPKCardType.FullHouse };
+                return { cards: cards[0], myCardList, publicCardList, cardType: DZPKCardType_1.DZPKCardType.FullHouse };
             }
             cards = this.findStraight(myCardList, publicCardList);
             if (cards.length > 0) {
@@ -126,10 +108,9 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
                 return { cards: cards[0], cardType: DZPKCardType_1.DZPKCardType.DOUBLE };
             }
             return { cards: [], cardType: DZPKCardType_1.DZPKCardType.SINGLE };
-        };
+        }
         /** 查找顺子 **/
-        DZPKCardLogic.prototype.findLine = function (myCardList, publicCardList, linelength) {
-            if (linelength === void 0) { linelength = 5; }
+        findLine(myCardList, publicCardList, linelength = 5) {
             var result = [];
             var cardData = this.TogetherCardList(myCardList, publicCardList);
             this.SortByCardData(cardData);
@@ -176,17 +157,15 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
                 result.push(temp);
             }
             return result;
-        };
+        }
         /**  查找同花顺**/
-        DZPKCardLogic.prototype.findStraightLine = function (myCardList, publicCardList, linelength) {
-            if (linelength === void 0) { linelength = 5; }
+        findStraightLine(myCardList, publicCardList, linelength = 5) {
             var straightList = this.findStraight(myCardList, publicCardList); //取出所有的同花
             var lineDataList = this.findLine(straightList.length > 0 ? straightList[0] : [], [], linelength);
             return lineDataList;
-        };
+        }
         /**  查找皇家同花顺**/
-        DZPKCardLogic.prototype.findBigStraightLine = function (myCardList, publicCardList, linelength) {
-            if (linelength === void 0) { linelength = 5; }
+        findBigStraightLine(myCardList, publicCardList, linelength = 5) {
             var result = [];
             var lineDataList = this.findStraightLine(myCardList, publicCardList, linelength); //取出所有的同花
             for (var i = 0; i < lineDataList.length; i++) {
@@ -196,9 +175,9 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
                 }
             }
             return result;
-        };
+        }
         /** 查找同花 **/
-        DZPKCardLogic.prototype.findStraight = function (myCardList, publicCardList) {
+        findStraight(myCardList, publicCardList) {
             var result = [];
             var cardData = this.TogetherCardList(myCardList, publicCardList);
             this.SortByCardData(cardData);
@@ -218,9 +197,9 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
                 }
             }
             return result;
-        };
+        }
         /** 查找4张 **/
-        DZPKCardLogic.prototype.findFour = function (myCardList, publicCardList) {
+        findFour(myCardList, publicCardList) {
             var result = [];
             var cardData = this.TogetherCardList(myCardList, publicCardList);
             this.SortByCardData(cardData);
@@ -235,9 +214,9 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
                 }
             }
             return result;
-        };
+        }
         /** 查找3张 **/
-        DZPKCardLogic.prototype.findThree = function (myCardList, publicCardList) {
+        findThree(myCardList, publicCardList) {
             var result = [];
             var cardData = this.TogetherCardList(myCardList, publicCardList);
             this.SortByCardData(cardData);
@@ -251,9 +230,9 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
                 }
             }
             return result;
-        };
+        }
         /** 查找2张 **/
-        DZPKCardLogic.prototype.findTwo = function (myCardList, publicCardList) {
+        findTwo(myCardList, publicCardList) {
             var result = [];
             var cardData = this.TogetherCardList(myCardList, publicCardList);
             this.SortByCardData(cardData);
@@ -266,9 +245,9 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
                 }
             }
             return result;
-        };
+        }
         /** 查找葫芦 **/
-        DZPKCardLogic.prototype.findFullHouse = function (myCardList, publicCardList) {
+        findFullHouse(myCardList, publicCardList) {
             var result = [];
             var cardData = this.TogetherCardList(myCardList, publicCardList);
             this.SortByCardData(cardData);
@@ -290,11 +269,11 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
                 }
             }
             return result;
-        };
+        }
         /** 根据牌值排序，从大到小，A最大 **/
-        DZPKCardLogic.prototype.SortByCardData = function (cardData) {
+        SortByCardData(cardData) {
             var self = this;
-            cardData.sort(function (left, right) {
+            cardData.sort((left, right) => {
                 var leftVale = self.getCardValue(left);
                 var rightVale = self.getCardValue(right);
                 leftVale = leftVale == 1 ? 14 : leftVale;
@@ -309,11 +288,11 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
                     return 0;
                 }
             });
-        };
+        }
         /*
         * 如果牌型中有三个对子，则拿出两个最大的对子
         * */
-        DZPKCardLogic.prototype.getMaxTwoPair = function (cards) {
+        getMaxTwoPair(cards) {
             var cardValues = [];
             for (var i = 0; i < cards.length; i++) {
                 if (this.getCardValue(cards[i][0]) == 1) {
@@ -325,19 +304,20 @@ define(["require", "exports", "../CardLogic", "../../core/CFun", "./DZPKCardType
             }
             cards.splice(cardValues.indexOf(Math.min.apply(null, cardValues)), 1); //删除最小的对子
             return cards;
-        };
-        Object.defineProperty(DZPKCardLogic, "ins", {
-            get: function () {
-                if (!this._instance) {
-                    this._instance = new DZPKCardLogic();
-                }
-                return this._instance;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return DZPKCardLogic;
-    }(CardLogic_1.CardLogic));
+        }
+        static get ins() {
+            if (!this._instance) {
+                this._instance = new DZPKCardLogic();
+            }
+            return this._instance;
+        }
+        constructor() {
+            super();
+            if (DZPKCardLogic._instance) {
+                CFun_1.CFun.throw("单例！");
+            }
+        }
+    }
     exports.DZPKCardLogic = DZPKCardLogic;
 });
 //# sourceMappingURL=DZPKCardLogic.js.map

@@ -6,88 +6,43 @@ define(["require", "exports", "./KYQP_laya", "./mbase/data/Player"], function (r
      * @author none
      *
      */
-    var StorageKeys = /** @class */ (function () {
-        function StorageKeys() {
+    class StorageKeys {
+        constructor() {
         }
-        Object.defineProperty(StorageKeys, "accountSave", {
-            get: function () {
-                return KYQP_laya_1.GameMain.appName + "accountSave";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(StorageKeys, "account", {
-            get: function () {
-                return KYQP_laya_1.GameMain.appName + "account";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(StorageKeys, "password", {
-            get: function () {
-                return KYQP_laya_1.GameMain.appName + "password";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(StorageKeys, "imei_windows", {
-            get: function () {
-                return KYQP_laya_1.GameMain.appName + "imei_windows";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(StorageKeys, "isGuest", {
-            get: function () {
-                return KYQP_laya_1.GameMain.appName + "isGuest";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(StorageKeys, "isLoginType", {
-            get: function () {
-                return KYQP_laya_1.GameMain.appName + "isLoginType";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(StorageKeys, "musicValue", {
-            get: function () {
-                return KYQP_laya_1.GameMain.appName + "musicValue";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(StorageKeys, "soundValue", {
-            get: function () {
-                return KYQP_laya_1.GameMain.appName + "soundValue";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(StorageKeys, "shakeValue", {
-            get: function () {
-                return KYQP_laya_1.GameMain.appName + "shakeValue";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(StorageKeys, "autoLogin", {
-            get: function () {
-                return KYQP_laya_1.GameMain.appName + "autoLogin";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(StorageKeys, "DZPKTakeScore", {
-            get: function () {
-                return KYQP_laya_1.GameMain.appName + Player_1.Player.accountId + "DZPKTakeScore";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return StorageKeys;
-    }());
+        static get accountSave() {
+            return KYQP_laya_1.GameMain.appName + "accountSave";
+        }
+        static get account() {
+            return KYQP_laya_1.GameMain.appName + "account";
+        }
+        static get password() {
+            return KYQP_laya_1.GameMain.appName + "password";
+        }
+        static get imei_windows() {
+            return KYQP_laya_1.GameMain.appName + "imei_windows";
+        }
+        static get isGuest() {
+            return KYQP_laya_1.GameMain.appName + "isGuest";
+        }
+        static get isLoginType() {
+            return KYQP_laya_1.GameMain.appName + "isLoginType";
+        }
+        static get musicValue() {
+            return KYQP_laya_1.GameMain.appName + "musicValue";
+        }
+        static get soundValue() {
+            return KYQP_laya_1.GameMain.appName + "soundValue";
+        }
+        static get shakeValue() {
+            return KYQP_laya_1.GameMain.appName + "shakeValue";
+        }
+        static get autoLogin() {
+            return KYQP_laya_1.GameMain.appName + "autoLogin";
+        }
+        static get DZPKTakeScore() {
+            return KYQP_laya_1.GameMain.appName + Player_1.Player.accountId + "DZPKTakeScore";
+        }
+    }
     exports.StorageKeys = StorageKeys;
 });
 //# sourceMappingURL=StorageKeys.js.map

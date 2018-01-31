@@ -7,18 +7,17 @@ define(["require", "exports", "../CFun", "./AnalyzeData"], function (require, ex
      * @export
      * @class SocketManager
      */
-    var SocketManager = /** @class */ (function () {
-        function SocketManager() {
+    class SocketManager {
+        constructor() {
             this._dic_ws = {};
         }
         /*
         main是URL或者host
         如果sub不存在，则是连接url
         */
-        SocketManager.prototype.connect = function (main, sub) {
-            if (sub === void 0) { sub = null; }
+        connect(main, sub = null) {
             if (SocketManager.arr_address.length > 0) {
-                for (var i = 0; i < SocketManager.arr_address.length; i++) {
+                for (let i = 0; i < SocketManager.arr_address.length; i++) {
                     if (SocketManager.arr_address[i].hasOwnProperty("main")) {
                         if (SocketManager.arr_address[i]["main"] == main && SocketManager.arr_address[i]["sub"] == sub) {
                         }
@@ -31,9 +30,9 @@ define(["require", "exports", "../CFun", "./AnalyzeData"], function (require, ex
             else {
                 SocketManager.arr_address.push({ "main": main, "sub": sub });
             }
-            var tuple = this.getWSBykey(main, sub);
-            var ws = tuple[0];
-            var key = tuple[1];
+            let tuple = this.getWSBykey(main, sub);
+            let ws = tuple[0];
+            let key = tuple[1];
             if (!ws) {
                 ws = new laya.net.Socket();
                 ws.endian = Laya.Byte.LITTLE_ENDIAN;
@@ -52,7 +51,7 @@ define(["require", "exports", "../CFun", "./AnalyzeData"], function (require, ex
             else {
                 ws.connect(main, Number(sub));
             }
-        };
+        }
         /**
          * @description 清除socket连接
          * @author wangyz
@@ -60,11 +59,10 @@ define(["require", "exports", "../CFun", "./AnalyzeData"], function (require, ex
          * @param {string} [sub] 连接地址(port)
          * @memberof SocketManager
          */
-        SocketManager.prototype.destroy = function (main, sub) {
-            if (sub === void 0) { sub = null; }
-            var tuple = this.getWSBykey(main, sub);
-            var ws = tuple[0];
-            var key = tuple[1];
+        destroy(main, sub = null) {
+            let tuple = this.getWSBykey(main, sub);
+            let ws = tuple[0];
+            let key = tuple[1];
             if (ws) {
                 ws.offAll();
                 ws.cleanSocket();
@@ -75,21 +73,20 @@ define(["require", "exports", "../CFun", "./AnalyzeData"], function (require, ex
             else {
                 CFun_1.CFun.throw("正在清除不存在的链接");
             }
-        };
+        }
         /*
         关闭连接，但是事件和字典没有移除
         */
-        SocketManager.prototype.close = function (main, sub) {
-            if (sub === void 0) { sub = null; }
-            var tuple = this.getWSBykey(main, sub);
-            var ws = tuple[0];
+        close(main, sub = null) {
+            let tuple = this.getWSBykey(main, sub);
+            let ws = tuple[0];
             if (ws) {
                 ws.close();
             }
             else {
                 CFun_1.CFun.throw("正在关闭不存在的链接");
             }
-        };
+        }
         /**
          * 发送数据
          * @param {*} pac 待发送数据
@@ -97,68 +94,57 @@ define(["require", "exports", "../CFun", "./AnalyzeData"], function (require, ex
          * @param {string} [sub] 连接地址(port)
          * @memberof SocketManager
          */
-        SocketManager.prototype.send = function (pac, main, sub) {
-            if (sub === void 0) { sub = null; }
-            var tuple = this.getWSBykey(main, sub);
-            var ws = tuple[0];
-            var key = tuple[1];
+        send(pac, main, sub = null) {
+            let tuple = this.getWSBykey(main, sub);
+            let ws = tuple[0];
+            let key = tuple[1];
             if (!ws) {
                 CFun_1.CFun.throw("正在向不存在的" + key + "链接发送消息");
             }
-            var flushData = AnalyzeData_1.AnalyzeData.ins.analyzeSend(pac, key);
+            let flushData = AnalyzeData_1.AnalyzeData.ins.analyzeSend(pac, key);
             ws.send(flushData[1]);
             laya.utils.Pool.recover("tmpByte", flushData[0]);
-        };
-        SocketManager.prototype.onMessage = function (msg) {
-            if (msg === void 0) { msg = null; }
-            var key = SocketManager.ins.getKeyByWS(this);
-            var recvData = AnalyzeData_1.AnalyzeData.ins.analyzeRecv(msg, key);
-        };
+        }
+        onMessage(msg = null) {
+            let key = SocketManager.ins.getKeyByWS(this);
+            let recvData = AnalyzeData_1.AnalyzeData.ins.analyzeRecv(msg, key);
+        }
         /**
         获取不到key值，把作用域改了
         */
-        SocketManager.prototype.getKeyByWS = function (ws) {
+        getKeyByWS(ws) {
             for (var key in this._dic_ws) {
                 if (this._dic_ws[key] == ws) {
                     return key;
                 }
             }
             return "";
-        };
-        SocketManager.prototype.getWSBykey = function (main, sub) {
-            if (sub === void 0) { sub = null; }
-            var key = "";
+        }
+        getWSBykey(main, sub = null) {
+            let key = "";
             if (!sub)
                 key = main + "," + sub;
             else
                 key = main;
             return [this._dic_ws[key], key];
-        };
-        Object.defineProperty(SocketManager, "ins", {
-            get: function () {
-                if (!this._instance) {
-                    this._instance = new SocketManager();
-                }
-                return this._instance;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        SocketManager.prototype.onOpen = function (event) {
-            if (event === void 0) { event = null; }
-        };
-        SocketManager.prototype.onClose = function (event) {
-            if (event === void 0) { event = null; }
+        }
+        static get ins() {
+            if (!this._instance) {
+                this._instance = new SocketManager();
+            }
+            return this._instance;
+        }
+        onOpen(event = null) {
+        }
+        onClose(event = null) {
             CFun_1.CFun.log("连接关闭：" + event);
-        };
-        SocketManager.prototype.onError = function (event) {
-            if (event === void 0) { event = null; }
+        }
+        onError(event = null) {
             CFun_1.CFun.log("连接错误：" + event);
-        };
-        //设置一个默认的地址
-        SocketManager.arr_address = [];
-        return SocketManager;
-    }());
+        }
+    }
+    //设置一个默认的地址
+    SocketManager.arr_address = [];
     exports.SocketManager = SocketManager;
 });
 //# sourceMappingURL=SocketManager.js.map

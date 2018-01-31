@@ -49,7 +49,7 @@ import { CFun } from '../../core/CFun';
 
             if(CFun.DEBUG){
                 if(this.playerData.gold == 0){
-                    this.sendData(16778278,[0]);
+                    this.sendData(16778278,[10000]);
                 }
             }
         }

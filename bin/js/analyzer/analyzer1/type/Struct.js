@@ -6,34 +6,29 @@ define(["require", "exports"], function (require, exports) {
      * @author	Fictiony
      * @version	2017/7/11
      */
-    var Struct = /** @class */ (function () {
-        function Struct(type) {
+    class Struct {
+        constructor(type) {
             this._type = type;
         }
         /**
          * 创建新结构体对象（扩展结构体类定义）
          */
-        Struct.createNew = function (type) {
+        static createNew(type) {
             return new Struct(type);
-        };
-        Object.defineProperty(Struct.prototype, "$type", {
-            /**
-             * 获取类型定义
-             */
-            get: function () {
-                return this._type;
-            },
-            enumerable: true,
-            configurable: true
-        });
+        }
+        /**
+         * 获取类型定义
+         */
+        get $type() {
+            return this._type;
+        }
         /**
          * 判断是否包含指定字段
          */
-        Struct.prototype.hasKey = function (name) {
+        hasKey(name) {
             return this._type.defs[name] != null;
-        };
-        return Struct;
-    }());
+        }
+    }
     exports.Struct = Struct;
 });
 //# sourceMappingURL=Struct.js.map

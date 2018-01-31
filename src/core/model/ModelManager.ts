@@ -5,17 +5,15 @@ import { CFun } from '../CFun';
         private getModel(model_name:string,callBack:Function):void{
             let myself = this._self;
             if(!model_name || model_name == "") CFun.throw("ModelManager的getModel参数不可为空！");
-            let model = this._dic_model[model_name];
+            let model = StaticData.dic_model[model_name];
             if(!model){
-                
-                
                 let path = laya.utils.ClassUtils.getRegClass(model_name);
                 if(typeof path == "string"){
                     require([path],function(mod){
                         let name = path.substr(path.lastIndexOf("/") + 1);
                         model = new (mod[name])();
                         if(model){
-                            myself._dic_model[model_name] = model;
+                            StaticData.dic_model[model_name] = model;
                             model["wyz_class_name"] = model_name;
                             callBack.call(myself,true);
                         }
@@ -27,7 +25,7 @@ import { CFun } from '../CFun';
                 else{
                     model = laya.utils.ClassUtils.getInstance(model_name);
                     if(model){
-                        this._dic_model[model_name] = model;
+                        StaticData.dic_model[model_name] = model;
                         model["wyz_class_name"] = model_name;
                         callBack.call(myself,true);
                     }
@@ -57,23 +55,25 @@ import { CFun } from '../CFun';
                 if(isReady){
                     if(!pros) CFun.throw("ModelManager的setPro参数不可为空！");
 
-                    let des = f_des;
-                    let model = myself._dic_model[model_name];
+                    let model = StaticData.dic_model[model_name];
                     let content = "";
-                    for(let key in pros){
-                        if(key[0] == "_") continue;
 
-                        if(pros[key]["__className"] == "laya.utils.Byte"){
-                            content = "{Byte}";
-                        }
-                        else{
-                            content = (myself.isBaseClass(pros[key])?pros[key]:myself.printObject(model,pros[key]));
-                        }
-                        model[key] = pros[key];
-                        if(des != (f_des)) des += ","
-                        if(key != "e_id") des += key + ":" + content; 
-                    }
+                    let des = myself.printObject(model,pros,myself,f_des + "{");
                     des += "]";
+
+                    // if(model_name == "Player"){
+                    //     let t1 = "%传入属性";
+                    //     for(let key in pros){
+                    //         t1 += "(" + key + ":" + pros[key] + "),"
+                    //     }
+                    //     console.log(t1,"传入属性%");
+                    //     let t = "%玩家属性";
+                    //     for(let key in model){
+                    //         t += "(" + key + ":" + model[key] + "),"
+                    //     }
+
+                    //     console.log(t,"玩家属性%");
+                    // }
                 
                     CFun.log(new Date()["format"]("dd-hh:mm:ss,S") + " "+des);
                     callBack.call(obj,model);
@@ -84,8 +84,8 @@ import { CFun } from '../CFun';
             });
         }
 
-        private printObject(model:any,pros:Object):string{
-            let des = "{";  
+        private printObject(model:any,pros:Object,obj:any,pre:string):string{
+            let des = pre;  
             let content = "";
             for(let key in pros){
                 if(key[0] == "_"){
@@ -95,11 +95,38 @@ import { CFun } from '../CFun';
                     content = "{Byte}";
                 }
                 else{
-                    content = (this.isBaseClass(pros[key])?pros[key]:this.printObject(model,pros[key]));
+                    if(obj.isBaseClass(pros[key])){
+                        content = pros[key];
+                    }
+                    else{
+                        let t_m = model[key];
+                        if(!t_m) t_m = {}
+                        content = obj.printObject(t_m,pros[key],obj,"{");
+                    }
                 }
+                // let descriptor = Object.getOwnPropertyDescriptor(model.__proto__,key);
+                // if(descriptor){
+                //     if(descriptor.set){
+                //         descriptor.set(pros[key]);
+                //     }
+                //     else{
+                //         descriptor.value = pros[key];
+                //     }
+                // }
+                // else{
+                //     descriptor = {
+                //         value : pros[key],
+                //         writable : true,
+                //         configurable : true,
+                //         enumerable : false
+                //     }
+                // }
+                // Object.defineProperty(model, key,descriptor );
                 model[key] = pros[key];
-                if(des !=  "{") des += ","
-                des += key + ":" + content; 
+                if(des != pre) des += ","
+                if(key != "e_id"){
+                    des += key + ":" + content; 
+                }
             } 
             des += "}";
             return des;
@@ -121,8 +148,8 @@ import { CFun } from '../CFun';
          * @memberof ModelManager
          */
         public getInfoByProValue(p_name:string,val:any):string{
-            for(let key in this._dic_model){
-                if(this._dic_model[key] && this._dic_model[key][p_name] == val){
+            for(let key in StaticData.dic_model){
+                if(StaticData.dic_model[key] && StaticData.dic_model[key][p_name] == val){
                     return key;
                 }
             }
@@ -130,7 +157,7 @@ import { CFun } from '../CFun';
         }
 
         public getInstByClassName(p_name:string):any{
-            let inst = this._dic_model[p_name];
+            let inst = StaticData.dic_model[p_name];
             if(!inst) return null;
 
             return inst;
@@ -145,9 +172,7 @@ import { CFun } from '../CFun';
         }
 
         private _self;
-        private _dic_model:{[key:string]:any};
         constructor(){
-            this._dic_model = {};
             this._self = this;
         }
     }

@@ -4,8 +4,8 @@ define(["require", "exports", "./StorageKeys", "./GameConfig", "./core/net/Socke
     // 程序入口
     var Handler = laya.utils.Handler;
     var Loader = laya.net.Loader;
-    var GameMain = /** @class */ (function () {
-        function GameMain() {
+    class GameMain {
+        constructor() {
             // if(CFun.SCREEN_PRINT){
             //     Laya.init(600,400,Laya.Log);
             // }
@@ -29,24 +29,23 @@ define(["require", "exports", "./StorageKeys", "./GameConfig", "./core/net/Socke
                 { url: "res/atlas/bitmapFont.atlas", type: Loader.ATLAS }
             ], Handler.create(this, this.onLoadComplete));
         }
-        GameMain.prototype.onLoadComplete = function () {
+        onLoadComplete() {
             // let m = require(["js/module/dzpk/help/DZPKHelpVM"]);
             // let c = new m();
             // console.log("");
-        };
-        GameMain.prototype.localInit = function () {
+        }
+        localInit() {
             CFun_1.CFun.playMusic("sounds/hall/hall_bg.mp3");
-            var music = CFun_1.CFun.getLSItem(StorageKeys_1.StorageKeys.musicValue + "last", "Number");
-            var sound = CFun_1.CFun.getLSItem(StorageKeys_1.StorageKeys.soundValue + "last", "Number");
+            let music = CFun_1.CFun.getLSItem(StorageKeys_1.StorageKeys.musicValue + "last", "Number");
+            let sound = CFun_1.CFun.getLSItem(StorageKeys_1.StorageKeys.soundValue + "last", "Number");
             if (music >= 0) {
                 CFun_1.CFun.musicV = music * 0.01;
             }
             if (sound >= 0) {
                 CFun_1.CFun.soundV = sound * 0.01;
             }
-        };
-        return GameMain;
-    }());
+        }
+    }
     exports.GameMain = GameMain;
     new GameMain();
 });

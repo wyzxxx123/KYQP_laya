@@ -6,33 +6,30 @@ define(["require", "exports"], function (require, exports) {
      * @author	Fictiony
      * @version	2017/7/10
      */
-    var TypeDef = /** @class */ (function () {
-        function TypeDef(def) {
+    class TypeDef {
+        constructor(def) {
             /** 字段表：{字段名: 字段类型} */
             this.defs = {};
             /** 字段名列表 */
             this.fields = [];
             this.id = def.id;
             this.name = def.name;
-            for (var _i = 0, _a = def.defs; _i < _a.length; _i++) {
-                var item = _a[_i];
+            for (var item of def.defs) {
                 this.fields.push(item.name);
                 this.defs[item.name] = item.type;
             }
         }
-        TypeDef.prototype.toString = function () {
+        toString() {
             if (this._info == null) {
                 var arr = [];
-                for (var _i = 0, _a = this.fields; _i < _a.length; _i++) {
-                    var i = _a[_i];
+                for (var i of this.fields) {
                     arr.push(i + ":" + this.defs[i]);
                 }
                 this._info = "<Type " + this.name + " {" + arr.join(",") + "}>";
             }
             return this._info;
-        };
-        return TypeDef;
-    }());
+        }
+    }
     exports.TypeDef = TypeDef;
 });
 //# sourceMappingURL=TypeDef.js.map

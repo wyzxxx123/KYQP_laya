@@ -29,8 +29,6 @@ import { InitData } from '../../mbase/base/InitData';
         protected onInitAndShow(data:InitData){
             let model:ViewModel = VMManager.static_dic_vm[data.className];//laya.utils.ClassUtils.getInstance(data.className);
             if(!model){
-                model = laya.utils.ClassUtils.getInstance(data.className);
-                VMManager.static_dic_vm[data.className] = model;
 
                 let path = laya.utils.ClassUtils.getRegClass(data.className);
                 if(typeof path == "string"){

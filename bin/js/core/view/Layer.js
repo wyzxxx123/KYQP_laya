@@ -1,8 +1,8 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var Layer = /** @class */ (function () {
-        function Layer() {
+    class Layer {
+        constructor() {
             Layer.SCENE_LAYER = new laya.ui.Component();
             Layer.SCENE_LAYER.width = Laya.stage.width;
             Layer.SCENE_LAYER.height = Laya.stage.height;
@@ -24,8 +24,7 @@ define(["require", "exports"], function (require, exports) {
             Laya.stage.addChild(Layer.WINDOW_LAYER);
             Laya.stage.addChild(Layer.TOP_LAYER);
         }
-        return Layer;
-    }());
+    }
     exports.Layer = Layer;
 });
 //# sourceMappingURL=Layer.js.map

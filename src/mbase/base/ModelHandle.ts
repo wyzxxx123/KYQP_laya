@@ -1,6 +1,6 @@
 import { MModel } from './MModel';
 import { ModelManager } from '../../core/model/ModelManager';
-import { Analyzer } from '../../analyzer/analyzer1/Analyzer';
+// import { Analyzer } from '../../analyzer/analyzer1/Analyzer';
 import { RpcDef } from '../../analyzer/analyzer1/RpcDef';
 import { CFun } from '../../core/CFun';
 import { RpcType } from '../../analyzer/analyzer1/RpcType';
@@ -22,7 +22,7 @@ import { EventManager } from '../../core/event/EventManager';
         private _seed:number = 0;
         public set seed(val:number){
             this._seed = val;
-            Analyzer.seed = val;
+            StaticData.seed = val;
         }
 
         public get seed():number{
@@ -138,7 +138,7 @@ import { EventManager } from '../../core/event/EventManager';
             let str_event = "server_Client_createEntity_" + cName;
             ModelManager.ins.setPro(cName,data_params,function(aModel){
                     EventManager.ins.dispatch(str_event,aModel);
-                },this,"创建：" +　cName + "[event:" + str_event + ",");
+                },this,"创建：" +　cName + " [event:" + str_event + ",");
             
             this.eid = 0;
             this.tid = 0;

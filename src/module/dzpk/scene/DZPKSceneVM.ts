@@ -599,6 +599,6 @@ import { DZPKSceneView } from './DZPKSceneView';
 
             this.setAtlasName = "res/atlas/dzpk/gameScene.atlas,res/atlas/dzpk/zh-cn/font/buttonFont.atlas,res/atlas/dzpk/zh-cn/font/operateActionFont.atlas,res/atlas/dzpk/zh-cn/font/gameOverFont.atlas,res/atlas/dzpk/zh-cn/font/cardTypeFont.atlas,res/atlas/dzpk/cards.atlas";
             this.setClass = DZPKSceneView;
-            this.setViewPath = "game_dzpk/DZPKScene";
+            this.setViewPath = "game_dzpk/DZPKScene,game_dzpk/DZPKHead,game_dzpk/DZPKCards";
         }
     }

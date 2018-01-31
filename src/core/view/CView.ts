@@ -100,7 +100,12 @@ import { ViewModel } from '../viewmodel/ViewModel';
                 tmp_arrAtlas.push({url:arr_atlas[i],type:laya.net.Loader.ATLAS});
             }
             // let path = CFun.parsingPath(this._class.prototype.constructor.__proto__);
-            tmp_arrAtlas.push({url:this._view_path +".json",type:laya.net.Loader.JSON});
+            let arr_json = this._view_path.split(",");
+            for(let i = 0;i < len;i++){
+                if(arr_json[i] == "") continue;
+                tmp_arrAtlas.push({url:arr_json[i] +".json",type:laya.net.Loader.JSON});
+            }
+            
             if(tmp_arrAtlas.length > 0){
                 Laya.loader.load(tmp_arrAtlas, laya.utils.Handler.create(this, this.onLoaded));
             }

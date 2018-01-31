@@ -7,43 +7,38 @@ define(["require", "exports", "../CFun", "../event/EventManager", "../model/Mode
      * @export
      * @class AnalyzeData
      */
-    var AnalyzeData = /** @class */ (function () {
-        function AnalyzeData() {
+    class AnalyzeData {
+        constructor() {
         }
         /**
          * 解析发送数据
         */
-        AnalyzeData.prototype.analyzeSend = function (data, key) {
+        analyzeSend(data, key) {
             if (key == "")
                 CFun_1.CFun.throw("发送的" + key + "链接不存在无法解析");
-            var a_data = AnalyzerManager_1.AnalyzerManager.ins.getSendAnalyzed(data);
+            let a_data = AnalyzerManager_1.AnalyzerManager.ins.getSendAnalyzed(data);
             return a_data;
-        };
+        }
         /*
         解析接收数据
         */
-        AnalyzeData.prototype.analyzeRecv = function (data, key) {
+        analyzeRecv(data, key) {
             if (key == "")
                 CFun_1.CFun.throw("接收的" + key + "链接不存在无法解析");
-            var a_data = AnalyzerManager_1.AnalyzerManager.ins.getAnalyzed(data);
+            let a_data = AnalyzerManager_1.AnalyzerManager.ins.getAnalyzed(data);
             if (a_data) {
                 ModelManager_1.ModelManager.ins.setPro(a_data.className, a_data.params, function (a_model) {
                     EventManager_1.EventManager.ins.dispatch(a_data.event_id, a_model);
                 }, this, a_data.toString());
             }
-        };
-        Object.defineProperty(AnalyzeData, "ins", {
-            get: function () {
-                if (!this._instance) {
-                    this._instance = new AnalyzeData();
-                }
-                return this._instance;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return AnalyzeData;
-    }());
+        }
+        static get ins() {
+            if (!this._instance) {
+                this._instance = new AnalyzeData();
+            }
+            return this._instance;
+        }
+    }
     exports.AnalyzeData = AnalyzeData;
 });
 //# sourceMappingURL=AnalyzeData.js.map
