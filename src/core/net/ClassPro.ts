@@ -1,4 +1,4 @@
-    export class ClassPro{
+class ClassPro{
         constructor(){}
 
         public recv_id:number;

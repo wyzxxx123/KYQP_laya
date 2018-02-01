@@ -1,5 +1,4 @@
-import { ComView } from './ComView';
-import { CFun } from '../CFun';
+module mview{
     export class WinView extends ComView{
 
         constructor(){
@@ -30,3 +29,4 @@ import { CFun } from '../CFun';
             this.vm.closeNow();
         }
     }
+}

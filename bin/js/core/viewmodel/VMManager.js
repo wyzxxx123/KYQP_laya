@@ -1,37 +1,23 @@
-define(["require", "exports", "../view/ComView", "../event/EventManager"], function (require, exports, ComView_1, EventManager_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class VMManager {
-        constructor() {
-            this._event_manager = EventManager_1.EventManager.ins;
-            this._event_manager.on(VMManager.SHOW_VIEW, this.onInitAndShow, this);
-            this.eventInit();
-        }
-        eventInit() {
-        }
-        regist(type, listener) {
-            this._event_manager.on(type, listener, this);
-        }
-        //初始化显示对象并显示
-        onInitAndShow(data) {
-            let model = VMManager.static_dic_vm[data.className]; //laya.utils.ClassUtils.getInstance(data.className);
-            if (!model) {
-                let path = laya.utils.ClassUtils.getRegClass(data.className);
-                if (typeof path == "string") {
-                    require([path], function (mod) {
-                        let name = path.substr(path.lastIndexOf("/") + 1);
-                        model = new (mod[name])();
-                        if (model) {
-                            VMManager.static_dic_vm[data.className] = model;
-                            model.onShow(data.exData);
-                            laya.utils.Pool.recover("InitData", data);
-                        }
-                        else {
-                        }
-                    });
-                }
-                else {
-                    model = laya.utils.ClassUtils.getInstance(data.className);
+var VMManager = /** @class */ (function () {
+    function VMManager() {
+        this._event_manager = EventManager.ins;
+        this._event_manager.on(VMManager.SHOW_VIEW, this.onInitAndShow, this);
+        this.eventInit();
+    }
+    VMManager.prototype.eventInit = function () {
+    };
+    VMManager.prototype.regist = function (type, listener) {
+        this._event_manager.on(type, listener, this);
+    };
+    //初始化显示对象并显示
+    VMManager.prototype.onInitAndShow = function (data) {
+        var model = VMManager.static_dic_vm[data.className]; //laya.utils.ClassUtils.getInstance(data.className);
+        if (!model) {
+            var path_1 = laya.utils.ClassUtils.getRegClass(data.className);
+            if (typeof path_1 == "string") {
+                require([path_1], function (mod) {
+                    var name = path_1.substr(path_1.lastIndexOf("/") + 1);
+                    model = new (mod[name])();
                     if (model) {
                         VMManager.static_dic_vm[data.className] = model;
                         model.onShow(data.exData);
@@ -39,41 +25,51 @@ define(["require", "exports", "../view/ComView", "../event/EventManager"], funct
                     }
                     else {
                     }
-                }
+                });
             }
             else {
-                model.onShow(data.exData);
-                laya.utils.Pool.recover("InitData", data);
+                model = laya.utils.ClassUtils.getInstance(data.className);
+                if (model) {
+                    VMManager.static_dic_vm[data.className] = model;
+                    model.onShow(data.exData);
+                    laya.utils.Pool.recover("InitData", data);
+                }
+                else {
+                }
             }
         }
-        closeAll() {
-            let model = null;
-            for (let key in VMManager.static_dic_vm) {
-                model = VMManager.static_dic_vm[key];
+        else {
+            model.onShow(data.exData);
+            laya.utils.Pool.recover("InitData", data);
+        }
+    };
+    VMManager.prototype.closeAll = function () {
+        var model = null;
+        for (var key in VMManager.static_dic_vm) {
+            model = VMManager.static_dic_vm[key];
+            model.closeNow();
+        }
+    };
+    VMManager.prototype.closeScene = function () {
+        var model = null;
+        for (var key in VMManager.static_dic_vm) {
+            model = VMManager.static_dic_vm[key];
+            if (model.getViewType() == ComView.SCENE) {
                 model.closeNow();
             }
         }
-        closeScene() {
-            let model = null;
-            for (let key in VMManager.static_dic_vm) {
-                model = VMManager.static_dic_vm[key];
-                if (model.getViewType() == ComView_1.ComView.SCENE) {
-                    model.closeNow();
-                }
+    };
+    VMManager.prototype.closeWindow = function () {
+        var model = null;
+        for (var key in VMManager.static_dic_vm) {
+            model = VMManager.static_dic_vm[key];
+            if (model.getViewType() == ComView.WINDOW) {
+                model.closeNow();
             }
         }
-        closeWindow() {
-            let model = null;
-            for (let key in VMManager.static_dic_vm) {
-                model = VMManager.static_dic_vm[key];
-                if (model.getViewType() == ComView_1.ComView.WINDOW) {
-                    model.closeNow();
-                }
-            }
-        }
-    }
+    };
     VMManager.SHOW_VIEW = "SHOW_VIEW"; //显示头像选择面板
     VMManager.static_dic_vm = {};
-    exports.VMManager = VMManager;
-});
+    return VMManager;
+}());
 //# sourceMappingURL=VMManager.js.map

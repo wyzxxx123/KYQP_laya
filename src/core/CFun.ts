@@ -1,10 +1,4 @@
-import { md5 } from './md5';
-import { StorageKeys } from '../StorageKeys';
-import { ExUtils } from './ExUtils';
-import { ui } from '../ui/layaUI.max.all';
-import { DialogView } from './view/DialogView';
-
-export class CFun {
+class CFun {
         public static SCREEN_PRINT:boolean = true;
         public static DEBUG:boolean = true;
 
@@ -37,23 +31,19 @@ export class CFun {
                 m_class = ui.dialog.OneButtonUI;
                 path = "dialog/OneButton.json"
             }
-            //this.parsingPath(m_class);
+            this.parsingPath(m_class);
             Laya.loader.load([{url:path,type:laya.net.Loader.JSON}], laya.utils.Handler.create(this, this.onDialogLoaded,[content,callback,obj,button,title]));
         }
 
         public static parsingPath(m_class:any):string{
-            let c:string = m_class.toString();
-            let c_s = "this.loadUI(\"";
-            let s_i = c.indexOf(c_s) + c_s.length;
-            let e_i = c.indexOf("\");",s_i);
-            let t_c = c.substring(s_i,e_i);
+            let ui_txt = Laya.loader.getRes("js/ui/layaUI.max.all.js");
 
-            return t_c + ".json";
+            return "";
         }
 
         private static onDialogLoaded(content:string,callback:Function,obj:any,button:string,title:string){
             let arrBtn = button.split("|");
-            let dialog:DialogView;
+            let dialog:mview.DialogView;
             if(arrBtn.length == 2){
                 dialog= new ui.dialog.TwoButtonUI();
                 dialog.getChildByName("cancel")["label"] = arrBtn[1];

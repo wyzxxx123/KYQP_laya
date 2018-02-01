@@ -1,11 +1,9 @@
-import { TypeDef } from './TypeDef';
-
-	/**
+/**
 	 * 结构体数据
 	 * @author	Fictiony
 	 * @version	2017/7/11
 	 */	
-	export class Struct
+class Struct
 	{
 		private _type:TypeDef;			//类型定义
 

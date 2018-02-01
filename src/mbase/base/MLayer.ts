@@ -1,6 +1,5 @@
-import { Layer } from '../../core/view/Layer';
 import { MVMManager } from './MVMManager';
-    export class MLayer extends Layer{
+export class MLayer extends Layer{
 
         private _vm_manager:MVMManager;
         constructor(){

@@ -1,8 +1,4 @@
-import { ClassPro } from './ClassPro';
-import { CFun } from '../CFun';
-import { EventManager } from '../event/EventManager';
-import { ModelManager } from '../model/ModelManager';
-import { AnalyzerManager } from './AnalyzerManager';
+
 
     /**
      * @description 解析接收和发送数据
@@ -10,7 +6,7 @@ import { AnalyzerManager } from './AnalyzerManager';
      * @export
      * @class AnalyzeData
      */
-    export class AnalyzeData{
+class AnalyzeData{
         constructor(){
         }
 

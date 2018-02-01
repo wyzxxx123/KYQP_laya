@@ -1,12 +1,10 @@
-import { CFun } from '../CFun';
-
-    /**
+ /**
      * @description 全局事件管理
      * @author wangyz
      * @export
      * @class EventManager
      */
-    export class EventManager {
+class EventManager {
 
         /**
          * 抛出事件

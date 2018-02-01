@@ -1,4 +1,3 @@
-import { ui } from '../../../ui/layaUI.max.all';
     import Sprite = Laya.Sprite;
     import Point = laya.maths.Point;
     export class DZPKEffect extends laya.ui.Component{

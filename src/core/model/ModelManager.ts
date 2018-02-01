@@ -1,7 +1,6 @@
 
 declare let require;
-import { CFun } from '../CFun';
-    export class ModelManager{
+class ModelManager{
         private getModel(model_name:string,callBack:Function):void{
             let myself = this._self;
             if(!model_name || model_name == "") CFun.throw("ModelManager的getModel参数不可为空！");
@@ -56,7 +55,6 @@ import { CFun } from '../CFun';
                     if(!pros) CFun.throw("ModelManager的setPro参数不可为空！");
 
                     let model = StaticData.dic_model[model_name];
-                    let content = "";
 
                     let des = myself.printObject(model,pros,myself,f_des + "{");
                     des += "]";
@@ -91,16 +89,18 @@ import { CFun } from '../CFun';
                 if(key[0] == "_"){
                     continue;
                 }
+                let t_m = model[key];
+                if(!t_m) t_m = {}
                 if(pros[key]["__className"] == "laya.utils.Byte"){
                     content = "{Byte}";
+                    t_m = pros[key];
                 }
                 else{
                     if(obj.isBaseClass(pros[key])){
                         content = pros[key];
+                        t_m = pros[key];
                     }
                     else{
-                        let t_m = model[key];
-                        if(!t_m) t_m = {}
                         content = obj.printObject(t_m,pros[key],obj,"{");
                     }
                 }
@@ -122,7 +122,7 @@ import { CFun } from '../CFun';
                 //     }
                 // }
                 // Object.defineProperty(model, key,descriptor );
-                model[key] = pros[key];
+                model[key] = t_m;
                 if(des != pre) des += ","
                 if(key != "e_id"){
                     des += key + ":" + content; 

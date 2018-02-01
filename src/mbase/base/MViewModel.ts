@@ -1,16 +1,8 @@
-import { ViewModel } from '../../core/viewmodel/ViewModel';
-import { MCView } from './MCView';
 import { Player } from '../data/Player';
-import { ModelManager } from '../../core/model/ModelManager';
-import { CFun } from '../../core/CFun';
-import { RpcDef } from '../../analyzer/analyzer1/RpcDef';
-import { SSend } from '../../analyzer/analyzer1/SSend';
-import { InitData } from './InitData';
-import { VMManager } from '../../core/viewmodel/VMManager';
-    export class MViewModel extends ViewModel{
+export class MViewModel extends ViewModel{
         constructor(){
             super();
-
+            this.playerData;
             this._cview = new MCView(this);
         }
 

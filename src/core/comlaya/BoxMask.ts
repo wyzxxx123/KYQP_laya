@@ -5,7 +5,7 @@
      * @export
      * @class BoxMask
      */
-    export class BoxMask extends laya.ui.Box{
+  class BoxMask extends laya.ui.Box{
         private onSetMask(){
             this.getChildByName("img_head")["mask"] = this.getChildByName("mmask");
         }

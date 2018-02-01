@@ -1,5 +1,5 @@
-import { MViewModel } from '../../mbase/base/MViewModel';
 import { AvaterChoseView } from './AvaterChoseView';
+import { MViewModel } from '../../mbase/base/MViewModel';
 
     /**
      * @description 头像选择界面

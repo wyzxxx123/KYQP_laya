@@ -1,6 +1,5 @@
-import { ui } from '../../ui/layaUI.max.all';
-import { Player } from '../../mbase/data/Player';
 import { AvaterChoseVM } from './AvaterChoseVM';
+import { Player } from '../../mbase/data/Player';
     /**
      * @description 头像选择界面
      * @author wangyz

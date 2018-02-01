@@ -1,5 +1,5 @@
-import { MViewModel } from '../../../mbase/base/MViewModel';
 import { PiPeiView } from './PiPeiView';
+import { MViewModel } from '../../../mbase/base/MViewModel';
     /**
      * @description 匹配界面
      * @author wangyz

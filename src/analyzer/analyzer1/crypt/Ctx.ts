@@ -4,7 +4,7 @@
 	 * @author	Fictiony
 	 * @version	2017/7/8
 	 */	
-	export class Ctx
+class Ctx
 	{
 		private _index:number = 0;
 		private _addikey:AddiKey[] = [];

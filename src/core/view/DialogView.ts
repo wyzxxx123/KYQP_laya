@@ -1,4 +1,4 @@
-import { CFun } from '../CFun';
+module mview{
     export class DialogView extends laya.ui.Dialog{
 
         constructor(){
@@ -17,3 +17,4 @@ import { CFun } from '../CFun';
             super.loadUI(path);
         }
     }
+}

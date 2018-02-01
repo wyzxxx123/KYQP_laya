@@ -1,13 +1,9 @@
-import { RpcDef } from './RpcDef';
-import { Struct } from './type/Struct';
-import { TypeArray } from './type/TypeArray';
-
-	/**
-	 * RPC数据类型定义
-	 * @author	Fictiony
-	 * @version	2017/7/10
-	 */
-	export class RpcType
+/**
+ * RPC数据类型定义
+ * @author	Fictiony
+ * @version	2017/7/10
+ */
+class RpcType
 	{
 		private static _buffer:laya.utils.Byte = new laya.utils.Byte();		//字节流缓存
 

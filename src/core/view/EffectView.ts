@@ -1,5 +1,4 @@
-import { Layer } from './Layer';
-    export class EffectView{
+class EffectView{
 
 
         protected _effectLayer:laya.ui.Component;

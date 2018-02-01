@@ -1,6 +1,4 @@
-import { ui } from '../../../ui/layaUI.max.all';
 import { PiPeiVM } from './PiPeiVM';
-import { ComView } from '../../../core/view/ComView';
     export class PiPeiView extends ui.pipei.PiPeiViewUI{
 
         private onCancel(){

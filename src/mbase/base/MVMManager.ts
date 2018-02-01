@@ -1,10 +1,6 @@
-import { CFun } from '../../core/CFun';
-import { ModelManager } from '../../core/model/ModelManager';
 import { Player } from '../data/Player';
-import { VMManager } from '../../core/viewmodel/VMManager';
-import { InitData } from './InitData';
-import { MsgData } from './MsgData';
-    export class MVMManager extends VMManager{
+
+export class MVMManager extends VMManager{
 
         //收到服务器消息才打开的界面
         protected eventInit(){
@@ -75,5 +71,6 @@ import { MsgData } from './MsgData';
             return ModelManager.ins.getInstByClassName("Player");
         }
 
-        constructor(){super();}
+        constructor(){super();
+        }
     }

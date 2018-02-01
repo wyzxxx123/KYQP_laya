@@ -1,4 +1,4 @@
-    export class Layer{
+class Layer{
         //场景层
         public static SCENE_LAYER:laya.ui.Component;
 

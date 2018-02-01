@@ -1,13 +1,10 @@
-import { CFun } from '../CFun';
-import { AnalyzeData } from './AnalyzeData';
-
-    /**
-     * @description socket管理类，通过connect可生成多个socket连接
-     * @author wangyz
-     * @export
-     * @class SocketManager
-     */
-    export class SocketManager{
+/**
+ * @description socket管理类，通过connect可生成多个socket连接
+ * @author wangyz
+ * @export
+ * @class SocketManager
+ */
+class SocketManager{
 
         //设置一个默认的地址
         public static arr_address:Object[] = [];

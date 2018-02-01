@@ -1,7 +1,5 @@
-import { ui } from '../../../ui/layaUI.max.all';
-import { Player } from '../../../mbase/data/Player';
-import { CFun } from '../../../core/CFun';
 import { DZPKRecordVM } from './DZPKRecordVM';
+import { Player } from '../../../mbase/data/Player';
     export class DZPKRecordView extends ui.game_dzpk.DZPKRecordUI{
 
         public viewInit(data:Player){

@@ -1,5 +1,4 @@
-import { EffectView } from '../../core/view/EffectView';
-import { CFun } from '../../core/CFun';
+
 import { DZPKEffect } from '../../module/dzpk/scene/DZPKEffect';
     export class MEffectView extends EffectView{
 

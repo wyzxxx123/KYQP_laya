@@ -1,7 +1,4 @@
-import { Analyzer } from '../../analyzer/analyzer1/Analyzer';
-import { ClassPro } from './ClassPro';
-
-    export class AnalyzerManager{
+class AnalyzerManager{
 
         public getAnalyzed(data:any):ClassPro{
             return this._analyzer.analyzeRecv(data);

@@ -1,48 +1,88 @@
-define(["require", "exports", "./KYQP_laya", "./mbase/data/Player"], function (require, exports, KYQP_laya_1, Player_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    /**
-     * 本地存储键配置
-     * @author none
-     *
-     */
-    class StorageKeys {
-        constructor() {
-        }
-        static get accountSave() {
-            return KYQP_laya_1.GameMain.appName + "accountSave";
-        }
-        static get account() {
-            return KYQP_laya_1.GameMain.appName + "account";
-        }
-        static get password() {
-            return KYQP_laya_1.GameMain.appName + "password";
-        }
-        static get imei_windows() {
-            return KYQP_laya_1.GameMain.appName + "imei_windows";
-        }
-        static get isGuest() {
-            return KYQP_laya_1.GameMain.appName + "isGuest";
-        }
-        static get isLoginType() {
-            return KYQP_laya_1.GameMain.appName + "isLoginType";
-        }
-        static get musicValue() {
-            return KYQP_laya_1.GameMain.appName + "musicValue";
-        }
-        static get soundValue() {
-            return KYQP_laya_1.GameMain.appName + "soundValue";
-        }
-        static get shakeValue() {
-            return KYQP_laya_1.GameMain.appName + "shakeValue";
-        }
-        static get autoLogin() {
-            return KYQP_laya_1.GameMain.appName + "autoLogin";
-        }
-        static get DZPKTakeScore() {
-            return KYQP_laya_1.GameMain.appName + Player_1.Player.accountId + "DZPKTakeScore";
-        }
+/**
+ * 本地存储键配置
+ * @author none
+ *
+ */
+var StorageKeys = /** @class */ (function () {
+    function StorageKeys() {
     }
-    exports.StorageKeys = StorageKeys;
-});
+    Object.defineProperty(StorageKeys, "accountSave", {
+        get: function () {
+            return StaticData.appName + "accountSave";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "account", {
+        get: function () {
+            return StaticData.appName + "account";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "password", {
+        get: function () {
+            return StaticData.appName + "password";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "imei_windows", {
+        get: function () {
+            return StaticData.appName + "imei_windows";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "isGuest", {
+        get: function () {
+            return StaticData.appName + "isGuest";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "isLoginType", {
+        get: function () {
+            return StaticData.appName + "isLoginType";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "musicValue", {
+        get: function () {
+            return StaticData.appName + "musicValue";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "soundValue", {
+        get: function () {
+            return StaticData.appName + "soundValue";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "shakeValue", {
+        get: function () {
+            return StaticData.appName + "shakeValue";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "autoLogin", {
+        get: function () {
+            return StaticData.appName + "autoLogin";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "DZPKTakeScore", {
+        get: function () {
+            return StaticData.appName + StaticData.accountId + "DZPKTakeScore";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return StorageKeys;
+}());
 //# sourceMappingURL=StorageKeys.js.map

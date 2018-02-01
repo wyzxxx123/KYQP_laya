@@ -1,11 +1,4 @@
-import { CFun } from '../../core/CFun';
-import { PropDef } from './PropDef';
-import { RpcType } from './RpcType';
-import { TypeDef } from './type/TypeDef';
-import { TypeArray } from './type/TypeArray';
-import { Struct } from './type/Struct';
-import { Dump } from './Dump';
-    export class RpcDef{
+class RpcDef{
 
         public static getTypeReader( type:number|string ):Function
 		{

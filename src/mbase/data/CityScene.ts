@@ -1,4 +1,3 @@
-import { MModel } from '../base/MModel';
     export class CityScene extends MModel{
 
         protected recvInit(){

@@ -1,8 +1,6 @@
-import { CView } from '../../core/view/CView';
-import { ViewModel } from '../../core/viewmodel/ViewModel';
-import { ComView } from '../../core/view/ComView';
+
 import Handler = laya.utils.Handler;
-    export class MCView extends CView{
+ class MCView extends CView{
         
         constructor(mv:ViewModel){
             super(mv);

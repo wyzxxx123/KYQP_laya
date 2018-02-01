@@ -1,12 +1,5 @@
-import { MModel } from './MModel';
-import { ModelManager } from '../../core/model/ModelManager';
-// import { Analyzer } from '../../analyzer/analyzer1/Analyzer';
-import { RpcDef } from '../../analyzer/analyzer1/RpcDef';
-import { CFun } from '../../core/CFun';
-import { RpcType } from '../../analyzer/analyzer1/RpcType';
-import { PropDef } from '../../analyzer/analyzer1/PropDef';
-import { EventManager } from '../../core/event/EventManager';
-    export class ModelHandle extends MModel{
+
+class ModelHandle extends MModel{
         protected _mManager:ModelManager;
 
 

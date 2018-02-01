@@ -1,10 +1,9 @@
-import { CFun } from './CFun';
 	/**
 	 * 和容器的通讯工具
 	 * @author none
 	 *
 	 */
-    export class ExUtils {
+class ExUtils {
 
         private static _IMEI: string = "";
         /**

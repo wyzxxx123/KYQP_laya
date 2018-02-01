@@ -1,6 +1,4 @@
-import { MModel } from '../base/MModel';
 import { GameConfig } from '../../GameConfig';
-import { CFun } from '../../core/CFun';
     export class Accounts extends MModel{
         public code:number;
 

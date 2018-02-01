@@ -1,5 +1,4 @@
-import { ViewModel } from '../viewmodel/ViewModel';
-import { CFun } from '../CFun';
+module mview{
     export class ComView extends laya.ui.View{
         public static TOP:string = "top";
         public static WINDOW:string = "window";
@@ -66,3 +65,4 @@ import { CFun } from '../CFun';
             super.loadUI(path);
         }
     }
+}

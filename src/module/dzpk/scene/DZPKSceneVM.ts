@@ -1,13 +1,10 @@
-import { MViewModel } from '../../../mbase/base/MViewModel';
-import { CFun } from '../../../core/CFun';
 import { DZPKCardLogic } from '../DZPKCardLogic';
 import { DZPKCardType } from '../DZPKCardType';
 import { TEXAS_HOLDEM_ACTION } from '../Holdem';
-import { StorageKeys } from '../../../StorageKeys';
 import { HoldemDeck } from '../../../mbase/data/HoldemDeck';
-import { ModelManager } from '../../../core/model/ModelManager';
 import { HoldemAgent } from '../../../mbase/data/HoldemAgent';
 import { DZPKSceneView } from './DZPKSceneView';
+import { MViewModel } from '../../../mbase/base/MViewModel';
     export class DZPKSceneVM extends MViewModel{
 
         //一个人赢

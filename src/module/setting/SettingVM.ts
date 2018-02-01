@@ -1,7 +1,5 @@
-import { MViewModel } from '../../mbase/base/MViewModel';
-import { StorageKeys } from '../../StorageKeys';
-import { CFun } from '../../core/CFun';
 import { SettingView } from './SettingView';
+import { MViewModel } from '../../mbase/base/MViewModel';
     /**
      * @description 设置音乐音效
      * @author wangyz

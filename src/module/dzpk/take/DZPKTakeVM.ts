@@ -1,8 +1,5 @@
-import { MViewModel } from '../../../mbase/base/MViewModel';
-import { ModelManager } from '../../../core/model/ModelManager';
-import { StorageKeys } from '../../../StorageKeys';
-import { CFun } from '../../../core/CFun';
 import { DZPKTakeView } from './DZPKTakeView';
+import { MViewModel } from '../../../mbase/base/MViewModel';
     export class DZPKTakeVM extends MViewModel{
 
         private _roomInfo:any = null;

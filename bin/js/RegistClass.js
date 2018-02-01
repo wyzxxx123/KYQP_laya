@@ -1,4 +1,4 @@
-define(["require", "exports", "../../mbase/data/Accounts", "../../mbase/data/CityScene", "../../mbase/data/HoldemAgent", "../../mbase/data/HoldemDeck", "../../mbase/data/Player"], function (require, exports, Accounts_1, CityScene_1, HoldemAgent_1, HoldemDeck_1, Player_1) {
+define(["require", "exports", "./mbase/data/Player", "./mbase/data/Accounts", "./mbase/data/CityScene", "./mbase/data/HoldemAgent", "./mbase/data/HoldemDeck"], function (require, exports, Player_1, Accounts_1, CityScene_1, HoldemAgent_1, HoldemDeck_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var RegistClass = /** @class */ (function () {
@@ -14,28 +14,18 @@ define(["require", "exports", "../../mbase/data/Accounts", "../../mbase/data/Cit
             this.registClass("CityScene", CityScene_1.CityScene);
             this.registClass("HoldemAgent", HoldemAgent_1.HoldemAgent);
             this.registClass("HoldemDeck", HoldemDeck_1.HoldemDeck);
-            // import { DZPKSceneVM } from '../../module/dzpk/scene/DZPKSceneVM';
-            // import { DZPKRoomsVM } from '../../module/dzpk/DZPKRoomsVM';
-            // import { AvaterChoseVM } from '../../module/avaterChose/AvaterChoseVM';
-            // import { SettingVM } from '../../module/setting/SettingVM';
-            // import { DZPKHelpVM } from '../../module/dzpk/help/DZPKHelpVM';
-            // import { DZPKRecordVM } from '../../module/dzpk/record/DZPKRecordVM';
-            // import { PiPeiVM } from '../../module/dzpk/pipei/PiPeiVM';
-            // import { MenuVM } from '../../module/dzpk/menu/MenuVM';
-            // import { CardTypeVM } from '../../module/dzpk/cardtype/CardTypeVM';
-            // import { DZPKTakeVM } from '../../module/dzpk/take/DZPKTakeVM';
             // //显示对象
-            // this.registClass("SCENE_HallVM","module/hall/HallVM");//"js/../../module/hall/HallVM.js"
-            // this.registClass("SCENE_DZPKSceneVM","module/dzpk/scene/DZPKSceneVM");
-            // this.registClass("SCENE_scene_620","../../module/dzpk/DZPKRoomsVM");
-            // this.registClass("avaterChose","../../module/avaterChose/AvaterChoseVM");
-            // this.registClass("setting","../../module/setting/SettingVM");
-            // this.registClass("DZPKHelpVM","../../module/dzpk/help/DZPKHelpVM");
-            // this.registClass("DZPKRecordVM","../../module/dzpk/record/DZPKRecordVM");
-            // this.registClass("DZPKTakeVM","../../module/dzpk/take/DZPKTakeVM");
-            // this.registClass("PiPeiVM","../../module/dzpk/pipei/PiPeiVM");
-            // this.registClass("MenuVM","../../module/dzpk/menu/MenuVM");
-            // this.registClass("CardTypeVM","../../module/dzpk/cardtype/CardTypeVM");
+            this.registClass("SCENE_HallVM", "./module/hall/HallVM"); //"js/../../module/hall/HallVM.js"
+            this.registClass("SCENE_DZPKSceneVM", "./module/dzpk/scene/DZPKSceneVM");
+            this.registClass("SCENE_scene_620", "./module/dzpk/DZPKRoomsVM");
+            this.registClass("avaterChose", "./module/avaterChose/AvaterChoseVM");
+            this.registClass("setting", "./module/setting/SettingVM");
+            this.registClass("DZPKHelpVM", "./module/dzpk/help/DZPKHelpVM");
+            this.registClass("DZPKRecordVM", "./module/dzpk/record/DZPKRecordVM");
+            this.registClass("DZPKTakeVM", "./module/dzpk/take/DZPKTakeVM");
+            this.registClass("PiPeiVM", "./module/dzpk/pipei/PiPeiVM");
+            this.registClass("MenuVM", "./module/dzpk/menu/MenuVM");
+            this.registClass("CardTypeVM", "./module/dzpk/cardtype/CardTypeVM");
         }
         RegistClass.prototype.registClass = function (cname, cclass) {
             laya.utils.ClassUtils.regClass(cname, cclass);

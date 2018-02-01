@@ -1,5 +1,4 @@
 import { CardLogic } from '../CardLogic';
-import { CFun } from '../../core/CFun';
 import { DZPKCardType } from './DZPKCardType';
     /**
      * 牌型判断逻辑

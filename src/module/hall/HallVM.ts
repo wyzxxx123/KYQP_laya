@@ -1,8 +1,6 @@
-import { MViewModel } from '../../mbase/base/MViewModel';
-import { Player } from '../../mbase/data/Player';
 import { HallView } from './HallView';
-import { ExUtils } from '../../core/ExUtils';
-import { CFun } from '../../core/CFun';
+import { Player } from '../../mbase/data/Player';
+import { MViewModel } from '../../mbase/base/MViewModel';
     /**
      * @description 大厅界面
      * @author wangyz

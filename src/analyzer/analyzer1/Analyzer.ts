@@ -1,16 +1,10 @@
-import { RpcDef } from './RpcDef';
-import { RpcType } from './RpcType';
-import { Ctx } from './crypt/Ctx';
-import { CFun } from '../../core/CFun';
-import { SSend } from './SSend';
-import { ClassPro } from '../../core/net/ClassPro';
-    /**
+/**
 	 * @description 解析具体数据
 	 * @author wangyz
 	 * @export
 	 * @class Analyzer
 	 */
-	export class Analyzer{
+class Analyzer{
         public analyzeRecv(data:any):ClassPro{
 			// console.log("前：" + this._byte.length + "_" + this._byte.pos + "_" + this._byte.bytesAvailable);
             this._byte.writeArrayBuffer(data);//把接收到的二进制数据读进byte数组便于解析。

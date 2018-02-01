@@ -1,13 +1,8 @@
-import { CFun } from '../CFun';
-import { ComView } from './ComView';
-import { Layer } from './Layer';
-import { EventManager } from '../event/EventManager';
-import { ViewModel } from '../viewmodel/ViewModel';
-
+import ComView = mview.ComView;
     /*
     可显示对象
     */
-    export class CView{
+class CView{
         // private static _dic_show:{[key:string]:{[key:string]:any}} = {};
         private _event_manager:EventManager;
         constructor(vm:ViewModel){

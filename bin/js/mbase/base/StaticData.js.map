@@ -1,1 +1,1 @@
-{"version":3,"file":"StaticData.js","sourceRoot":"","sources":["../../../../src/mbase/base/StaticData.ts"],"names":[],"mappings":"AACA;IAGI;IACA,CAAC;;AAHa,oBAAS,GAAsB,EAAE,CAAC;AAClC,eAAI,GAAU,CAAC,CAAC"}
+{"version":3,"file":"StaticData.js","sourceRoot":"","sources":["../../../../src/mbase/base/StaticData.ts"],"names":[],"mappings":"AACA;IAKI;IACA,CAAC;IALa,oBAAS,GAAsB,EAAE,CAAC;IAClC,eAAI,GAAU,CAAC,CAAC;IAChB,kBAAO,GAAU,EAAE,CAAC;IACpB,oBAAS,GAAU,CAAC,CAAC;IAGvC,iBAAC;CAAA,AAPD,IAOC"}

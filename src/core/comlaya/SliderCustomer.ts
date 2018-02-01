@@ -5,7 +5,7 @@
      * @class SliderCustomer
      * @extends {laya.ui.HSlider}
      */
-    export class SliderCustomer extends laya.ui.Slider{
+class SliderCustomer extends laya.ui.Slider{
 
         public set is_v(val:boolean){
             this.isVertical = val;

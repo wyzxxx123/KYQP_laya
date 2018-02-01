@@ -1,6 +1,4 @@
-import { ui } from '../../../ui/layaUI.max.all';
 import { DZPKTakeVM } from './DZPKTakeVM';
-import { CFun } from '../../../core/CFun';
     export class DZPKTakeView extends ui.game_dzpk.DZPKTakeUI{
 
         private _isClick:boolean = false;

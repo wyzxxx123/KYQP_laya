@@ -1,11 +1,10 @@
-import { TypeDef } from './TypeDef';
 
 	/**
 	 * 指定项类型的列表
 	 * @author	Fictiony
 	 * @version	2017/7/22
 	 */	
-	export class TypeArray extends Array
+class TypeArray extends Array
 	{
 		private _type:TypeDef;		//每项的类型定义
 		

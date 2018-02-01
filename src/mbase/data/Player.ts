@@ -1,7 +1,14 @@
-import { MModel } from '../base/MModel';
-import { CFun } from '../../core/CFun';
-    export class Player extends MModel{
-        public static accountId:number = 0;
+export class Player extends MModel{
+        private _accountId:number = 0;
+
+        public set accountId(val:number){
+            this._accountId = val;
+            StaticData.accountId = val;
+        }
+
+        public get accountId():number{
+            return this._accountId
+        }
 
         public lockGold:number = 0;
         public gold:number = 0;

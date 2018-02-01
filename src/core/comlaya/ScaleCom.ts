@@ -4,7 +4,7 @@
      * @export
      * @class ScaleComponent
      */
-    export class ScaleCom{
+class ScaleCom{
       private _is_scale:boolean = true;
       private _scale_scope:number = 0.9;
       private _owner:laya.ui.Component;

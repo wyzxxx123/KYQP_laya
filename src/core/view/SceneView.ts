@@ -1,4 +1,4 @@
-import { ComView } from './ComView';
+module mview{
     export class SceneView extends ComView{
 
         protected layerInit(){
@@ -11,3 +11,4 @@ import { ComView } from './ComView';
             this._view_type = ComView.SCENE;
         }
     }
+}

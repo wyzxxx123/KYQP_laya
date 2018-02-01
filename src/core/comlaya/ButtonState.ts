@@ -4,7 +4,7 @@
      * @export
      * @class ScaleComponent
      */
-    export class ButtonState extends laya.ui.Button{
+  class ButtonState extends laya.ui.Button{
 
         protected changeState(){
             super.changeState();

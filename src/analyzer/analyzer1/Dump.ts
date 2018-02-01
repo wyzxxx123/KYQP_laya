@@ -1,4 +1,4 @@
-export var Dump={
+let Dump={
 "Digi": 44469,
 "MethodList": [
 	{"id":4026532845,"name":"ackAdjustTime","className":"Gateway","server":"server","isStatic":true,"args":[{"name":"clienttime","type":"uint"}]},

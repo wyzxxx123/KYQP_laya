@@ -1,7 +1,5 @@
-import { ui } from '../../ui/layaUI.max.all';
 import { DZPKRoomsVM } from './DZPKRoomsVM';
 import { Player } from '../../mbase/data/Player';
-import { CFun } from '../../core/CFun';
     export class DZPKRoomsView extends ui.game_dzpk.DZPKRoomUI{
         private getHeadImage(sex:number,index:number):string{
             let icon:string = "";

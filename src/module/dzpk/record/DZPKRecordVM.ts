@@ -1,5 +1,5 @@
-import { MViewModel } from '../../../mbase/base/MViewModel';
 import { DZPKRecordView } from './DZPKRecordView';
+import { MViewModel } from '../../../mbase/base/MViewModel';
     export class DZPKRecordVM extends MViewModel{
 
        //继承的

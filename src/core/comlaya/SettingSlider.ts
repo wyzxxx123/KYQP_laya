@@ -5,7 +5,7 @@
      * @class SettingSlider
      * @extends {laya.ui.HSlider}
      */
-    export class SettingSlider extends laya.ui.HSlider{
+class SettingSlider extends laya.ui.HSlider{
 
         private onChange(){
             let front = this.getChildByName("front");

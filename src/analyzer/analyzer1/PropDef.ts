@@ -1,11 +1,9 @@
-import { RpcDef } from './RpcDef';
-
-	/**
+/**
 	 * 属性定义
 	 * @author	Fictiony
 	 * @version	2017/7/10
 	 */	
-	export class PropDef
+class PropDef
 	{
 		/** 属性ID */
 		public id:number;

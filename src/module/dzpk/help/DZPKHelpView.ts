@@ -1,4 +1,3 @@
-import { ui } from '../../../ui/layaUI.max.all';
 import { DZPKHelpVM } from './DZPKHelpVM';
     export class DZPKHelpView extends ui.game_dzpk.DZPKHelpUI{
 

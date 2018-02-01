@@ -1,5 +1,5 @@
-import { MViewModel } from '../../../mbase/base/MViewModel';
 import { CardTypeView } from './CardTypeView';
+import { MViewModel } from '../../../mbase/base/MViewModel';
     export class CardTypeVM extends MViewModel{
 
 

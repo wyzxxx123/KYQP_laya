@@ -1,4 +1,3 @@
-import { MModel } from '../base/MModel';
     export class HoldemDeck extends MModel{
 
         //sitdown

@@ -1,4 +1,3 @@
-import { ui } from '../../../ui/layaUI.max.all';
 import { MenuVM } from './MenuVM';
     export class MenuView extends ui.game_dzpk.DZPKMenuUI{
 

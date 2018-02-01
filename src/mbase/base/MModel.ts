@@ -1,6 +1,4 @@
-import { Model } from '../../core/model/Model';
-import { SSend } from '../../analyzer/analyzer1/SSend';
-    export class MModel extends Model{
+class MModel extends Model{
         constructor(){
             super();
         }

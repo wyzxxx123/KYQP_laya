@@ -1,5 +1,4 @@
-import { SocketManager } from './net/SocketManager';
-    export class SendHandel{
+class SendHandel{
 
         protected send(data:any){
             SocketManager.ins.send(data,this._host == undefined?SocketManager.arr_address[0]["main"]:this._host,

@@ -1,10 +1,6 @@
-define(["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class InitData {
-        constructor() {
-        }
+var InitData = /** @class */ (function () {
+    function InitData() {
     }
-    exports.InitData = InitData;
-});
+    return InitData;
+}());
 //# sourceMappingURL=InitData.js.map

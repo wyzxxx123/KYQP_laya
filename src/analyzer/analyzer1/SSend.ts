@@ -1,6 +1,4 @@
-import { RpcDef } from './RpcDef';
-
-    export class SSend{
+class SSend{
         private _method_id:number;
 
         public set method_id(val:number){

@@ -1,13 +1,10 @@
-import { SendHandel } from '../SendHandel';
-import { EventManager } from '../event/EventManager';
-
-    /**
-     * @description MODEL数据层
-     * @author wangyz
-     * @export
-     * @class Model
-     */
-    export class Model extends SendHandel{
+/**
+ * @description MODEL数据层
+ * @author wangyz
+ * @export
+ * @class Model
+ */
+class Model extends SendHandel{
         private _eventManager:EventManager;
 
         constructor(){

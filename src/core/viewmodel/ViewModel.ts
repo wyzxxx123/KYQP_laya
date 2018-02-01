@@ -1,8 +1,3 @@
-import { SendHandel } from '../SendHandel';
-import { EventManager } from '../event/EventManager';
-import { CView } from '../view/CView';
-import { CFun } from '../CFun';
-import { ComView } from '../view/ComView';
 
     /**
      * @description VM层
@@ -10,7 +5,7 @@ import { ComView } from '../view/ComView';
      * @export
      * @class ViewModel
      */
-    export class ViewModel extends SendHandel{
+  class ViewModel extends SendHandel{
         private _event_manager:EventManager;
         private _event_list:any[];
         protected _cview:CView;
@@ -88,7 +83,7 @@ import { ComView } from '../view/ComView';
             this.cview.setClass(arg_class);
         }
 
-        public get view():ComView{
+        public get view():mview.ComView{
             return this.cview.display;
         }
 

@@ -4,7 +4,7 @@
 	 * @author	Fictiony
 	 * @version	2017/7/10
 	 */	
-	export class TypeDef
+class TypeDef
 	{
 		/** 类型ID */
 		public id:number;

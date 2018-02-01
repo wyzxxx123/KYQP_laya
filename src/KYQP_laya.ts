@@ -1,15 +1,10 @@
-import { StorageKeys } from './StorageKeys';
 import { GameConfig } from './GameConfig';
-import { SocketManager } from './core/net/SocketManager';
 import { MLayer } from './mbase/base/MLayer';
-import { CFun } from './core/CFun';
-import { RegistClass } from './core/model/RegistClass';
+import { RegistClass } from './RegistClass';
 // 程序入口
 import Handler = laya.utils.Handler;
 import Loader = laya.net.Loader;
-export class GameMain {
-    public static appName: string;
-
+class GameMain {
     constructor() {
 
         // if(CFun.SCREEN_PRINT){
@@ -27,6 +22,8 @@ export class GameMain {
         //调用DebugTool调试面板
         // Laya.DebugTool.init();
 
+        new MCView(null);
+
         new RegistClass();
         new MLayer();
 
@@ -36,7 +33,8 @@ export class GameMain {
 
         Laya.loader.load([{ url: "res/atlas/public.atlas", type: Loader.ATLAS },
         { url: "res/atlas/winTitle.atlas", type: Loader.ATLAS },
-        { url: "res/atlas/bitmapFont.atlas", type: Loader.ATLAS }
+        { url: "res/atlas/bitmapFont.atlas", type: Loader.ATLAS },
+        { url: "js/ui/layaUI.max.all.js", type: Loader.TEXT },
         ],
             Handler.create(this, this.onLoadComplete));
     }
@@ -45,6 +43,8 @@ export class GameMain {
         // let m = require(["js/module/dzpk/help/DZPKHelpVM"]);
         // let c = new m();
         // console.log("");
+
+        CFun.parsingPath(1);
     }
 
     private localInit() {

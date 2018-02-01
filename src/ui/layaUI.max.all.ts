@@ -1,16 +1,9 @@
 
-import { ComView as View} from '../core/view/ComView';
-import { DialogView as Dialogs } from '../core/view/DialogView';
-import { SceneView as Scenes } from '../core/view/SceneView';
-import { WinView as Windows } from '../core/view/WinView';
-import { ScaleCom } from '../core/comlaya/ScaleCom';
-import { BoxMask } from '../core/comlaya/BoxMask';
-import { ButtonState } from '../core/comlaya/ButtonState';
-import { SliderCustomer } from '../core/comlaya/SliderCustomer';
-import { CheckState } from '../core/comlaya/CheckState';
-import { SettingSlider } from '../core/comlaya/SettingSlider';
-
-export module ui.avater_chose {
+import View=mview.ComView;
+import Dialogs=mview.DialogView;
+import Scenes=mview.SceneView;
+import Windows=mview.WinView;
+module ui.avater_chose {
     export class AvaterChoseUI extends Windows {
 		public btn_close:Laya.Image;
 		public btn_save:Laya.Button;
@@ -30,7 +23,7 @@ export module ui.avater_chose {
     }
 }
 
-export module ui.dialog {
+module ui.dialog {
     export class OneButtonUI extends Dialogs {
 
         constructor(){ super()}
@@ -45,7 +38,7 @@ export module ui.dialog {
     }
 }
 
-export module ui.dialog {
+module ui.dialog {
     export class TwoButtonUI extends Dialogs {
 
         constructor(){ super()}
@@ -60,7 +53,7 @@ export module ui.dialog {
     }
 }
 
-export module ui.game_dzpk {
+module ui.game_dzpk {
     export class DZPKCardsUI extends View {
 
         constructor(){ super()}
@@ -74,7 +67,7 @@ export module ui.game_dzpk {
     }
 }
 
-export module ui.game_dzpk {
+module ui.game_dzpk {
     export class DZPKCardTypeUI extends Windows {
 
         constructor(){ super()}
@@ -88,7 +81,7 @@ export module ui.game_dzpk {
     }
 }
 
-export module ui.game_dzpk {
+module ui.game_dzpk {
     export class DZPKHeadUI extends View {
 
         constructor(){ super()}
@@ -103,7 +96,7 @@ export module ui.game_dzpk {
     }
 }
 
-export module ui.game_dzpk {
+module ui.game_dzpk {
     export class DZPKHelpUI extends Windows {
 		public btn_close:Laya.Image;
 		public vs_des:Laya.ViewStack;
@@ -122,7 +115,7 @@ export module ui.game_dzpk {
     }
 }
 
-export module ui.game_dzpk {
+module ui.game_dzpk {
     export class DZPKMenuUI extends Windows {
 		public btn_out:ButtonState;
 		public btn_setting:ButtonState;
@@ -141,7 +134,7 @@ export module ui.game_dzpk {
     }
 }
 
-export module ui.game_dzpk {
+module ui.game_dzpk {
     export class DZPKRecordUI extends Windows {
 		public btn_close:Laya.Image;
 		public list_record:Laya.List;
@@ -160,7 +153,7 @@ export module ui.game_dzpk {
     }
 }
 
-export module ui.game_dzpk {
+module ui.game_dzpk {
     export class DZPKRoomUI extends Scenes {
 		public btn_back:Laya.Button;
 		public list_rooms:Laya.List;
@@ -183,7 +176,7 @@ export module ui.game_dzpk {
     }
 }
 
-export module ui.game_dzpk {
+module ui.game_dzpk {
     export class DZPKSceneUI extends Scenes {
 		public img_bg:Laya.Image;
 		public btn_menu:Laya.Image;
@@ -234,7 +227,7 @@ export module ui.game_dzpk {
     }
 }
 
-export module ui.game_dzpk {
+module ui.game_dzpk {
     export class DZPKSuccUI extends View {
 		public img_succ_type:Laya.Image;
 
@@ -249,7 +242,7 @@ export module ui.game_dzpk {
     }
 }
 
-export module ui.game_dzpk {
+module ui.game_dzpk {
     export class DZPKTakeUI extends Windows {
 		public btn_close:Laya.Image;
 		public txt_all:Laya.Label;
@@ -273,7 +266,7 @@ export module ui.game_dzpk {
     }
 }
 
-export module ui.game_dzpk {
+module ui.game_dzpk {
     export class TestVSUI extends View {
 		public vs:SliderCustomer;
 
@@ -289,7 +282,7 @@ export module ui.game_dzpk {
     }
 }
 
-export module ui.game_hall {
+module ui.game_hall {
     export class GameChoseUI extends View {
 
         constructor(){ super()}
@@ -305,7 +298,7 @@ export module ui.game_hall {
     }
 }
 
-export module ui.game_hall {
+module ui.game_hall {
     export class GameHallUI extends Scenes {
 		public btn_full:Laya.Button;
 		public btn_setting:Laya.Button;
@@ -330,7 +323,7 @@ export module ui.game_hall {
     }
 }
 
-export module ui.pipei {
+module ui.pipei {
     export class PiPeiViewUI extends Windows {
 		public btn_close:Laya.Image;
 		public txt_content:Laya.Label;
@@ -347,7 +340,7 @@ export module ui.pipei {
     }
 }
 
-export module ui.setting {
+module ui.setting {
     export class SettingWindowUI extends Windows {
 		public btn_close:Laya.Image;
 		public slider_music:SettingSlider;
@@ -369,7 +362,7 @@ export module ui.setting {
     }
 }
 
-export module ui {
+module ui {
     export class TempleteWindowUI extends Windows {
 		public btn_close:Laya.Image;
 

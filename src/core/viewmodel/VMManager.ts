@@ -1,10 +1,5 @@
-declare let require;
-import { ViewModel } from './ViewModel';
-import { ComView } from '../view/ComView';
-import { EventManager } from '../event/EventManager';
-import { InitData } from '../../mbase/base/InitData';
 
-    export class VMManager{
+class VMManager{
         public static SHOW_VIEW:string = "SHOW_VIEW"; //显示头像选择面板
         public static static_dic_vm:{[key:string]:ViewModel} = {};
 
@@ -29,7 +24,6 @@ import { InitData } from '../../mbase/base/InitData';
         protected onInitAndShow(data:InitData){
             let model:ViewModel = VMManager.static_dic_vm[data.className];//laya.utils.ClassUtils.getInstance(data.className);
             if(!model){
-
                 let path = laya.utils.ClassUtils.getRegClass(data.className);
                 if(typeof path == "string"){
                     require([path],function(mod){

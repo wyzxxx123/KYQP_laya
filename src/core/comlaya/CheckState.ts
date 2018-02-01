@@ -5,7 +5,7 @@
      * @class SettingToggle
      * @extends {laya.ui.Box}
      */
-    export class CheckState extends laya.ui.CheckBox{
+ class CheckState extends laya.ui.CheckBox{
 
         public check_state:boolean;
 

@@ -6,8 +6,8 @@ define(["require", "exports"], function (require, exports) {
      * @author none
      *
      */
-    class CardLogic {
-        constructor() {
+    var CardLogic = /** @class */ (function () {
+        function CardLogic() {
             /** 花色掩码 **/
             this.MASK_COLOR = 0xF0;
             /** 数值掩码 **/
@@ -22,28 +22,28 @@ define(["require", "exports"], function (require, exports) {
             ];
         }
         /** 获取数值 **/
-        getCardValue(cardData) {
+        CardLogic.prototype.getCardValue = function (cardData) {
             cardData = this.cardValuetToClient(cardData);
             return (cardData & this.MASK_VALUE);
-        }
+        };
         /** 获取花色 **/
-        getCardColor(cardData) {
+        CardLogic.prototype.getCardColor = function (cardData) {
             cardData = this.cardValuetToClient(cardData);
             return (cardData & this.MASK_COLOR) / 16;
-        }
+        };
         /** 根据值获取牌数据 **/
-        getCardByValue(cardData, cardValue) {
+        CardLogic.prototype.getCardByValue = function (cardData, cardValue) {
             for (var i = 0; i < cardData.length; i++) {
                 if (this.getCardValue(cardData[i]) == cardValue) {
                     return cardData[i];
                 }
             }
             return 0;
-        }
+        };
         /** 根据数值排序，从大到小 **/
-        SortByValue(cardData) {
+        CardLogic.prototype.SortByValue = function (cardData) {
             var self = this;
-            cardData.sort((left, right) => {
+            cardData.sort(function (left, right) {
                 if (self.getCardValue(left) > self.getCardValue(right)) {
                     return -1;
                 }
@@ -54,11 +54,11 @@ define(["require", "exports"], function (require, exports) {
                     return 0;
                 }
             });
-        }
+        };
         /** 根据花色排序，从大到小 **/
-        SortByColor(cardData) {
+        CardLogic.prototype.SortByColor = function (cardData) {
             var self = this;
-            cardData.sort((left, right) => {
+            cardData.sort(function (left, right) {
                 if (self.getCardColor(left) > self.getCardColor(right)) {
                     return -1;
                 }
@@ -69,16 +69,16 @@ define(["require", "exports"], function (require, exports) {
                     return 0;
                 }
             });
-        }
+        };
         //服务器端扑克牌数据转换为客户端
-        cardValuetToClient(cardData) {
+        CardLogic.prototype.cardValuetToClient = function (cardData) {
             if (cardData > 0 && cardData <= 54) {
                 return this.cardDataArray[cardData - 1];
             }
             return 0;
-        }
+        };
         //客户端端扑克牌数据转换为服务器
-        cardValuetToServer(cardData) {
+        CardLogic.prototype.cardValuetToServer = function (cardData) {
             var suit = (cardData & this.MASK_COLOR) / 16;
             var rank = (cardData & this.MASK_VALUE);
             if (suit >= 0 && suit <= 3) {
@@ -90,8 +90,9 @@ define(["require", "exports"], function (require, exports) {
                 return (suit - 1) * 13 + rank;
             }
             return 0;
-        }
-    }
+        };
+        return CardLogic;
+    }());
     exports.CardLogic = CardLogic;
 });
 //# sourceMappingURL=CardLogic.js.map
