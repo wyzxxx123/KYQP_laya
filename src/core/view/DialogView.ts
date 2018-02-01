@@ -14,6 +14,7 @@ module mview{
 
         loadUI(path:string):void{
             this.createView(Laya.loader.getRes(path + ".json"));
+            // this.createView(CFun.parsingPath(this.constructor.));
             super.loadUI(path);
         }
     }

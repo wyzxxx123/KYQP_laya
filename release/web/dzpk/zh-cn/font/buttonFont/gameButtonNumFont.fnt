@@ -1,0 +1,13 @@
+{"file":"gameButtonNumFont.png","frames":{
+"4":{"x":35,"y":1,"w":16,"h":22,"offX":0,"offY":1,"sourceW":16,"sourceH":24},
+"5":{"x":35,"y":50,"w":15,"h":23,"offX":0,"offY":1,"sourceW":15,"sourceH":24},
+"6":{"x":35,"y":25,"w":15,"h":23,"offX":0,"offY":1,"sourceW":15,"sourceH":24},
+"7":{"x":1,"y":52,"w":15,"h":22,"offX":0,"offY":1,"sourceW":15,"sourceH":24},
+"8":{"x":18,"y":27,"w":15,"h":23,"offX":0,"offY":1,"sourceW":15,"sourceH":24},
+"9":{"x":1,"y":1,"w":15,"h":24,"offX":0,"offY":0,"sourceW":15,"sourceH":24},
+",":{"x":52,"y":25,"w":7,"h":9,"offX":0,"offY":15,"sourceW":7,"sourceH":24},
+".":{"x":52,"y":36,"w":7,"h":7,"offX":0,"offY":17,"sourceW":7,"sourceH":24},
+"0":{"x":18,"y":1,"w":15,"h":24,"offX":0,"offY":0,"sourceW":15,"sourceH":24},
+"1":{"x":53,"y":1,"w":9,"h":22,"offX":0,"offY":1,"sourceW":9,"sourceH":24},
+"2":{"x":1,"y":27,"w":15,"h":23,"offX":0,"offY":1,"sourceW":15,"sourceH":24},
+"3":{"x":18,"y":52,"w":14,"h":23,"offX":0,"offY":1,"sourceW":14,"sourceH":24}}}

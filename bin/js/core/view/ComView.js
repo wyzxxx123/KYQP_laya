@@ -51,14 +51,14 @@ var mview;
         };
         ComView.prototype.layerInit = function () {
         };
-        // createChildren():void {
-        //     super.createChildren();
-        //     let path = CFun.parsingPath(this.constructor.prototype.constructor.__proto__);
-        //     this.createView(Laya.loader.getRes(path));
-        // }
-        ComView.prototype.loadUI = function (path) {
-            this.createView(Laya.loader.getRes(path + ".json"));
-            _super.prototype.loadUI.call(this, path);
+        ComView.prototype.createChildren = function () {
+            _super.prototype.createChildren.call(this);
+            var pname = this["__proto__"].constructor["__proto__"].name;
+            if (pname == "ComView") {
+                pname = this.constructor.name;
+            }
+            var path = CFun.parsingPath(pname);
+            this.createView(Laya.loader.getRes(path));
         };
         ComView.TOP = "top";
         ComView.WINDOW = "window";

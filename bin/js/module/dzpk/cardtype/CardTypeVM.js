@@ -17,7 +17,6 @@ define(["require", "exports", "./CardTypeView", "../../../mbase/base/MViewModel"
             var _this = _super.call(this) || this;
             _this.setAtlasName = "1";
             _this.setClass = CardTypeView_1.CardTypeView;
-            _this.setViewPath = "game_dzpk/DZPKCardType";
             return _this;
         }
         return CardTypeVM;

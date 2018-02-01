@@ -10,6 +10,5 @@ import { MViewModel } from '../../../mbase/base/MViewModel';
 
             this.setAtlasName = "1";
             this.setClass = CardTypeView;
-            this.setViewPath = "game_dzpk/DZPKCardType";
         }
     }

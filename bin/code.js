@@ -50180,9 +50180,6 @@ var requirejs, require, define;
              * @private
              */
             execCb: function (name, callback, args, exports) {
-                if(name == "mbase/data/Player"){
-                    console.log(name);
-                }
                 return callback.apply(exports, args);
             },
 
@@ -50634,6 +50631,4391 @@ var requirejs, require, define;
     req(cfg);
 }(this, (typeof setTimeout === 'undefined' ? undefined : setTimeout)));
 
+/**
+ * 本地存储键配置
+ * @author none
+ *
+ */
+var StorageKeys = /** @class */ (function () {
+    function StorageKeys() {
+    }
+    Object.defineProperty(StorageKeys, "accountSave", {
+        get: function () {
+            return StaticData.appName + "accountSave";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "account", {
+        get: function () {
+            return StaticData.appName + "account";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "password", {
+        get: function () {
+            return StaticData.appName + "password";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "imei_windows", {
+        get: function () {
+            return StaticData.appName + "imei_windows";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "isGuest", {
+        get: function () {
+            return StaticData.appName + "isGuest";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "isLoginType", {
+        get: function () {
+            return StaticData.appName + "isLoginType";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "musicValue", {
+        get: function () {
+            return StaticData.appName + "musicValue";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "soundValue", {
+        get: function () {
+            return StaticData.appName + "soundValue";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "shakeValue", {
+        get: function () {
+            return StaticData.appName + "shakeValue";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "autoLogin", {
+        get: function () {
+            return StaticData.appName + "autoLogin";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StorageKeys, "DZPKTakeScore", {
+        get: function () {
+            return StaticData.appName + StaticData.accountId + "DZPKTakeScore";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return StorageKeys;
+}());
+//# sourceMappingURL=StorageKeys.js.map
+// require.config({
+//     baseUrl: "../libs",
+// 　　　　paths: {
+// 　　　　　　'laya.core': 'laya.core',
+// 　　　　　　"laya.webgl": "laya.webgl",
+// 　　　　　　"laya.filter": "laya.filter",
+// 　　　　　　"laya.ani": "laya.ani",
+// 　　　　　　"laya.html": "laya.html",
+// 　　　　　　"laya.particle": "laya.particle",
+// 　　　　　　"laya.tiledmap": "laya.tiledmap",
+// 　　　　　　"laya.ui": "laya.ui",
+// 　　　　　　"laya.debugtool": "laya.debugtool",
+// 　　　　}
+// 　　});
+// require(['laya.core'], function (core) {
+// });
+// require(['laya.webgl'], function (core) {
+// });
+// require(['laya.filter'], function (core) {
+// });
+// require(['laya.ani'], function (core) {
+// });
+// require(['laya.html'], function (core) {
+// });
+// require(['laya.particle'], function (core) {
+// });
+// require(['laya.tiledmap'], function (core) {
+// });
+// require(['laya.ui'], function (core) {
+// });
+// require(['laya.debugtool'], function (core) {
+// }); 
+//# sourceMappingURL=pre_load.js.map
+var VMManager = /** @class */ (function () {
+    function VMManager() {
+        this._event_manager = EventManager.ins;
+        this._event_manager.on(VMManager.SHOW_VIEW, this.onInitAndShow, this);
+        this.eventInit();
+    }
+    VMManager.prototype.eventInit = function () {
+    };
+    VMManager.prototype.regist = function (type, listener) {
+        this._event_manager.on(type, listener, this);
+    };
+    //初始化显示对象并显示
+    VMManager.prototype.onInitAndShow = function (data) {
+        var model = VMManager.static_dic_vm[data.className]; //laya.utils.ClassUtils.getInstance(data.className);
+        if (!model) {
+            var path_1 = laya.utils.ClassUtils.getRegClass(data.className);
+            if (typeof path_1 == "string") {
+                require([path_1], function (mod) {
+                    var name = path_1.substr(path_1.lastIndexOf("/") + 1);
+                    model = new (mod[name])();
+                    if (model) {
+                        VMManager.static_dic_vm[data.className] = model;
+                        model.onShow(data.exData);
+                        laya.utils.Pool.recover("InitData", data);
+                    }
+                    else {
+                    }
+                });
+            }
+            else {
+                model = laya.utils.ClassUtils.getInstance(data.className);
+                if (model) {
+                    VMManager.static_dic_vm[data.className] = model;
+                    model.onShow(data.exData);
+                    laya.utils.Pool.recover("InitData", data);
+                }
+                else {
+                }
+            }
+        }
+        else {
+            model.onShow(data.exData);
+            laya.utils.Pool.recover("InitData", data);
+        }
+    };
+    VMManager.prototype.closeAll = function () {
+        var model = null;
+        for (var key in VMManager.static_dic_vm) {
+            model = VMManager.static_dic_vm[key];
+            model.closeNow();
+        }
+    };
+    VMManager.prototype.closeScene = function () {
+        var model = null;
+        for (var key in VMManager.static_dic_vm) {
+            model = VMManager.static_dic_vm[key];
+            if (model.getViewType() == ComView.SCENE) {
+                model.closeNow();
+            }
+        }
+    };
+    VMManager.prototype.closeWindow = function () {
+        var model = null;
+        for (var key in VMManager.static_dic_vm) {
+            model = VMManager.static_dic_vm[key];
+            if (model.getViewType() == ComView.WINDOW) {
+                model.closeNow();
+            }
+        }
+    };
+    VMManager.SHOW_VIEW = "SHOW_VIEW"; //显示头像选择面板
+    VMManager.static_dic_vm = {};
+    return VMManager;
+}());
+//# sourceMappingURL=VMManager.js.map
+var Layer = /** @class */ (function () {
+    function Layer() {
+        Layer.SCENE_LAYER = new laya.ui.Component();
+        Layer.SCENE_LAYER.width = Laya.stage.width;
+        Layer.SCENE_LAYER.height = Laya.stage.height;
+        // Layer.SCENE_LAYER.mouseEnabled = false;
+        Layer.EFFECT_LAYER = new laya.ui.Component();
+        Layer.EFFECT_LAYER.width = Laya.stage.width;
+        Layer.EFFECT_LAYER.height = Laya.stage.height;
+        Layer.EFFECT_LAYER.mouseEnabled = false;
+        Layer.WINDOW_LAYER = new laya.ui.Component();
+        Layer.WINDOW_LAYER.width = Laya.stage.width;
+        Layer.WINDOW_LAYER.height = Laya.stage.height;
+        Layer.WINDOW_LAYER.mouseEnabled = false;
+        Layer.TOP_LAYER = new laya.ui.Component();
+        Layer.TOP_LAYER.width = Laya.stage.width;
+        Layer.TOP_LAYER.height = Laya.stage.height;
+        Layer.TOP_LAYER.mouseEnabled = false;
+        Laya.stage.addChild(Layer.SCENE_LAYER);
+        Laya.stage.addChild(Layer.EFFECT_LAYER);
+        Laya.stage.addChild(Layer.WINDOW_LAYER);
+        Laya.stage.addChild(Layer.TOP_LAYER);
+    }
+    return Layer;
+}());
+//# sourceMappingURL=Layer.js.map
+var EffectView = /** @class */ (function () {
+    function EffectView() {
+        this._effectLayer = Layer.EFFECT_LAYER;
+    }
+    return EffectView;
+}());
+//# sourceMappingURL=EffectView.js.map
+/**
+ * @description socket管理类，通过connect可生成多个socket连接
+ * @author wangyz
+ * @export
+ * @class SocketManager
+ */
+var SocketManager = /** @class */ (function () {
+    function SocketManager() {
+        this._dic_ws = {};
+    }
+    /*
+    main是URL或者host
+    如果sub不存在，则是连接url
+    */
+    SocketManager.prototype.connect = function (main, sub) {
+        if (sub === void 0) { sub = null; }
+        if (SocketManager.arr_address.length > 0) {
+            for (var i = 0; i < SocketManager.arr_address.length; i++) {
+                if (SocketManager.arr_address[i].hasOwnProperty("main")) {
+                    if (SocketManager.arr_address[i]["main"] == main && SocketManager.arr_address[i]["sub"] == sub) {
+                    }
+                    else {
+                        SocketManager.arr_address.push({ "main": main, "sub": sub });
+                    }
+                }
+            }
+        }
+        else {
+            SocketManager.arr_address.push({ "main": main, "sub": sub });
+        }
+        var tuple = this.getWSBykey(main, sub);
+        var ws = tuple[0];
+        var key = tuple[1];
+        if (!ws) {
+            ws = new laya.net.Socket();
+            ws.endian = Laya.Byte.LITTLE_ENDIAN;
+            this._dic_ws[key] = ws;
+            ws.on(laya.events.Event.MESSAGE, ws, this.onMessage);
+            ws.on(laya.events.Event.OPEN, ws, this.onOpen);
+            ws.on(laya.events.Event.CLOSE, ws, this.onClose);
+            ws.on(laya.events.Event.ERROR, ws, this.onError);
+        }
+        else {
+            ws = this._dic_ws[key];
+        }
+        if (!sub) {
+            ws.connectByUrl(main);
+        }
+        else {
+            ws.connect(main, Number(sub));
+        }
+    };
+    /**
+     * @description 清除socket连接
+     * @author wangyz
+     * @param {string} main 连接地址(url\host)
+     * @param {string} [sub] 连接地址(port)
+     * @memberof SocketManager
+     */
+    SocketManager.prototype.destroy = function (main, sub) {
+        if (sub === void 0) { sub = null; }
+        var tuple = this.getWSBykey(main, sub);
+        var ws = tuple[0];
+        var key = tuple[1];
+        if (ws) {
+            ws.offAll();
+            ws.cleanSocket();
+            ws = null;
+            this._dic_ws[key] = null;
+            delete this._dic_ws[key];
+        }
+        else {
+            CFun.throw("正在清除不存在的链接");
+        }
+    };
+    /*
+    关闭连接，但是事件和字典没有移除
+    */
+    SocketManager.prototype.close = function (main, sub) {
+        if (sub === void 0) { sub = null; }
+        var tuple = this.getWSBykey(main, sub);
+        var ws = tuple[0];
+        if (ws) {
+            ws.close();
+        }
+        else {
+            CFun.throw("正在关闭不存在的链接");
+        }
+    };
+    /**
+     * 发送数据
+     * @param {*} pac 待发送数据
+     * @param {string} main 连接地址(url\host)
+     * @param {string} [sub] 连接地址(port)
+     * @memberof SocketManager
+     */
+    SocketManager.prototype.send = function (pac, main, sub) {
+        if (sub === void 0) { sub = null; }
+        var tuple = this.getWSBykey(main, sub);
+        var ws = tuple[0];
+        var key = tuple[1];
+        if (!ws) {
+            CFun.throw("正在向不存在的" + key + "链接发送消息");
+        }
+        var flushData = AnalyzeData.ins.analyzeSend(pac, key);
+        ws.send(flushData[1]);
+        laya.utils.Pool.recover("tmpByte", flushData[0]);
+    };
+    SocketManager.prototype.onMessage = function (msg) {
+        if (msg === void 0) { msg = null; }
+        var key = SocketManager.ins.getKeyByWS(this);
+        var recvData = AnalyzeData.ins.analyzeRecv(msg, key);
+    };
+    /**
+    获取不到key值，把作用域改了
+    */
+    SocketManager.prototype.getKeyByWS = function (ws) {
+        for (var key in this._dic_ws) {
+            if (this._dic_ws[key] == ws) {
+                return key;
+            }
+        }
+        return "";
+    };
+    SocketManager.prototype.getWSBykey = function (main, sub) {
+        if (sub === void 0) { sub = null; }
+        var key = "";
+        if (!sub)
+            key = main + "," + sub;
+        else
+            key = main;
+        return [this._dic_ws[key], key];
+    };
+    Object.defineProperty(SocketManager, "ins", {
+        get: function () {
+            if (!this._instance) {
+                this._instance = new SocketManager();
+            }
+            return this._instance;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SocketManager.prototype.onOpen = function (event) {
+        if (event === void 0) { event = null; }
+    };
+    SocketManager.prototype.onClose = function (event) {
+        if (event === void 0) { event = null; }
+        CFun.log("连接关闭：" + event);
+    };
+    SocketManager.prototype.onError = function (event) {
+        if (event === void 0) { event = null; }
+        CFun.log("连接错误：" + event);
+    };
+    //设置一个默认的地址
+    SocketManager.arr_address = [];
+    return SocketManager;
+}());
+//# sourceMappingURL=SocketManager.js.map
+var ClassPro = /** @class */ (function () {
+    function ClassPro() {
+    }
+    ClassPro.prototype.toString = function () {
+        return "收到：" + this.className + " [f_id:" + this.recv_id + ",event:" + this.event_id + ",";
+    };
+    return ClassPro;
+}());
+//# sourceMappingURL=ClassPro.js.map
+var AnalyzerManager = /** @class */ (function () {
+    function AnalyzerManager() {
+        this._analyzer = new Analyzer();
+    }
+    AnalyzerManager.prototype.getAnalyzed = function (data) {
+        return this._analyzer.analyzeRecv(data);
+    };
+    AnalyzerManager.prototype.getSendAnalyzed = function (data) {
+        return this._analyzer.analyzeSend(data);
+    };
+    Object.defineProperty(AnalyzerManager, "ins", {
+        get: function () {
+            if (!this._instance) {
+                this._instance = new AnalyzerManager();
+            }
+            return this._instance;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return AnalyzerManager;
+}());
+//# sourceMappingURL=AnalyzerManager.js.map
+/**
+ * @description 解析接收和发送数据
+ * @author wangyz
+ * @export
+ * @class AnalyzeData
+ */
+var AnalyzeData = /** @class */ (function () {
+    function AnalyzeData() {
+    }
+    /**
+     * 解析发送数据
+    */
+    AnalyzeData.prototype.analyzeSend = function (data, key) {
+        if (key == "")
+            CFun.throw("发送的" + key + "链接不存在无法解析");
+        var a_data = AnalyzerManager.ins.getSendAnalyzed(data);
+        return a_data;
+    };
+    /*
+    解析接收数据
+    */
+    AnalyzeData.prototype.analyzeRecv = function (data, key) {
+        if (key == "")
+            CFun.throw("接收的" + key + "链接不存在无法解析");
+        var a_data = AnalyzerManager.ins.getAnalyzed(data);
+        if (a_data) {
+            ModelManager.ins.setPro(a_data.className, a_data.params, function (a_model) {
+                EventManager.ins.dispatch(a_data.event_id, a_model);
+            }, this, a_data.toString());
+        }
+    };
+    Object.defineProperty(AnalyzeData, "ins", {
+        get: function () {
+            if (!this._instance) {
+                this._instance = new AnalyzeData();
+            }
+            return this._instance;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return AnalyzeData;
+}());
+//# sourceMappingURL=AnalyzeData.js.map
+var ModelManager = /** @class */ (function () {
+    function ModelManager() {
+        this._self = this;
+    }
+    ModelManager.prototype.getModel = function (model_name, callBack) {
+        var myself = this._self;
+        if (!model_name || model_name == "")
+            CFun.throw("ModelManager的getModel参数不可为空！");
+        var model = StaticData.dic_model[model_name];
+        if (!model) {
+            var path_1 = laya.utils.ClassUtils.getRegClass(model_name);
+            if (typeof path_1 == "string") {
+                require([path_1], function (mod) {
+                    var name = path_1.substr(path_1.lastIndexOf("/") + 1);
+                    model = new (mod[name])();
+                    if (model) {
+                        StaticData.dic_model[model_name] = model;
+                        model["wyz_class_name"] = model_name;
+                        callBack.call(myself, true);
+                    }
+                    else {
+                        callBack.call(myself, false);
+                    }
+                });
+            }
+            else {
+                model = laya.utils.ClassUtils.getInstance(model_name);
+                if (model) {
+                    StaticData.dic_model[model_name] = model;
+                    model["wyz_class_name"] = model_name;
+                    callBack.call(myself, true);
+                }
+                else {
+                    callBack.call(myself, false);
+                }
+            }
+        }
+        else {
+            callBack.call(myself, true);
+        }
+    };
+    // private async getClassByPath(path:string){
+    //     return await new Promise(function(resolve, reject) {
+    //             require([path],function(mod){
+    //                 let name = path.substr(path.lastIndexOf("/") + 1);
+    //                 resolve(mod[name]);
+    //             });
+    //         });
+    // }
+    ModelManager.prototype.setPro = function (model_name, pros, callBack, obj, f_des) {
+        var myself = this._self;
+        this.getModel(model_name, function (isReady) {
+            if (isReady) {
+                if (!pros)
+                    CFun.throw("ModelManager的setPro参数不可为空！");
+                var model = StaticData.dic_model[model_name];
+                var des = myself.printObject(model, pros, myself, f_des + "{");
+                des += "]";
+                // if(model_name == "Player"){
+                //     let t1 = "%传入属性";
+                //     for(let key in pros){
+                //         t1 += "(" + key + ":" + pros[key] + "),"
+                //     }
+                //     console.log(t1,"传入属性%");
+                //     let t = "%玩家属性";
+                //     for(let key in model){
+                //         t += "(" + key + ":" + model[key] + "),"
+                //     }
+                //     console.log(t,"玩家属性%");
+                // }
+                CFun.log(new Date()["format"]("dd-hh:mm:ss,S") + " " + des);
+                callBack.call(obj, model);
+            }
+            else {
+                CFun.throw("ModelManager\u7684" + model_name + "\u7C7B\u578B\u4E0D\u5B58\u5728\uFF01");
+            }
+        });
+    };
+    ModelManager.prototype.printObject = function (model, pros, obj, pre) {
+        var des = pre;
+        var content = "";
+        for (var key in pros) {
+            if (key[0] == "_") {
+                continue;
+            }
+            var t_m = model[key];
+            if (!t_m)
+                t_m = {};
+            if (pros[key]["__className"] == "laya.utils.Byte") {
+                content = "{Byte}";
+                t_m = pros[key];
+            }
+            else {
+                if (obj.isBaseClass(pros[key])) {
+                    content = pros[key];
+                    t_m = pros[key];
+                }
+                else {
+                    content = obj.printObject(t_m, pros[key], obj, "{");
+                }
+            }
+            // let descriptor = Object.getOwnPropertyDescriptor(model.__proto__,key);
+            // if(descriptor){
+            //     if(descriptor.set){
+            //         descriptor.set(pros[key]);
+            //     }
+            //     else{
+            //         descriptor.value = pros[key];
+            //     }
+            // }
+            // else{
+            //     descriptor = {
+            //         value : pros[key],
+            //         writable : true,
+            //         configurable : true,
+            //         enumerable : false
+            //     }
+            // }
+            // Object.defineProperty(model, key,descriptor );
+            model[key] = t_m;
+            if (des != pre)
+                des += ",";
+            if (key != "e_id") {
+                des += key + ":" + content;
+            }
+        }
+        des += "}";
+        return des;
+    };
+    ModelManager.prototype.isBaseClass = function (obj) {
+        if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean') {
+            return true;
+        }
+        return false;
+    };
+    /**
+     * @description 为了用e_id查找类名用
+     * @author wangyz
+     * @param {string} pName e_id
+     * @param {*} val 值
+     * @returns {*}
+     * @memberof ModelManager
+     */
+    ModelManager.prototype.getInfoByProValue = function (p_name, val) {
+        for (var key in StaticData.dic_model) {
+            if (StaticData.dic_model[key] && StaticData.dic_model[key][p_name] == val) {
+                return key;
+            }
+        }
+        return null;
+    };
+    ModelManager.prototype.getInstByClassName = function (p_name) {
+        var inst = StaticData.dic_model[p_name];
+        if (!inst)
+            return null;
+        return inst;
+    };
+    Object.defineProperty(ModelManager, "ins", {
+        get: function () {
+            if (!this._instance) {
+                this._instance = new ModelManager();
+            }
+            return this._instance;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ModelManager;
+}());
+//# sourceMappingURL=ModelManager.js.map
+/*
+* A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+* Digest Algorithm, as defined in RFC 1321.
+* Version 2.2 Copyright (C) Paul Johnston 1999 - 2009
+    * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+* Distributed under the BSD License
+* See http://pajhome.org.uk/crypt/md5 for more info.
+*/
+/*
+* Configurable variables. You may need to tweak these to be compatible with
+* the server-side, but the defaults work in most cases.
+*/
+var md5 = /** @class */ (function () {
+    function md5() {
+        this.hexcase = 0; /* hex output format. 0 - lowercase; 1 - uppercase        */
+        this.b64pad = ""; /* base-64 pad character. "=" for strict RFC compliance   */
+    }
+    /*
+    * These are the privates you'll usually want to call
+    * They take string arguments and return either hex or base-64 encoded strings
+    */
+    md5.prototype.hex_md5 = function (s) { return this.rstr2hex(this.rstr_md5(this.str2rstr_utf8(s))); };
+    md5.prototype.b64_md5 = function (s) { return this.rstr2b64(this.rstr_md5(this.str2rstr_utf8(s))); };
+    md5.prototype.any_md5 = function (s, e) { return this.rstr2any(this.rstr_md5(this.str2rstr_utf8(s)), e); };
+    md5.prototype.hex_hmac_md5 = function (k, d) { return this.rstr2hex(this.rstr_hmac_md5(this.str2rstr_utf8(k), this.str2rstr_utf8(d))); };
+    md5.prototype.b64_hmac_md5 = function (k, d) { return this.rstr2b64(this.rstr_hmac_md5(this.str2rstr_utf8(k), this.str2rstr_utf8(d))); };
+    md5.prototype.any_hmac_md5 = function (k, d, e) { return this.rstr2any(this.rstr_hmac_md5(this.str2rstr_utf8(k), this.str2rstr_utf8(d)), e); };
+    /*
+    * Perform a simple self-test to see if the VM is working
+    */
+    md5.prototype.md5_vm_test = function () {
+        return this.hex_md5("abc").toLowerCase() == "900150983cd24fb0d6963f7d28e17f72";
+    };
+    /*
+    * Calculate the MD5 of a raw string
+    */
+    md5.prototype.rstr_md5 = function (s) {
+        return this.binl2rstr(this.binl_md5(this.rstr2binl(s), s.length * 8));
+    };
+    /*
+    * Calculate the HMAC-MD5, of a key and some data (raw strings)
+        */
+    md5.prototype.rstr_hmac_md5 = function (key, data) {
+        var bkey = this.rstr2binl(key);
+        if (bkey.length > 16)
+            bkey = this.binl_md5(bkey, key.length * 8);
+        var ipad = Array(16), opad = Array(16);
+        for (var i = 0; i < 16; i++) {
+            ipad[i] = bkey[i] ^ 0x36363636;
+            opad[i] = bkey[i] ^ 0x5C5C5C5C;
+        }
+        var hash = this.binl_md5(ipad.concat(this.rstr2binl(data)), 512 + data.length * 8);
+        return this.binl2rstr(this.binl_md5(opad.concat(hash), 512 + 128));
+    };
+    /*
+    * Convert a raw string to a hex string
+    */
+    md5.prototype.rstr2hex = function (input) {
+        try {
+            this.hexcase;
+        }
+        catch (e) {
+            this.hexcase = 0;
+        }
+        var hex_tab = this.hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
+        var output = "";
+        var x;
+        for (var i = 0; i < input.length; i++) {
+            x = input.charCodeAt(i);
+            output += hex_tab.charAt((x >>> 4) & 0x0F)
+                + hex_tab.charAt(x & 0x0F);
+        }
+        return output;
+    };
+    /*
+    * Convert a raw string to a base-64 string
+    */
+    md5.prototype.rstr2b64 = function (input) {
+        try {
+            this.b64pad;
+        }
+        catch (e) {
+            this.b64pad = '';
+        }
+        var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        var output = "";
+        var len = input.length;
+        for (var i = 0; i < len; i += 3) {
+            var triplet = (input.charCodeAt(i) << 16)
+                | (i + 1 < len ? input.charCodeAt(i + 1) << 8 : 0)
+                | (i + 2 < len ? input.charCodeAt(i + 2) : 0);
+            for (var j = 0; j < 4; j++) {
+                if (i * 8 + j * 6 > input.length * 8)
+                    output += this.b64pad;
+                else
+                    output += tab.charAt((triplet >>> 6 * (3 - j)) & 0x3F);
+            }
+        }
+        return output;
+    };
+    /*
+    * Convert a raw string to an arbitrary string encoding
+    */
+    md5.prototype.rstr2any = function (input, encoding) {
+        var divisor = encoding.length;
+        var i, j, q, x, quotient;
+        /* Convert to an array of 16-bit big-endian values, forming the dividend */
+        var dividend = Array(Math.ceil(input.length / 2));
+        for (i = 0; i < dividend.length; i++) {
+            dividend[i] = (input.charCodeAt(i * 2) << 8) | input.charCodeAt(i * 2 + 1);
+        }
+        /*
+        * Repeatedly perform a long division. The binary array forms the dividend,
+        * the length of the encoding is the divisor. Once computed, the quotient
+        * forms the dividend for the next step. All remainders are stored for later
+        * use.
+        */
+        var full_length = Math.ceil(input.length * 8 /
+            (Math.log(encoding.length) / Math.log(2)));
+        var remainders = Array(full_length);
+        for (j = 0; j < full_length; j++) {
+            quotient = Array();
+            x = 0;
+            for (i = 0; i < dividend.length; i++) {
+                x = (x << 16) + dividend[i];
+                q = Math.floor(x / divisor);
+                x -= q * divisor;
+                if (quotient.length > 0 || q > 0)
+                    quotient[quotient.length] = q;
+            }
+            remainders[j] = x;
+            dividend = quotient;
+        }
+        /* Convert the remainders to the output string */
+        var output = "";
+        for (i = remainders.length - 1; i >= 0; i--)
+            output += encoding.charAt(remainders[i]);
+        return output;
+    };
+    /*
+    * Encode a string as utf-8.
+    * For efficiency, this assumes the input is valid utf-16.
+    */
+    md5.prototype.str2rstr_utf8 = function (input) {
+        var output = "";
+        var i = -1;
+        var x, y;
+        while (++i < input.length) {
+            /* Decode utf-16 surrogate pairs */
+            x = input.charCodeAt(i);
+            y = i + 1 < input.length ? input.charCodeAt(i + 1) : 0;
+            if (0xD800 <= x && x <= 0xDBFF && 0xDC00 <= y && y <= 0xDFFF) {
+                x = 0x10000 + ((x & 0x03FF) << 10) + (y & 0x03FF);
+                i++;
+            }
+            /* Encode output as utf-8 */
+            if (x <= 0x7F)
+                output += String.fromCharCode(x);
+            else if (x <= 0x7FF)
+                output += String.fromCharCode(0xC0 | ((x >>> 6) & 0x1F), 0x80 | (x & 0x3F));
+            else if (x <= 0xFFFF)
+                output += String.fromCharCode(0xE0 | ((x >>> 12) & 0x0F), 0x80 | ((x >>> 6) & 0x3F), 0x80 | (x & 0x3F));
+            else if (x <= 0x1FFFFF)
+                output += String.fromCharCode(0xF0 | ((x >>> 18) & 0x07), 0x80 | ((x >>> 12) & 0x3F), 0x80 | ((x >>> 6) & 0x3F), 0x80 | (x & 0x3F));
+        }
+        return output;
+    };
+    /*
+    * Encode a string as utf-16
+    */
+    md5.prototype.str2rstr_utf16le = function (input) {
+        var output = "";
+        for (var i = 0; i < input.length; i++)
+            output += String.fromCharCode(input.charCodeAt(i) & 0xFF, (input.charCodeAt(i) >>> 8) & 0xFF);
+        return output;
+    };
+    md5.prototype.str2rstr_utf16be = function (input) {
+        var output = "";
+        for (var i = 0; i < input.length; i++)
+            output += String.fromCharCode((input.charCodeAt(i) >>> 8) & 0xFF, input.charCodeAt(i) & 0xFF);
+        return output;
+    };
+    /*
+    * Convert a raw string to an array of little-endian words
+    * Characters >255 have their high-byte silently ignored.
+    */
+    md5.prototype.rstr2binl = function (input) {
+        var output = Array(input.length >> 2);
+        for (var i = 0; i < output.length; i++)
+            output[i] = 0;
+        for (var i = 0; i < input.length * 8; i += 8)
+            output[i >> 5] |= (input.charCodeAt(i / 8) & 0xFF) << (i % 32);
+        return output;
+    };
+    /*
+    * Convert an array of little-endian words to a string
+    */
+    md5.prototype.binl2rstr = function (input) {
+        var output = "";
+        for (var i = 0; i < input.length * 32; i += 8)
+            output += String.fromCharCode((input[i >> 5] >>> (i % 32)) & 0xFF);
+        return output;
+    };
+    /*
+    * Calculate the MD5 of an array of little-endian words, and a bit length.
+    */
+    md5.prototype.binl_md5 = function (x, len) {
+        /* append padding */
+        x[len >> 5] |= 0x80 << ((len) % 32);
+        x[(((len + 64) >>> 9) << 4) + 14] = len;
+        var a = 1732584193;
+        var b = -271733879;
+        var c = -1732584194;
+        var d = 271733878;
+        for (var i = 0; i < x.length; i += 16) {
+            var olda = a;
+            var oldb = b;
+            var oldc = c;
+            var oldd = d;
+            a = this.md5_ff(a, b, c, d, x[i + 0], 7, -680876936);
+            d = this.md5_ff(d, a, b, c, x[i + 1], 12, -389564586);
+            c = this.md5_ff(c, d, a, b, x[i + 2], 17, 606105819);
+            b = this.md5_ff(b, c, d, a, x[i + 3], 22, -1044525330);
+            a = this.md5_ff(a, b, c, d, x[i + 4], 7, -176418897);
+            d = this.md5_ff(d, a, b, c, x[i + 5], 12, 1200080426);
+            c = this.md5_ff(c, d, a, b, x[i + 6], 17, -1473231341);
+            b = this.md5_ff(b, c, d, a, x[i + 7], 22, -45705983);
+            a = this.md5_ff(a, b, c, d, x[i + 8], 7, 1770035416);
+            d = this.md5_ff(d, a, b, c, x[i + 9], 12, -1958414417);
+            c = this.md5_ff(c, d, a, b, x[i + 10], 17, -42063);
+            b = this.md5_ff(b, c, d, a, x[i + 11], 22, -1990404162);
+            a = this.md5_ff(a, b, c, d, x[i + 12], 7, 1804603682);
+            d = this.md5_ff(d, a, b, c, x[i + 13], 12, -40341101);
+            c = this.md5_ff(c, d, a, b, x[i + 14], 17, -1502002290);
+            b = this.md5_ff(b, c, d, a, x[i + 15], 22, 1236535329);
+            a = this.md5_gg(a, b, c, d, x[i + 1], 5, -165796510);
+            d = this.md5_gg(d, a, b, c, x[i + 6], 9, -1069501632);
+            c = this.md5_gg(c, d, a, b, x[i + 11], 14, 643717713);
+            b = this.md5_gg(b, c, d, a, x[i + 0], 20, -373897302);
+            a = this.md5_gg(a, b, c, d, x[i + 5], 5, -701558691);
+            d = this.md5_gg(d, a, b, c, x[i + 10], 9, 38016083);
+            c = this.md5_gg(c, d, a, b, x[i + 15], 14, -660478335);
+            b = this.md5_gg(b, c, d, a, x[i + 4], 20, -405537848);
+            a = this.md5_gg(a, b, c, d, x[i + 9], 5, 568446438);
+            d = this.md5_gg(d, a, b, c, x[i + 14], 9, -1019803690);
+            c = this.md5_gg(c, d, a, b, x[i + 3], 14, -187363961);
+            b = this.md5_gg(b, c, d, a, x[i + 8], 20, 1163531501);
+            a = this.md5_gg(a, b, c, d, x[i + 13], 5, -1444681467);
+            d = this.md5_gg(d, a, b, c, x[i + 2], 9, -51403784);
+            c = this.md5_gg(c, d, a, b, x[i + 7], 14, 1735328473);
+            b = this.md5_gg(b, c, d, a, x[i + 12], 20, -1926607734);
+            a = this.md5_hh(a, b, c, d, x[i + 5], 4, -378558);
+            d = this.md5_hh(d, a, b, c, x[i + 8], 11, -2022574463);
+            c = this.md5_hh(c, d, a, b, x[i + 11], 16, 1839030562);
+            b = this.md5_hh(b, c, d, a, x[i + 14], 23, -35309556);
+            a = this.md5_hh(a, b, c, d, x[i + 1], 4, -1530992060);
+            d = this.md5_hh(d, a, b, c, x[i + 4], 11, 1272893353);
+            c = this.md5_hh(c, d, a, b, x[i + 7], 16, -155497632);
+            b = this.md5_hh(b, c, d, a, x[i + 10], 23, -1094730640);
+            a = this.md5_hh(a, b, c, d, x[i + 13], 4, 681279174);
+            d = this.md5_hh(d, a, b, c, x[i + 0], 11, -358537222);
+            c = this.md5_hh(c, d, a, b, x[i + 3], 16, -722521979);
+            b = this.md5_hh(b, c, d, a, x[i + 6], 23, 76029189);
+            a = this.md5_hh(a, b, c, d, x[i + 9], 4, -640364487);
+            d = this.md5_hh(d, a, b, c, x[i + 12], 11, -421815835);
+            c = this.md5_hh(c, d, a, b, x[i + 15], 16, 530742520);
+            b = this.md5_hh(b, c, d, a, x[i + 2], 23, -995338651);
+            a = this.md5_ii(a, b, c, d, x[i + 0], 6, -198630844);
+            d = this.md5_ii(d, a, b, c, x[i + 7], 10, 1126891415);
+            c = this.md5_ii(c, d, a, b, x[i + 14], 15, -1416354905);
+            b = this.md5_ii(b, c, d, a, x[i + 5], 21, -57434055);
+            a = this.md5_ii(a, b, c, d, x[i + 12], 6, 1700485571);
+            d = this.md5_ii(d, a, b, c, x[i + 3], 10, -1894986606);
+            c = this.md5_ii(c, d, a, b, x[i + 10], 15, -1051523);
+            b = this.md5_ii(b, c, d, a, x[i + 1], 21, -2054922799);
+            a = this.md5_ii(a, b, c, d, x[i + 8], 6, 1873313359);
+            d = this.md5_ii(d, a, b, c, x[i + 15], 10, -30611744);
+            c = this.md5_ii(c, d, a, b, x[i + 6], 15, -1560198380);
+            b = this.md5_ii(b, c, d, a, x[i + 13], 21, 1309151649);
+            a = this.md5_ii(a, b, c, d, x[i + 4], 6, -145523070);
+            d = this.md5_ii(d, a, b, c, x[i + 11], 10, -1120210379);
+            c = this.md5_ii(c, d, a, b, x[i + 2], 15, 718787259);
+            b = this.md5_ii(b, c, d, a, x[i + 9], 21, -343485551);
+            a = this.safe_add(a, olda);
+            b = this.safe_add(b, oldb);
+            c = this.safe_add(c, oldc);
+            d = this.safe_add(d, oldd);
+        }
+        return [a, b, c, d];
+    };
+    /*
+    * These privates implement the four basic operations the algorithm uses.
+    */
+    md5.prototype.md5_cmn = function (q, a, b, x, s, t) {
+        return this.safe_add(this.bit_rol(this.safe_add(this.safe_add(a, q), this.safe_add(x, t)), s), b);
+    };
+    md5.prototype.md5_ff = function (a, b, c, d, x, s, t) {
+        return this.md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
+    };
+    md5.prototype.md5_gg = function (a, b, c, d, x, s, t) {
+        return this.md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
+    };
+    md5.prototype.md5_hh = function (a, b, c, d, x, s, t) {
+        return this.md5_cmn(b ^ c ^ d, a, b, x, s, t);
+    };
+    md5.prototype.md5_ii = function (a, b, c, d, x, s, t) {
+        return this.md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
+    };
+    /*
+    * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+    * to work around bugs in some JS interpreters.
+    */
+    md5.prototype.safe_add = function (x, y) {
+        var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+        var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+        return (msw << 16) | (lsw & 0xFFFF);
+    };
+    /*
+    * Bitwise rotate a 32-bit number to the left.
+    */
+    md5.prototype.bit_rol = function (num, cnt) {
+        return (num << cnt) | (num >>> (32 - cnt));
+    };
+    return md5;
+}());
+//# sourceMappingURL=md5.js.map
+/**
+ * 和容器的通讯工具
+ * @author none
+ *
+ */
+var ExUtils = /** @class */ (function () {
+    function ExUtils() {
+    }
+    Object.defineProperty(ExUtils, "IMEI", {
+        /**
+         * 手机设备唯一序列号
+         */
+        get: function () {
+            return this._IMEI;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ExUtils, "version", {
+        /**
+         * 应用版本号
+         */
+        get: function () {
+            return this._version;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ExUtils, "MACAddress", {
+        /**
+         * 设备MAC地址
+         */
+        get: function () {
+            return this._MACAddress;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * 获取手机卡运营商
+     * 参数：回调方法，0：无卡，1：无法判断 ，2：电信，3：联通 ，4 ：移动
+     */
+    ExUtils.getCardProvidersName = function () {
+        return 0;
+    };
+    /**
+     * 获取联通渠道号
+     */
+    ExUtils.GetUnipayId = function () {
+        return 0;
+    };
+    ExUtils.init = function () {
+    };
+    ExUtils.fullScreen = function () {
+        if (!this._is_full) {
+            Laya.stage.fullScreenEnabled = true;
+            this._is_full = true;
+        }
+        else {
+            Laya.stage.fullScreenEnabled = false;
+            Laya.stage.exitFullscreen();
+            this._is_full = false;
+        }
+    };
+    ExUtils.getPackageName = function (data) {
+        ExUtils.packageName = data;
+    };
+    ExUtils.onKeyDown = function (event) {
+    };
+    ExUtils.onResume = function (data) {
+    };
+    ExUtils.onPause = function (data) {
+    };
+    ExUtils.onBack = function (data) {
+    };
+    ExUtils.getIMEI = function (data) {
+        ExUtils._IMEI = data;
+        CFun.log("获取到设备唯一序列号：" + data);
+    };
+    ExUtils.getMAC = function (data) {
+        ExUtils._MACAddress = data;
+        CFun.log("获取到设备MAC地址：" + data);
+    };
+    ExUtils.getVersion = function (data) {
+        ExUtils._version = data;
+        CFun.log("获取到应用版本号：" + data);
+    };
+    ExUtils.onWebViewJavascriptBridgeReady = function (bridge) {
+        bridge.registerHandler("texttext", this.ontext.bind(this));
+    };
+    ExUtils.ontext = function (data) {
+        alert(data);
+    };
+    ExUtils._IMEI = "";
+    ExUtils._version = "0.0.0.0";
+    ExUtils._MACAddress = "0:0:0:0";
+    /*
+     *当前界面上是否显示loading
+     * */
+    ExUtils.isShowLoading = false;
+    /**
+     * 获取包名
+     */
+    ExUtils.packageName = "null";
+    ExUtils._is_full = false;
+    return ExUtils;
+}());
+function setupWebViewJavascriptBridge(callback) {
+    if (window["WebViewJavascriptBridge"]) {
+        return callback(window["WebViewJavascriptBridge"]);
+    }
+    if (window["WVJBCallbacks"]) {
+        return window["WVJBCallbacks"].push(callback);
+    }
+    window["WVJBCallbacks"] = [callback];
+    var WVJBIframe = document.createElement('iframe');
+    WVJBIframe.style.display = 'none';
+    WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+    document.documentElement.appendChild(WVJBIframe);
+    setTimeout(function () { document.documentElement.removeChild(WVJBIframe); }, 0);
+}
+if (window && window.navigator && navigator.userAgent == "ios_miq") {
+    setupWebViewJavascriptBridge(function (bridge) {
+        bridge.registerHandler('texttext', function (data, responseCallback) {
+            alert("JS Echo called with:" + data);
+            responseCallback(data);
+        });
+    });
+}
+//# sourceMappingURL=ExUtils.js.map
+/**
+    * @description 全局事件管理
+    * @author wangyz
+    * @export
+    * @class EventManager
+    */
+var EventManager = /** @class */ (function () {
+    function EventManager() {
+        if (EventManager._instance) {
+            CFun.throw("单例！");
+        }
+        this._dispatcher = new laya.events.EventDispatcher();
+    }
+    /**
+     * 抛出事件
+     *
+     */
+    EventManager.prototype.dispatch = function (type, data) {
+        if (data === void 0) { data = null; }
+        return this._dispatcher.event(type, data);
+    };
+    /**
+     * 添加事件监听
+     */
+    EventManager.prototype.on = function (type, listener, caller, args) {
+        if (args === void 0) { args = null; }
+        this._dispatcher.on(type, caller, listener, args);
+    };
+    /**
+     * 执行1次就自动移除的监听
+     */
+    EventManager.prototype.once = function (type, listener, caller, args) {
+        if (args === void 0) { args = null; }
+        this._dispatcher.once(type, caller, listener, args);
+    };
+    /**
+    * 取消事件监听
+    */
+    EventManager.prototype.off = function (type, listener, caller, once_only) {
+        if (once_only === void 0) { once_only = false; }
+        this._dispatcher.off(type, caller, listener, once_only);
+    };
+    Object.defineProperty(EventManager, "ins", {
+        get: function () {
+            if (!this._instance) {
+                this._instance = new EventManager();
+            }
+            return this._instance;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return EventManager;
+}());
+//# sourceMappingURL=EventManager.js.map
+/**
+ * @description 附加组件点击缩放
+ * @author wangyz
+ * @export
+ * @class ScaleComponent
+ */
+var ScaleCom = /** @class */ (function () {
+    function ScaleCom() {
+        this._is_scale = true;
+        this._scale_scope = 0.9;
+    }
+    Object.defineProperty(ScaleCom.prototype, "owner", {
+        //设置owner函数，可以直接获取到Button组件的实例
+        set: function (v) {
+            this._owner = v;
+            //由于时序问题，我们需要在此处添加逻辑代码，确保_owner不为null
+            if (this._is_scale && this._owner) {
+                this._owner.anchorX = 0.5;
+                this._owner.anchorY = 0.5;
+                // if(this._owner.width > 0){
+                //     this.onChangeHeight();
+                // }
+                // else{
+                this._owner.once(laya.events.Event.ADDED, this, this.onChangeHeight);
+                // }
+                this._owner.on(laya.events.Event.MOUSE_DOWN, this, this.onDown);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ScaleCom.prototype.onChangeHeight = function () {
+        this._owner.x += this._owner.width * 0.5;
+        this._owner.y += this._owner.height * 0.5;
+    };
+    ScaleCom.prototype.onLoaded = function () {
+        this._owner.x += this._owner.width * 0.5;
+        this._owner.y += this._owner.height * 0.5;
+    };
+    Object.defineProperty(ScaleCom.prototype, "is_scale", {
+        get: function () {
+            return this._is_scale;
+        },
+        set: function (val) {
+            this._is_scale = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ScaleCom.prototype, "scale_scope", {
+        get: function () {
+            return this._scale_scope;
+        },
+        set: function (val) {
+            this._scale_scope = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ScaleCom.prototype.onDown = function () {
+        this._owner.scale(this._scale_scope, this._scale_scope);
+        this._owner.once(laya.events.Event.MOUSE_UP, this, this.onUP);
+        this._owner.once(laya.events.Event.MOUSE_OUT, this, this.onUP);
+    };
+    ScaleCom.prototype.onUP = function () {
+        this._owner.scale(1, 1);
+    };
+    return ScaleCom;
+}());
+//# sourceMappingURL=ScaleCom.js.map
+var CFun = /** @class */ (function () {
+    function CFun() {
+    }
+    CFun.throw = function (des) {
+        laya.utils.Pool.clearBySign("tmpByte");
+        laya.utils.Pool.clearBySign("tmpSend");
+        laya.utils.Pool.clearBySign("InitData");
+        throw new Error(des);
+    };
+    CFun.log = function (log) {
+        if (this.DEBUG) {
+            console.log(log);
+            if (this.SCREEN_PRINT) {
+                laya.utils.Log.print(log);
+            }
+        }
+    };
+    /////////////////////////////////弹框
+    CFun.dialog = function (content, callback, obj, button, title) {
+        if (content === void 0) { content = "确定要退出游戏？"; }
+        if (callback === void 0) { callback = null; }
+        if (obj === void 0) { obj = this; }
+        if (button === void 0) { button = "确 定|取 消"; }
+        if (title === void 0) { title = "提 示"; }
+        var arrBtn = button.split("|");
+        var m_class;
+        var path = "";
+        if (arrBtn.length == 2) {
+            m_class = ui.dialog.TwoButtonUI;
+            path = "dialog/TwoButton.json";
+        }
+        else if (arrBtn.length == 1) {
+            m_class = ui.dialog.OneButtonUI;
+            path = "dialog/OneButton.json";
+        }
+        this.parsingPath(m_class);
+        Laya.loader.load([{ url: path, type: laya.net.Loader.JSON }], laya.utils.Handler.create(this, this.onDialogLoaded, [content, callback, obj, button, title]));
+    };
+    CFun.parsingPath = function (m_class) {
+        var ui_txt = Laya.loader.getRes("js/ui/layaUI.max.all.js");
+        return "";
+    };
+    CFun.onDialogLoaded = function (content, callback, obj, button, title) {
+        var arrBtn = button.split("|");
+        var dialog;
+        if (arrBtn.length == 2) {
+            dialog = new ui.dialog.TwoButtonUI();
+            dialog.getChildByName("cancel")["label"] = arrBtn[1];
+            dialog.getChildByName("ok")["label"] = arrBtn[0];
+            dialog.getChildByName("title")["text"] = title;
+            dialog.getChildByName("content")["text"] = content;
+        }
+        else if (arrBtn.length == 1) {
+            dialog = new ui.dialog.OneButtonUI();
+            dialog.getChildByName("ok")["label"] = arrBtn[0];
+            dialog.getChildByName("title")["text"] = title;
+            dialog.getChildByName("content")["text"] = content;
+        }
+        // dialog.isModal = true;
+        dialog.closeHandler = laya.utils.Handler.create(obj, callback);
+        dialog.popup();
+    };
+    /////////////////////////////////弹框///////////////////////////////
+    CFun.getItem = function (array, property, value) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i][property] == value) {
+                return array[i];
+            }
+        }
+        return null;
+    };
+    /**
+    * 删除数组中的某项元素
+    * */
+    CFun.remove = function (array, item) {
+        var index = array.indexOf(item);
+        if (index > -1) {
+            array.splice(index, 1);
+        }
+    };
+    Object.defineProperty(CFun, "soundV", {
+        get: function () {
+            return laya.media.SoundManager.soundVolume;
+        },
+        //0-1
+        set: function (val) {
+            laya.media.SoundManager.setSoundVolume(val);
+            if (val <= 0) {
+                laya.media.SoundManager.setSoundVolume(0);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CFun, "musicV", {
+        get: function () {
+            return laya.media.SoundManager.musicVolume;
+        },
+        //0-1
+        set: function (val) {
+            laya.media.SoundManager.setMusicVolume(val);
+            if (val <= 0) {
+                laya.media.SoundManager.setMusicVolume(0);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    CFun.playSound = function (url) {
+        laya.media.SoundManager.playSound(url);
+    };
+    CFun.playMusic = function (url) {
+        laya.media.SoundManager.playMusic(url);
+    };
+    /**
+    * 将数值保留2位小数后格式化成金额形式
+    * @param num 数值(Number或者String)
+    * @param accurate 是否显示后面为.00的小数
+    * @type {String}
+    */
+    CFun.formatCurrency = function (num, accurate) {
+        if (accurate === void 0) { accurate = false; }
+        num = parseFloat(num) / 100;
+        if (num < 1 && num > -1) {
+            return num.toString();
+        }
+        num = (num.toFixed(2) + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+        if (accurate) {
+            return num;
+        }
+        else {
+            var decimal = num.substring(num.length - 2, num.length);
+            if (parseInt(decimal) == 0) {
+                decimal = '';
+            }
+            else if (parseInt(decimal.substring(1, decimal.length)) == 0) {
+                decimal = '.' + decimal.substring(0, 1);
+            }
+            else {
+                decimal = "." + decimal;
+            }
+            var result = num.substring(0, num.length - 3);
+            return result + decimal;
+        }
+        // var result;
+        // if (num < 10000) {
+        //     result = this.toFixed(num, 2);
+        // }
+        // else if (num < 100000000) {
+        //     var n = num / 10000;
+        //     result = this.isInteger(n) ? n.toString() + "万" : this.toFixed(n, 2) + "万";
+        // }
+        // else if (num < 1000000000000) {
+        //     var n = num / 100000000;
+        //     result = this.isInteger(n) ? n.toString() + "亿" : this.toFixed(n, 2) + "亿";
+        // }
+        // else {
+        //     var n = num / 1000000000000;
+        //     result = this.isInteger(n) ? n.toString() + "兆" : this.toFixed(n, 2) + "兆";
+        // }
+        // return result;
+    };
+    CFun.getQueryString = function (argID) {
+        var reg = new RegExp("(^|&)" + argID + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return decodeURI(r[2]);
+        }
+        return null;
+    };
+    /**
+    * md5方式加密字符串
+    */
+    CFun.md5 = function (str) {
+        this.md5Object = this.md5Object || new md5();
+        return this.md5Object.hex_md5(str);
+    };
+    /**
+     * 格式化字符串函数
+     * 例：format("Hello {0}",world)
+     * @param str {string} 要格式化的字符串
+     * @param args {Array<any>} 参数列表
+     * @returns {string} 格式化之后的字符串
+     */
+    CFun.format = function (str) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        var result = str;
+        for (var i = 0; i < args.length; i++) {
+            result = result.replace("{" + i + "}", args[i].toString());
+        }
+        return result;
+    };
+    /**
+    * 日期格式化
+    */
+    CFun.formatDate = function (date, fmt) {
+        var o = {
+            "M+": date.getMonth() + 1,
+            "d+": date.getDate(),
+            "h+": date.getHours(),
+            "m+": date.getMinutes(),
+            "s+": date.getSeconds(),
+            "q+": Math.floor((date.getMonth() + 3) / 3),
+            "S": date.getMilliseconds() //毫秒   
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    };
+    /**
+    * 获取设备唯一号，暂时只支持安卓平台，别的平台用当前时间的md5代替
+    * @returns 设备唯一号
+    */
+    CFun.getIMEI = function () {
+        if (ExUtils.IMEI) {
+            return ExUtils.IMEI;
+        }
+        var result = laya.net.LocalStorage.getItem(StorageKeys.imei_windows);
+        if (!result) {
+            result = CFun.md5(CFun.formatDate(new Date(), "qqddMMhhmmS") + Math.random());
+            laya.net.LocalStorage.setItem(StorageKeys.imei_windows, result);
+        }
+        return result;
+    };
+    CFun.getLSItem = function (key, type) {
+        var localStorageItem = laya.net.LocalStorage.getItem(key);
+        switch (type) {
+            case "Array":
+                if (!localStorageItem) {
+                    return [];
+                }
+                else {
+                    return JSON.parse(localStorageItem);
+                }
+            case "Object":
+                if (!localStorageItem) {
+                    return {};
+                }
+                else {
+                    return JSON.parse(localStorageItem);
+                }
+            case "String":
+                if (!localStorageItem) {
+                    return "";
+                }
+                else {
+                    return localStorageItem;
+                }
+            case "Number":
+                if (!localStorageItem) {
+                    return NaN;
+                }
+                else {
+                    return parseFloat(localStorageItem);
+                }
+            case "Boolean":
+                if (!localStorageItem) {
+                    return false;
+                }
+                else {
+                    return localStorageItem == "true";
+                }
+        }
+    };
+    CFun.SCREEN_PRINT = true;
+    CFun.DEBUG = true;
+    return CFun;
+}());
+//# sourceMappingURL=CFun.js.map
+/**
+ * 类型定义
+ * @author	Fictiony
+ * @version	2017/7/10
+ */
+var TypeDef = /** @class */ (function () {
+    function TypeDef(def) {
+        /** 字段表：{字段名: 字段类型} */
+        this.defs = {};
+        /** 字段名列表 */
+        this.fields = [];
+        this.id = def.id;
+        this.name = def.name;
+        for (var _i = 0, _a = def.defs; _i < _a.length; _i++) {
+            var item = _a[_i];
+            this.fields.push(item.name);
+            this.defs[item.name] = item.type;
+        }
+    }
+    TypeDef.prototype.toString = function () {
+        if (this._info == null) {
+            var arr = [];
+            for (var _i = 0, _a = this.fields; _i < _a.length; _i++) {
+                var i = _a[_i];
+                arr.push(i + ":" + this.defs[i]);
+            }
+            this._info = "<Type " + this.name + " {" + arr.join(",") + "}>";
+        }
+        return this._info;
+    };
+    return TypeDef;
+}());
+//# sourceMappingURL=TypeDef.js.map
+/**
+     * 结构体数据
+     * @author	Fictiony
+     * @version	2017/7/11
+     */
+var Struct = /** @class */ (function () {
+    function Struct(type) {
+        this._type = type;
+    }
+    /**
+     * 创建新结构体对象（扩展结构体类定义）
+     */
+    Struct.createNew = function (type) {
+        return new Struct(type);
+    };
+    Object.defineProperty(Struct.prototype, "$type", {
+        /**
+         * 获取类型定义
+         */
+        get: function () {
+            return this._type;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * 判断是否包含指定字段
+     */
+    Struct.prototype.hasKey = function (name) {
+        return this._type.defs[name] != null;
+    };
+    return Struct;
+}());
+//# sourceMappingURL=Struct.js.map
+var SSend = /** @class */ (function () {
+    function SSend() {
+        this.e_id = 0;
+        this.sendClass = "";
+    }
+    Object.defineProperty(SSend.prototype, "method_id", {
+        set: function (val) {
+            this._method_id = val;
+            this._method = RpcDef.getMethodByID(val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SSend.prototype, "method", {
+        get: function () {
+            return this._method;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SSend.prototype.toString = function () {
+        return new Date()["format"]("dd-hh:mm:ss,S") + " 发送->" + this.sendClass + "->" + this._method_id + "->" + this._method["name"] + " {" + this.args + "}";
+    };
+    return SSend;
+}());
+//# sourceMappingURL=SSend.js.map
+/**
+ * RPC数据类型定义
+ * @author	Fictiony
+ * @version	2017/7/10
+ */
+var RpcType = /** @class */ (function () {
+    function RpcType() {
+    }
+    /**
+     * 整数
+     */
+    RpcType.intWriter = function (data, val) {
+        data.writeInt32(val);
+    };
+    RpcType.intReader = function (data) {
+        return data.getUint32();
+    };
+    RpcType.int8Writer = function (data, val) {
+        data.writeByte(val);
+    };
+    RpcType.int8Reader = function (data) {
+        return data.readByte();
+    };
+    RpcType.int16Writer = function (data, val) {
+        data.writeInt16(val);
+    };
+    RpcType.int16Reader = function (data) {
+        return data.getInt16();
+    };
+    RpcType.int48Writer = function (data, val) {
+        data.writeUint32(val);
+        data.writeInt16(Math.floor(val / 4294967296));
+    };
+    RpcType.int48Reader = function (data) {
+        return data.getUint32() + 4294967296 * data.getInt16();
+    };
+    /**
+     * 无符号整数
+     */
+    RpcType.uintReader = function (data) {
+        return data.getUint32();
+    };
+    RpcType.uintWriter = function (data, val) {
+        data.writeUint32(val);
+    };
+    RpcType.uint8Writer = function (data, val) {
+        data.writeByte(val);
+    };
+    RpcType.uint8Reader = function (data) {
+        return data.getUint8();
+    };
+    RpcType.uint16Writer = function (data, val) {
+        data.writeUint16(val);
+    };
+    RpcType.uint16Reader = function (data) {
+        return data.getUint16();
+    };
+    /**
+     * 浮点数
+     */
+    RpcType.doubleWriter = function (data, val) {
+        data.writeFloat64(val);
+    };
+    RpcType.doubleReader = function (data) {
+        return data.getFloat64();
+    };
+    RpcType.floatWriter = function (data, val) {
+        data.writeFloat32(val);
+    };
+    RpcType.floatReader = function (data) {
+        return data.getFloat32();
+    };
+    /**
+     * 布尔值
+     */
+    RpcType.boolWriter = function (data, val) {
+        data.writeByte(val ? 1 : 0);
+    };
+    RpcType.boolReader = function (data) {
+        return data.getByte() == 0;
+    };
+    /**
+     * 字符串
+     */
+    RpcType.stringWriter = function (data, val) {
+        this._buffer.length = 0;
+        this._buffer.writeUTFBytes(val);
+        if (this._buffer.length > 0xFFFF) {
+            this._buffer.length = 0xFFFF;
+        }
+        data.writeUint16(this._buffer.length);
+        data.writeArrayBuffer(this._buffer.buffer);
+    };
+    RpcType.stringReader = function (data) {
+        var len = data.getUint16();
+        return data.readUTFBytes(len);
+    };
+    RpcType.lstringWriter = function (data, val) {
+        this._buffer.length = 0;
+        this._buffer.writeUTFBytes(val);
+        data.writeUint16(this._buffer.length);
+        data.writeArrayBuffer(this._buffer.buffer);
+    };
+    RpcType.lstringReader = function (data) {
+        var len = data.getUint16();
+        return data.readUTFBytes(len);
+    };
+    /**
+     * 字节流
+     */
+    RpcType.arWriter = function (data, val) {
+        data.writeArrayBuffer(val.buffer, val.pos);
+    };
+    RpcType.arReader = function (data) {
+        var ar = new data.constructor;
+        // return ar;
+        ar.writeArrayBuffer(data.buffer, data.pos);
+        ar.pos = 0;
+        return ar;
+    };
+    /**
+     * 变长整数（最大限56位，不能为负数）
+     */
+    RpcType.vintWriter = function (data, val) {
+        while (val >= 0x80) {
+            data.writeByte(val | 0x80);
+            val = Math.floor(val / 128);
+        }
+        data.writeByte(val);
+    };
+    RpcType.vintReader = function (data) {
+        var ch = data.readByte();
+        var v = ch & 0x7F;
+        for (var i = 128; (ch & 0x80) && (data.bytesAvailable > 0); i *= 128) {
+            ch = data.readByte();
+            v += (ch & 0x7F) * i;
+        }
+        if (v == 0) {
+            console.log("");
+        }
+        return v;
+    };
+    /**
+     * 双浮点数
+     */
+    RpcType.float2Writer = function (data, val) {
+        data.writeFloat32(val.x);
+        data.writeFloat32(val.y);
+    };
+    RpcType.float2Reader = function (data) {
+        return new laya.maths.Point(data.getFloat32(), data.getFloat32());
+    };
+    /**
+     * 数组
+     */
+    RpcType.arrayWriter = function (data, val) {
+        data.writeInt16(val.$type.id);
+        data.writeInt16(val.length);
+        var writer = RpcDef.getTypeWriter(val.$type.name);
+        if (writer == null) {
+            throw new TypeError("Type writer not found: " + val.$type.name);
+        }
+        for (var _i = 0, val_1 = val; _i < val_1.length; _i++) {
+            var i = val_1[_i];
+            writer(data, i);
+        }
+    };
+    RpcType.arrayReader = function (data) {
+        var id = data.getInt16();
+        var v = RpcDef.newArray(id);
+        if (!v) {
+            throw new TypeError("Invalid array type id: " + id);
+        }
+        var len = data.getInt16();
+        var reader = RpcDef.getTypeReader(v.$type.name);
+        if (reader == null) {
+            throw new TypeError("Type reader not found: " + v.$type.name);
+        }
+        for (var i = 0; i < len; i++) {
+            v.push(reader(data));
+        }
+        return v;
+    };
+    /**
+     * 结构体
+     */
+    RpcType.structWriter = function (data, val) {
+        data.writeInt16(val.$type.id);
+        var defs = val.$type.defs;
+        for (var _i = 0, _a = val.$type.fields; _i < _a.length; _i++) {
+            var i = _a[_i];
+            var writer = RpcDef.getTypeWriter(defs[i]);
+            if (writer == null) {
+                throw new TypeError("Type writer not found: " + val.$type.name + "." + i + ":" + defs[i]);
+            }
+            writer(data, val[i]);
+        }
+    };
+    RpcType.structReader = function (data) {
+        var id = data.getInt16();
+        var v = RpcDef.newStruct(id);
+        if (!v) {
+            throw new TypeError("Invalid struct type id: " + id);
+        }
+        var defs = v.$type.defs;
+        for (var _i = 0, _a = v.$type.fields; _i < _a.length; _i++) {
+            var i = _a[_i];
+            var reader = RpcDef.getTypeReader(defs[i]);
+            if (reader == null) {
+                throw new TypeError("Type reader not found: " + v.$type.name + "." + i + ":" + defs[i]);
+            }
+            v[i] = reader(data);
+        }
+        return v;
+    };
+    /**
+     * 字典（暂未实现）
+     */
+    RpcType.tableWriter = function (data, val) {
+        //todo
+    };
+    RpcType.tableReader = function (data) {
+        return null; //todo
+    };
+    /**
+     * 压缩包（暂未实现）
+     */
+    RpcType.lzoWriter = function (data, val) {
+        //todo
+    };
+    RpcType.lzoReader = function (data) {
+        return null; //todo
+    };
+    /**
+     * 释放缓存（建议定时执行）
+     */
+    RpcType.clearBuffer = function () {
+        this._buffer.clear();
+    };
+    RpcType._buffer = new laya.utils.Byte(); //字节流缓存
+    return RpcType;
+}());
+//# sourceMappingURL=RpcType.js.map
+var RpcDef = /** @class */ (function () {
+    function RpcDef() {
+        this._dump = Dump;
+        RpcDef._version = this._dump.Digi;
+        RpcDef._type_writers = {};
+        RpcDef._type_readers = {};
+        RpcDef._type_defs = {};
+        RpcDef._method_id = {};
+        RpcDef._class_id = {};
+        RpcDef._class_props = {};
+        RpcDef._pro_id = {};
+        this.initDump();
+    }
+    RpcDef.getTypeReader = function (type) {
+        var f = this._type_readers[type];
+        if (!f)
+            CFun.throw("getTypeReader的" + type + "不存在");
+        return f;
+    };
+    /**
+     * 获取类型写入方法
+     * @param type	类型ID或类型名
+     * @return		类型写入方法，格式为：function( data:ByteArray, val:any ):void
+     */
+    RpcDef.getTypeWriter = function (type) {
+        var f = this._type_writers[type];
+        if (!f)
+            CFun.throw("getTypeWriter的" + type + "不存在");
+        return f;
+    };
+    RpcDef.getMethodByID = function (id) {
+        var o = this._method_id[id];
+        if (!o)
+            CFun.throw("getMethodByID的" + id + "不存在");
+        return o;
+    };
+    RpcDef.getModelClassByID = function (id) {
+        var m = this._class_id[id];
+        if (!m)
+            CFun.throw("getModelClassByID的" + id + "不存在");
+        return m;
+    };
+    RpcDef.getProByID = function (id) {
+        var p = this._pro_id[id];
+        if (!p) {
+            CFun.log("getProByID的" + id + "不存在"); //CFun.throw("getProByID的"+id+"不存在");
+        }
+        return p;
+    };
+    /**
+     * 创建指定类型的结构体
+     * @param type	类型ID或类型名
+     * @return		成功则返回结构体对象，否则返回null
+     */
+    RpcDef.newStruct = function (type) {
+        var def = this._type_defs[type];
+        if (def && def.id >= RpcDef.STRUCT_BASE_ID) {
+            return Struct.createNew(def);
+        }
+        return null;
+    };
+    /**
+     * 创建指定项类型的列表
+     * @param type	类型ID或类型名
+     * @return		成功则返回列表对象，否则返回null
+     */
+    RpcDef.newArray = function (type) {
+        var def = this._type_defs[type];
+        if (def) {
+            return new TypeArray(def);
+        }
+        return null;
+    };
+    Object.defineProperty(RpcDef, "version", {
+        /**
+         * 版本编号
+         */
+        get: function () {
+            return this._version;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    RpcDef.prototype.initDump = function () {
+        var arr_method = this._dump["MethodList"];
+        if (!arr_method)
+            CFun.throw("dump中的MethodList不存在");
+        var i, tobj, len = arr_method.length;
+        for (i = 0; i < len; i++) {
+            tobj = arr_method[i];
+            RpcDef._method_id[tobj["id"]] = tobj;
+        }
+        var arr_type = this._dump["TypeList"];
+        if (!arr_type)
+            CFun.throw("dump中的TypeList不存在");
+        len = arr_type.length;
+        for (i = 0; i < len; i++) {
+            var def_1 = new TypeDef(arr_type[i]);
+            RpcDef._type_defs[def_1.id] = RpcDef._type_defs[def_1.name] = def_1;
+            var type = def_1.id < RpcDef.STRUCT_BASE_ID ? def_1.name : "struct";
+            var writer = RpcType[type + "Writer"].bind(RpcType);
+            var reader = RpcType[type + "Reader"].bind(RpcType);
+            RpcDef._type_writers[def_1.id] = writer;
+            RpcDef._type_writers[def_1.name] = writer;
+            RpcDef._type_readers[def_1.id] = reader;
+            RpcDef._type_readers[def_1.name] = reader;
+        }
+        var arr_enter = this._dump["EntityList"];
+        if (!arr_enter)
+            CFun.throw("dump中的EntityList不存在");
+        len = arr_enter.length;
+        for (i = 0; i < len; i++) {
+            tobj = arr_enter[i];
+            RpcDef._class_id[tobj.id] = tobj.className;
+        }
+        var arr_pros = this._dump["PropList"];
+        if (!arr_pros)
+            CFun.throw("dump中的PropList不存在");
+        len = arr_pros.length;
+        for (i = 0; i < len; i++) {
+            tobj = arr_pros[i];
+            if (tobj.flag != "CLIENT" && tobj.flag != "ALLCLIENTS")
+                continue;
+            var def = new PropDef(tobj);
+            RpcDef._pro_id[def.id] = def;
+            if (!RpcDef._class_props[def.className]) {
+                RpcDef._class_props[def.className] = {};
+            }
+            RpcDef._class_props[def.className][def.id] = def;
+            RpcDef._class_props[def.className][def.name] = def;
+        }
+    };
+    RpcDef.STRUCT_BASE_ID = 20; //结构体类型起始ID
+    return RpcDef;
+}());
+//# sourceMappingURL=RpcDef.js.map
+/**
+     * 属性定义
+     * @author	Fictiony
+     * @version	2017/7/10
+     */
+var PropDef = /** @class */ (function () {
+    function PropDef(def) {
+        this.id = def.id;
+        this.name = def.name;
+        this.className = def.className;
+        this.type = def.type;
+        this._defVal = def.defVal;
+    }
+    Object.defineProperty(PropDef.prototype, "defVal", {
+        /**
+         * 默认值
+         */
+        get: function () {
+            switch (this.type) {
+                case "float2": return new laya.maths.Point;
+                case "array": return [];
+            }
+            return this._defVal;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PropDef.prototype, "writer", {
+        /**
+         * 属性写入方法
+         * @throw TypeError	属性类型未定义则抛出异常
+         */
+        get: function () {
+            if (!this._writer) {
+                this._writer = RpcDef.getTypeWriter(this.type);
+            }
+            if (this._writer == null) {
+                throw new TypeError("Property writer not found: " + this);
+            }
+            return this._writer;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PropDef.prototype, "reader", {
+        /**
+         * 属性读取方法
+         * @throw TypeError	属性类型未定义则抛出异常
+         */
+        get: function () {
+            if (!this._reader) {
+                this._reader = RpcDef.getTypeReader(this.type);
+            }
+            if (this._reader == null) {
+                throw new TypeError("Property reader not found: " + this);
+            }
+            return this._reader;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    PropDef.prototype.toString = function () {
+        if (this._info == null) {
+            this._info = "<Prop " + this.className + "." + this.name + ":" + this.type + ">";
+        }
+        return this._info;
+    };
+    return PropDef;
+}());
+//# sourceMappingURL=PropDef.js.map
+var Dump = {
+    "Digi": 44469,
+    "MethodList": [
+        { "id": 4026532845, "name": "ackAdjustTime", "className": "Gateway", "server": "server", "isStatic": true, "args": [{ "name": "clienttime", "type": "uint" }] },
+        { "id": 4026532846, "name": "checkVersion", "className": "Gateway", "server": "server", "isStatic": true, "args": [{ "name": "version", "type": "int" }] },
+        { "id": 4026532847, "name": "fixCode", "className": "Gateway", "server": "server", "isStatic": true, "args": [{ "name": "version", "type": "int" }, { "name": "code", "type": "string" }] },
+        { "id": 4026532848, "name": "heartBeat", "className": "Gateway", "server": "server", "isStatic": true, "args": [{ "name": "networkTime", "type": "uint" }] },
+        { "id": 4026532849, "name": "netStreamOk", "className": "Gateway", "server": "server", "isStatic": true, "args": [{ "name": "code", "type": "int8" }] },
+        { "id": 4026532850, "name": "reconnect", "className": "Gateway", "server": "server", "isStatic": true, "args": [{ "name": "oldsn", "type": "int" }, { "name": "packetsn", "type": "int" }, { "name": "code", "type": "int8" }] },
+        { "id": 4026531842, "name": "adjustTime", "className": "Client", "server": "server", "isStatic": true, "args": [{ "name": "networkTime", "type": "uint" }, { "name": "serverTime", "type": "uint" }] },
+        { "id": 4026531844, "name": "adjustTimeLatacy", "className": "Client", "server": "server", "isStatic": true, "args": [{ "name": "latacy", "type": "uint" }] },
+        { "id": 4026531841, "name": "connectError", "className": "Client", "server": "server", "isStatic": true, "args": [{ "name": "code", "type": "int8" }] },
+        { "id": 4026532854, "name": "createEntity", "className": "Client", "server": "server", "isStatic": true, "args": [{ "name": "eid", "type": "int48" }, { "name": "tid", "type": "int" }, { "name": "active", "type": "bool" }, { "name": "props", "type": "ar" }] },
+        { "id": 4026532855, "name": "reconnectResult", "className": "Client", "server": "server", "isStatic": true, "args": [{ "name": "code", "type": "int8" }] },
+        { "id": 4026532856, "name": "recvSvrErr", "className": "Client", "server": "server", "isStatic": true, "args": [{ "name": "err", "type": "string" }] },
+        { "id": 4026532857, "name": "removeEntity", "className": "Client", "server": "server", "isStatic": true, "args": [{ "name": "eid", "type": "int48" }] },
+        { "id": 4026531843, "name": "setNetSeed", "className": "Client", "server": "server", "isStatic": true, "args": [{ "name": "seed", "type": "int" }, { "name": "sn", "type": "int" }] },
+        { "id": 4026532859, "name": "syncProperty", "className": "Client", "server": "server", "isStatic": true, "args": [{ "name": "data", "type": "ar" }] },
+        { "id": 50332668, "name": "enterScene", "className": "Sprite", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332669, "name": "enterScene", "className": "Agent", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332670, "name": "openScene", "className": "Agent", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332671, "name": "enterScene", "className": "Robot", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332672, "name": "onCheckAccount", "className": "Account", "server": "client", "isStatic": false, "args": [{ "name": "code", "type": "int8" }] },
+        { "id": 50332673, "name": "onPlatformLogin", "className": "Account", "server": "client", "isStatic": false, "args": [{ "name": "code", "type": "int8" }] },
+        { "id": 50332674, "name": "recvServerInfo", "className": "Account", "server": "client", "isStatic": false, "args": [{ "name": "timeStamp", "type": "uint" }] },
+        { "id": 1027, "name": "checkAccount", "className": "Account", "server": "gateway", "isStatic": false, "args": [{ "name": "phone", "type": "string" }, { "name": "code", "type": "string" }, { "name": "localip", "type": "string" }, { "name": "guestmode", "type": "bool" }] },
+        { "id": 1028, "name": "fetchcode", "className": "Account", "server": "gateway", "isStatic": false, "args": [{ "name": "phone", "type": "string" }] },
+        { "id": 1029, "name": "platformLogin", "className": "Account", "server": "gateway", "isStatic": false, "args": [{ "name": "phone", "type": "string" }, { "name": "code", "type": "string" }, { "name": "localip", "type": "string" }, { "name": "guestmode", "type": "bool" }] },
+        { "id": 1030, "name": "quickLogin", "className": "Account", "server": "gateway", "isStatic": false, "args": [{ "name": "uId", "type": "string" }, { "name": "token", "type": "string" }, { "name": "localip", "type": "string" }, { "name": "deviceId", "type": "string" }, { "name": "netmode", "type": "string" }] },
+        { "id": 1031, "name": "startGame", "className": "Account", "server": "gateway", "isStatic": false, "args": [] },
+        { "id": 50332680, "name": "enterScene", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332681, "name": "openScene", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332682, "name": "enterSceneOK", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "code", "type": "uint8" }] },
+        { "id": 50332683, "name": "onAddNoticeMsg", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "msgSN", "type": "int" }, { "name": "msg", "type": "string" }, { "name": "gameType", "type": "string" }, { "name": "interval", "type": "int" }, { "name": "startTime", "type": "uint" }, { "name": "endTime", "type": "uint" }, { "name": "ab", "type": "string" }] },
+        { "id": 50332684, "name": "onAddRecord", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "gameType", "type": "string" }, { "name": "roomType", "type": "int" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "gameNo", "type": "string" }, { "name": "matchType", "type": "int" }, { "name": "take", "type": "int" }, { "name": "chip", "type": "int" }, { "name": "win", "type": "int" }, { "name": "deduct", "type": "int" }, { "name": "time", "type": "uint" }] },
+        { "id": 50332685, "name": "onAllNoticeMsg", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "noticeMsg", "type": "array" }] },
+        { "id": 50332686, "name": "onDelNoticeMsg", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "msgSN", "type": "int" }] },
+        { "id": 50332687, "name": "onEnterRoomList", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "roomData", "type": "string" }] },
+        { "id": 50332688, "name": "onGetGameList", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "gameList", "type": "string" }] },
+        { "id": 50332689, "name": "onGetGamePlayer", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "gamePlayer", "type": "array" }] },
+        { "id": 50332690, "name": "onGetRoomData", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "roomData", "type": "string" }] },
+        { "id": 50332691, "name": "onJoinGame", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "gameid", "type": "int" }, { "name": "errorCode", "type": "int" }] },
+        { "id": 50332692, "name": "onJoinRoom", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "ret", "type": "int" }] },
+        { "id": 50332693, "name": "onLoadRecords", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "recordList", "type": "array" }] },
+        { "id": 50332694, "name": "onQueue", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "roomType", "type": "int" }, { "name": "ret", "type": "int" }] },
+        { "id": 50332695, "name": "onQuitRoom", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "sn", "type": "int" }] },
+        { "id": 50332696, "name": "onRecvMsg", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "msgType", "type": "int" }, { "name": "srcname", "type": "string" }, { "name": "msg", "type": "string" }, { "name": "info", "type": "string" }] },
+        { "id": 50332697, "name": "onRecvMsgId", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "msgType", "type": "int" }, { "name": "srcname", "type": "string" }, { "name": "msgId", "type": "int" }, { "name": "paramList", "type": "array" }, { "name": "info", "type": "string" }] },
+        { "id": 50332698, "name": "onTakeChip", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "amount", "type": "int" }, { "name": "ret", "type": "int" }] },
+        { "id": 50332699, "name": "queueToClient", "className": "Player", "server": "client", "isStatic": false, "args": [{ "name": "info", "type": "string" }] },
+        { "id": 50332700, "name": "respIsConnect", "className": "Player", "server": "client", "isStatic": false, "args": [] },
+        { "id": 16778269, "name": "changeGameType", "className": "Player", "server": "hall", "isStatic": false, "args": [{ "name": "gameType", "type": "string" }] },
+        { "id": 16778270, "name": "changeIcon", "className": "Player", "server": "hall", "isStatic": false, "args": [{ "name": "icon", "type": "string" }] },
+        { "id": 16778271, "name": "changeName", "className": "Player", "server": "hall", "isStatic": false, "args": [{ "name": "name", "type": "string" }] },
+        { "id": 16778272, "name": "changeSex", "className": "Player", "server": "hall", "isStatic": false, "args": [{ "name": "sex", "type": "int8" }] },
+        { "id": 16778273, "name": "getAllNoticeMsg", "className": "Player", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778274, "name": "getGameList", "className": "Player", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778275, "name": "getGamePlayer", "className": "Player", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778276, "name": "getQueueInfo", "className": "Player", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778277, "name": "getRoomData", "className": "Player", "server": "hall", "isStatic": false, "args": [{ "name": "type", "type": "string" }] },
+        { "id": 16778278, "name": "incGold", "className": "Player", "server": "hall", "isStatic": false, "args": [{ "name": "money", "type": "int" }] },
+        { "id": 16778279, "name": "isConnect", "className": "Player", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778280, "name": "joinGame", "className": "Player", "server": "hall", "isStatic": false, "args": [{ "name": "gameid", "type": "int" }] },
+        { "id": 16778281, "name": "joinRoom", "className": "Player", "server": "hall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }] },
+        { "id": 16778282, "name": "queue", "className": "Player", "server": "hall", "isStatic": false, "args": [{ "name": "roomType", "type": "int" }] },
+        { "id": 16778283, "name": "takeChip", "className": "Player", "server": "hall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "amount", "type": "uint" }] },
+        { "id": 67109932, "name": "callGMOperation", "className": "ServerManager", "server": "back", "isStatic": false, "args": [{ "name": "ops", "type": "string" }, { "name": "param", "type": "string" }] },
+        { "id": 67109933, "name": "cutBackPlayerMoneyBack", "className": "ServerManager", "server": "back", "isStatic": false, "args": [{ "name": "callbackSn", "type": "int" }, { "name": "code", "type": "int" }] },
+        { "id": 67109934, "name": "dbgProxy", "className": "ServerManager", "server": "back", "isStatic": false, "args": [{ "name": "funcName", "type": "string" }, { "name": "tb", "type": "string" }] },
+        { "id": 67109935, "name": "finishCharge", "className": "ServerManager", "server": "back", "isStatic": false, "args": [{ "name": "user", "type": "string" }] },
+        { "id": 67109936, "name": "fixCode", "className": "ServerManager", "server": "back", "isStatic": false, "args": [{ "name": "version", "type": "int" }, { "name": "code", "type": "string" }] },
+        { "id": 67109937, "name": "getGatewayIDResult", "className": "ServerManager", "server": "back", "isStatic": false, "args": [{ "name": "tb", "type": "string" }] },
+        { "id": 67109938, "name": "onGamePlayer", "className": "ServerManager", "server": "back", "isStatic": false, "args": [{ "name": "totalGamePlayer", "type": "table" }, { "name": "maxGamePlayer", "type": "table" }, { "name": "totalPlayer", "type": "int" }, { "name": "maxPlayer", "type": "int" }, { "name": "totalRoomPlayer", "type": "table" }, { "name": "maxRoomPlayer", "type": "table" }, { "name": "totalRoomRobot", "type": "table" }, { "name": "maxRoomRobot", "type": "table" }] },
+        { "id": 67109939, "name": "runCallback", "className": "ServerManager", "server": "back", "isStatic": false, "args": [{ "name": "callbackSn", "type": "int" }, { "name": "code", "type": "int" }] },
+        { "id": 1076, "name": "callGMOperation", "className": "ServerManager", "server": "gateway", "isStatic": false, "args": [{ "name": "ops", "type": "string" }, { "name": "param", "type": "string" }] },
+        { "id": 1077, "name": "delHallId", "className": "ServerManager", "server": "gateway", "isStatic": false, "args": [{ "name": "ssn", "type": "int" }, { "name": "eid", "type": "int48" }] },
+        { "id": 1078, "name": "kickoff", "className": "ServerManager", "server": "gateway", "isStatic": false, "args": [{ "name": "ssn", "type": "int" }, { "name": "reason", "type": "int" }] },
+        { "id": 1079, "name": "setHallId", "className": "ServerManager", "server": "gateway", "isStatic": false, "args": [{ "name": "ssn", "type": "int" }, { "name": "eid", "type": "int48" }, { "name": "hallId", "type": "int" }] },
+        { "id": 16778296, "name": "broadcastSvrErr", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "err", "type": "string" }] },
+        { "id": 16778297, "name": "callGMOperation", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "ops", "type": "string" }, { "name": "param", "type": "string" }] },
+        { "id": 16778298, "name": "changeHall", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "eid", "type": "int48" }, { "name": "oldHall", "type": "int" }, { "name": "newHall", "type": "int" }] },
+        { "id": 16778299, "name": "cutBackPlayerMoney", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "modifyName", "type": "string" }, { "name": "modifyValue", "type": "int" }, { "name": "callbackSn", "type": "int" }] },
+        { "id": 16778300, "name": "cutBackPlayerMoneyBack", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "callbackSn", "type": "int" }, { "name": "code", "type": "int" }] },
+        { "id": 16778301, "name": "getGatewayIDForBack", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [] },
+        { "id": 16778302, "name": "heartbeat", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "type", "type": "int" }, { "name": "id", "type": "int" }] },
+        { "id": 16778303, "name": "incPlayerBatchData", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "tb", "type": "table" }] },
+        { "id": 16778304, "name": "incPlayerData", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "modifyName", "type": "string" }, { "name": "modifyValue", "type": "int" }] },
+        { "id": 16778305, "name": "joinServer", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "type", "type": "int" }, { "name": "id", "type": "int" }, { "name": "port", "type": "int16" }] },
+        { "id": 16778306, "name": "kickoff", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "reason", "type": "int" }] },
+        { "id": 16778307, "name": "kickoffByReplaceResult", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }] },
+        { "id": 16778308, "name": "modifyPlayerBatchData", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "tb", "type": "table" }] },
+        { "id": 16778309, "name": "modifyPlayerData", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "modifyName", "type": "string" }, { "name": "modifyValue", "type": "int" }] },
+        { "id": 16778310, "name": "offline", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "tb", "type": "string" }] },
+        { "id": 16778311, "name": "onPaySuccess", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "payInfo", "type": "table" }] },
+        { "id": 16778312, "name": "registerAttack", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "time", "type": "uint" }] },
+        { "id": 16778313, "name": "syncServerTypeResp", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sn", "type": "uint" }, { "name": "sid", "type": "int" }] },
+        { "id": 16778314, "name": "unregisterAttack", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }] },
+        { "id": 16778315, "name": "updateRidGameType", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "gameType", "type": "string" }] },
+        { "id": 16778316, "name": "upline", "className": "ServerManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "eid", "type": "int48" }, { "name": "ssn", "type": "int" }, { "name": "gateway", "type": "int" }, { "name": "hall", "type": "int" }, { "name": "name", "type": "string" }, { "name": "lv", "type": "int" }, { "name": "remoteip", "type": "string" }, { "name": "localip", "type": "string" }, { "name": "gameType", "type": "string" }] },
+        { "id": 16778317, "name": "callGMOperation", "className": "ServerManager", "server": "hall", "isStatic": false, "args": [{ "name": "ops", "type": "string" }, { "name": "param", "type": "string" }] },
+        { "id": 16778318, "name": "cutBackPlayerMoney", "className": "ServerManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "modifyName", "type": "string" }, { "name": "modifyValue", "type": "int" }, { "name": "callbackSn", "type": "int" }] },
+        { "id": 16778319, "name": "incPlayerBatchData", "className": "ServerManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "tb", "type": "table" }] },
+        { "id": 16778320, "name": "incPlayerData", "className": "ServerManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "modifyName", "type": "string" }, { "name": "modifyValue", "type": "int" }] },
+        { "id": 16778321, "name": "kickoffByReplace", "className": "ServerManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "eid", "type": "int48" }] },
+        { "id": 16778322, "name": "kickoffInHall", "className": "ServerManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "eid", "type": "int48" }, { "name": "reason", "type": "int" }] },
+        { "id": 16778323, "name": "modifyPlayerBatchData", "className": "ServerManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "tb", "type": "table" }] },
+        { "id": 16778324, "name": "modifyPlayerData", "className": "ServerManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "modifyName", "type": "string" }, { "name": "modifyValue", "type": "int" }] },
+        { "id": 16778325, "name": "onGamePlayer", "className": "ServerManager", "server": "hall", "isStatic": false, "args": [{ "name": "totalGamePlayer", "type": "table" }, { "name": "maxGamePlayer", "type": "table" }, { "name": "totalPlayer", "type": "int" }, { "name": "maxPlayer", "type": "int" }, { "name": "totalRoomPlayer", "type": "table" }, { "name": "maxRoomPlayer", "type": "table" }, { "name": "totalRoomRobot", "type": "table" }, { "name": "maxRoomRobot", "type": "table" }] },
+        { "id": 16778326, "name": "onPaySuccess", "className": "ServerManager", "server": "hall", "isStatic": false, "args": [{ "name": "payInfo", "type": "table" }] },
+        { "id": 16778327, "name": "recvServerInfo", "className": "ServerManager", "server": "hall", "isStatic": false, "args": [{ "name": "tb", "type": "string" }] },
+        { "id": 1112, "name": "jumpFail", "className": "SceneManager", "server": "gateway", "isStatic": false, "args": [{ "name": "eid", "type": "int48" }] },
+        { "id": 1113, "name": "reqInitSceneFail", "className": "SceneManager", "server": "gateway", "isStatic": false, "args": [{ "name": "eid", "type": "int48" }, { "name": "code", "type": "int8" }] },
+        { "id": 1114, "name": "reqInitSceneResult", "className": "SceneManager", "server": "gateway", "isStatic": false, "args": [{ "name": "hall", "type": "int" }, { "name": "sceneEid", "type": "int48" }, { "name": "sceneId", "type": "int" }, { "name": "accountEid", "type": "int48" }] },
+        { "id": 1115, "name": "updatePlayerTotalCount", "className": "SceneManager", "server": "gateway", "isStatic": false, "args": [{ "name": "count", "type": "int" }] },
+        { "id": 16778332, "name": "addPlayer", "className": "SceneManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "id", "type": "int" }, { "name": "sceneEid", "type": "int48" }] },
+        { "id": 16778333, "name": "allocSceneResult", "className": "SceneManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "id", "type": "int" }, { "name": "tag", "type": "string" }, { "name": "hall", "type": "int" }, { "name": "sceneEid", "type": "int48" }] },
+        { "id": 16778334, "name": "cancelReqInitScene", "className": "SceneManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "gateway", "type": "int" }, { "name": "ssn", "type": "int" }] },
+        { "id": 16778335, "name": "removePlayer", "className": "SceneManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "id", "type": "int" }, { "name": "sceneEid", "type": "int48" }] },
+        { "id": 16778336, "name": "removeScene", "className": "SceneManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "id", "type": "int" }, { "name": "sceneEid", "type": "int48" }] },
+        { "id": 16778337, "name": "reqEnterScene", "className": "SceneManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sceneId", "type": "int" }, { "name": "sceneTag", "type": "string" }, { "name": "rid", "type": "int48" }, { "name": "hall", "type": "int" }, { "name": "playerEid", "type": "int48" }] },
+        { "id": 16778338, "name": "reqInitScene", "className": "SceneManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sceneId", "type": "int" }, { "name": "sceneTag", "type": "string" }, { "name": "rid", "type": "int48" }, { "name": "gateway", "type": "int" }, { "name": "ssn", "type": "int" }, { "name": "accountEid", "type": "int48" }, { "name": "uflag", "type": "int" }] },
+        { "id": 16778339, "name": "allocScene", "className": "SceneManager", "server": "hall", "isStatic": false, "args": [{ "name": "id", "type": "int" }, { "name": "tag", "type": "string" }] },
+        { "id": 16778340, "name": "reqEnterSceneResult", "className": "SceneManager", "server": "hall", "isStatic": false, "args": [{ "name": "hall", "type": "int" }, { "name": "sceneEid", "type": "int48" }, { "name": "sceneId", "type": "int" }, { "name": "playerEid", "type": "int48" }] },
+        { "id": 67110032, "name": "announce", "className": "Admin", "server": "back", "isStatic": false, "args": [{ "name": "redisIP", "type": "string" }, { "name": "redisPort", "type": "int" }, { "name": "info", "type": "string" }] },
+        { "id": 67110033, "name": "checkAccount", "className": "Admin", "server": "back", "isStatic": false, "args": [{ "name": "user", "type": "string" }, { "name": "pwd", "type": "string" }] },
+        { "id": 67110034, "name": "reqActivePlayer", "className": "Admin", "server": "back", "isStatic": false, "args": [{ "name": "serverIdentify", "type": "string" }, { "name": "beginTime", "type": "int" }, { "name": "endTime", "type": "int" }] },
+        { "id": 67110035, "name": "reqAvgServerOnline", "className": "Admin", "server": "back", "isStatic": false, "args": [{ "name": "serverIdentify", "type": "string" }, { "name": "unixTime", "type": "int" }] },
+        { "id": 67110036, "name": "reqData", "className": "Admin", "server": "back", "isStatic": false, "args": [{ "name": "jsonStr", "type": "string" }] },
+        { "id": 67110037, "name": "reqPlayerUpgradeRecord", "className": "Admin", "server": "back", "isStatic": false, "args": [{ "name": "serverIdentify", "type": "string" }, { "name": "rid", "type": "int48" }, { "name": "beginTime", "type": "int" }, { "name": "endTime", "type": "int" }] },
+        { "id": 67110038, "name": "reqServerOnline", "className": "Admin", "server": "back", "isStatic": false, "args": [{ "name": "serverIdentify", "type": "string" }, { "name": "beginTimestamp", "type": "int" }, { "name": "endTimestamp", "type": "int" }] },
+        { "id": 67110039, "name": "reqSumPlayerUpAndOff", "className": "Admin", "server": "back", "isStatic": false, "args": [{ "name": "serverIdentify", "type": "string" }, { "name": "playerId", "type": "int48" }, { "name": "interval", "type": "int" }, { "name": "beginTime", "type": "int" }, { "name": "endTime", "type": "int" }] },
+        { "id": 67110040, "name": "reqUpdateServerOnline", "className": "Admin", "server": "back", "isStatic": false, "args": [{ "name": "serverIdentify", "type": "string" }, { "name": "beginTimestamp", "type": "int" }, { "name": "endTimestamp", "type": "int" }] },
+        { "id": 67110041, "name": "reqUserBasic", "className": "Admin", "server": "back", "isStatic": false, "args": [{ "name": "redisIP", "type": "string" }, { "name": "redisPort", "type": "int" }, { "name": "username", "type": "string" }, { "name": "role", "type": "string" }, { "name": "rid", "type": "int48" }] },
+        { "id": 67110042, "name": "reqUserInfo", "className": "Admin", "server": "back", "isStatic": false, "args": [{ "name": "redisIP", "type": "string" }, { "name": "redisPort", "type": "int" }, { "name": "rid", "type": "int48" }] },
+        { "id": 50332827, "name": "onCheckAccount", "className": "Admin", "server": "client", "isStatic": false, "args": [{ "name": "code", "type": "int" }, { "name": "privilege", "type": "string" }] },
+        { "id": 50332828, "name": "recvMenu", "className": "Admin", "server": "client", "isStatic": false, "args": [{ "name": "jsonStr", "type": "string" }] },
+        { "id": 50332829, "name": "resActivePlayer", "className": "Admin", "server": "client", "isStatic": false, "args": [{ "name": "jsonStr", "type": "string" }] },
+        { "id": 50332830, "name": "resAvgServerOnline", "className": "Admin", "server": "client", "isStatic": false, "args": [{ "name": "avgMin", "type": "double" }] },
+        { "id": 50332831, "name": "resData", "className": "Admin", "server": "client", "isStatic": false, "args": [{ "name": "jsonStr", "type": "lstring" }] },
+        { "id": 50332832, "name": "resPlayerUpgradeRecord", "className": "Admin", "server": "client", "isStatic": false, "args": [{ "name": "jsonStr", "type": "string" }] },
+        { "id": 50332833, "name": "resServerOnline", "className": "Admin", "server": "client", "isStatic": false, "args": [{ "name": "timestamp", "type": "int" }, { "name": "jsonStr", "type": "string" }] },
+        { "id": 50332834, "name": "resSumPlayerUpAndOff", "className": "Admin", "server": "client", "isStatic": false, "args": [{ "name": "jsonStr", "type": "string" }] },
+        { "id": 50332835, "name": "resUpdateServerOnline", "className": "Admin", "server": "client", "isStatic": false, "args": [{ "name": "jsonStr", "type": "string" }] },
+        { "id": 50332836, "name": "resUserBasic", "className": "Admin", "server": "client", "isStatic": false, "args": [{ "name": "username", "type": "string" }, { "name": "role", "type": "string" }, { "name": "rid", "type": "int48" }] },
+        { "id": 50332837, "name": "resUserInfo", "className": "Admin", "server": "client", "isStatic": false, "args": [{ "name": "jsonStr", "type": "string" }] },
+        { "id": 50332840, "name": "say", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "name", "type": "string" }, { "name": "clip", "type": "ar" }] },
+        { "id": 50332841, "name": "sitdown", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "rid", "type": "int48" }, { "name": "name", "type": "string" }, { "name": "icon", "type": "string" }, { "name": "sex", "type": "int8" }, { "name": "chip", "type": "int" }] },
+        { "id": 50332842, "name": "standup", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }] },
+        { "id": 50332843, "name": "takein", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "amount", "type": "int" }] },
+        { "id": 50332844, "name": "banker", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "times", "type": "int8" }] },
+        { "id": 50332845, "name": "bet", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "amount", "type": "int" }, { "name": "chip", "type": "int" }] },
+        { "id": 50332846, "name": "finishGame", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "code", "type": "int8" }] },
+        { "id": 50332847, "name": "grab", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "isGrab", "type": "bool" }, { "name": "times", "type": "int8" }] },
+        { "id": 50332848, "name": "overBet", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [] },
+        { "id": 50332849, "name": "sendHoleCard", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }] },
+        { "id": 50332850, "name": "sendResult", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "result", "type": "array" }, { "name": "cards", "type": "array" }, { "name": "kill", "type": "bool" }, { "name": "lost", "type": "bool" }] },
+        { "id": 50332851, "name": "showCard", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "holeCards", "type": "array" }, { "name": "type", "type": "int8" }] },
+        { "id": 50332852, "name": "sice", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "sice1", "type": "int8" }, { "name": "sice2", "type": "int8" }, { "name": "seat", "type": "int8" }] },
+        { "id": 50332853, "name": "startGame", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "activeList", "type": "array" }] },
+        { "id": 50332854, "name": "startNextHand", "className": "ErbaDesk", "server": "client", "isStatic": false, "args": [{ "name": "round", "type": "int8" }, { "name": "id", "type": "string" }] },
+        { "id": 50332855, "name": "enterScene", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332856, "name": "openScene", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332857, "name": "quit", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [{ "name": "ret", "type": "int" }] },
+        { "id": 50332858, "name": "robotAction", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [{ "name": "ps", "type": "bool" }, { "name": "cnt", "type": "string" }] },
+        { "id": 50332859, "name": "sitdown", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [{ "name": "seatNO", "type": "int" }, { "name": "ret", "type": "int" }] },
+        { "id": 50332860, "name": "standup", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [{ "name": "ret", "type": "int" }] },
+        { "id": 50332861, "name": "betting", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [{ "name": "times", "type": "array" }] },
+        { "id": 50332862, "name": "enterDesk", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [{ "name": "pokers", "type": "array" }] },
+        { "id": 50332863, "name": "getWinResult", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [{ "name": "result", "type": "array" }] },
+        { "id": 50332864, "name": "grab", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [{ "name": "times", "type": "array" }] },
+        { "id": 50332865, "name": "recvHoleCard", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [] },
+        { "id": 50332866, "name": "startBetting", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [] },
+        { "id": 50332867, "name": "startNextHand", "className": "ErbaAgent", "server": "client", "isStatic": false, "args": [{ "name": "round", "type": "int8" }, { "name": "roundId", "type": "string" }] },
+        { "id": 16778436, "name": "getAction", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778437, "name": "leave", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778438, "name": "pause", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [{ "name": "ps", "type": "bool" }] },
+        { "id": 16778439, "name": "quit", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778440, "name": "say", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [{ "name": "clip", "type": "ar" }] },
+        { "id": 16778441, "name": "sitdown", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [{ "name": "seatNO", "type": "int" }] },
+        { "id": 16778442, "name": "standup", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778443, "name": "betting", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [{ "name": "amount", "type": "int" }] },
+        { "id": 16778444, "name": "getBettingTimes", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778445, "name": "getGrabTimes", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778446, "name": "getWinResult", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778447, "name": "grab", "className": "ErbaAgent", "server": "hall", "isStatic": false, "args": [{ "name": "isGrab", "type": "bool" }, { "name": "times", "type": "int" }] },
+        { "id": 16778448, "name": "addRecord", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "gameType", "type": "string" }, { "name": "roomType", "type": "int" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "gameNo", "type": "string" }, { "name": "matchType", "type": "int" }, { "name": "take", "type": "int" }, { "name": "chip", "type": "int" }, { "name": "win", "type": "int" }, { "name": "deduct", "type": "int" }, { "name": "validBet", "type": "int" }, { "name": "time", "type": "uint" }] },
+        { "id": 16778449, "name": "checkAgentSitDown", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "rid", "type": "int48" }] },
+        { "id": 16778450, "name": "checkTake", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "take", "type": "int" }] },
+        { "id": 16778451, "name": "clearUsers", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }] },
+        { "id": 16778452, "name": "createRoom", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "info", "type": "table" }] },
+        { "id": 16778453, "name": "destroyRoom", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }] },
+        { "id": 16778454, "name": "joinRoom", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "rid", "type": "int48" }, { "name": "info", "type": "table" }] },
+        { "id": 16778455, "name": "onAgentFinishGame", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "roomType", "type": "int" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "gameNo", "type": "string" }, { "name": "matchType", "type": "int" }, { "name": "take", "type": "int" }, { "name": "chip", "type": "int" }, { "name": "win", "type": "int" }, { "name": "deduct", "type": "int" }, { "name": "validBet", "type": "int" }, { "name": "duration", "type": "int" }] },
+        { "id": 16778456, "name": "onCheckTake", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "take", "type": "int" }, { "name": "ret", "type": "int" }] },
+        { "id": 16778457, "name": "onCreateRoom", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "eid", "type": "int48" }, { "name": "info", "type": "table" }, { "name": "ret", "type": "int" }] },
+        { "id": 16778458, "name": "onJoinRoom", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "rid", "type": "int48" }, { "name": "info", "type": "table" }, { "name": "ret", "type": "int" }] },
+        { "id": 16778459, "name": "onPlayerDisconnect", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }] },
+        { "id": 16778460, "name": "onRoomDestroy", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }] },
+        { "id": 16778461, "name": "onTakeChip", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "rid", "type": "int48" }, { "name": "amount", "type": "int" }, { "name": "ret", "type": "int" }] },
+        { "id": 16778462, "name": "quitRoom", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "rid", "type": "int48" }] },
+        { "id": 16778463, "name": "takeChangeTake", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "chip", "type": "int" }] },
+        { "id": 16778464, "name": "takeChip", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "rid", "type": "int48" }, { "name": "amount", "type": "uint" }, { "name": "ownAmount", "type": "uint" }] },
+        { "id": 16778465, "name": "takeOverGame", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "chip", "type": "int" }] },
+        { "id": 16778466, "name": "takeReturnChip", "className": "RoomManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "chip", "type": "int" }] },
+        { "id": 16778467, "name": "addRecord", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "gameType", "type": "string" }, { "name": "roomType", "type": "int" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "gameNo", "type": "string" }, { "name": "matchType", "type": "int" }, { "name": "take", "type": "int" }, { "name": "chip", "type": "int" }, { "name": "win", "type": "int" }, { "name": "deduct", "type": "int" }, { "name": "validBet", "type": "int" }, { "name": "time", "type": "uint" }] },
+        { "id": 16778468, "name": "checkAgentSitDown", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "rid", "type": "int48" }] },
+        { "id": 16778469, "name": "checkTake", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "take", "type": "int" }] },
+        { "id": 16778470, "name": "createRoom", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "info", "type": "table" }] },
+        { "id": 16778471, "name": "joinRoom", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "rid", "type": "int48" }, { "name": "info", "type": "table" }] },
+        { "id": 16778472, "name": "onCheckTake", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "take", "type": "int" }, { "name": "ret", "type": "int" }] },
+        { "id": 16778473, "name": "onJoinRoom", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "rid", "type": "int48" }, { "name": "info", "type": "table" }, { "name": "ret", "type": "int" }] },
+        { "id": 16778474, "name": "onPlayerDisconnect", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "rid", "type": "int48" }] },
+        { "id": 16778475, "name": "onQuitRoom", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "rid", "type": "int48" }] },
+        { "id": 16778476, "name": "onTakeChip", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "rid", "type": "int48" }, { "name": "amount", "type": "int" }, { "name": "ret", "type": "int" }] },
+        { "id": 16778477, "name": "takeChangeTake", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "chip", "type": "int" }] },
+        { "id": 16778478, "name": "takeChip", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "rid", "type": "int48" }, { "name": "amount", "type": "uint" }, { "name": "ownAmount", "type": "uint" }] },
+        { "id": 16778479, "name": "takeOverGame", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "chip", "type": "int" }] },
+        { "id": 16778480, "name": "takeReturnChip", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "chip", "type": "int" }] },
+        { "id": 16778481, "name": "useRoom", "className": "RoomManager", "server": "hall", "isStatic": false, "args": [{ "name": "sn", "type": "int" }, { "name": "info", "type": "table" }] },
+        { "id": 50332914, "name": "enterScene", "className": "HoldemAgent", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332915, "name": "openScene", "className": "HoldemAgent", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332916, "name": "quit", "className": "HoldemAgent", "server": "client", "isStatic": false, "args": [{ "name": "ret", "type": "int" }] },
+        { "id": 50332917, "name": "robotAction", "className": "HoldemAgent", "server": "client", "isStatic": false, "args": [{ "name": "ps", "type": "bool" }, { "name": "cnt", "type": "string" }] },
+        { "id": 50332918, "name": "sitdown", "className": "HoldemAgent", "server": "client", "isStatic": false, "args": [{ "name": "seatNO", "type": "int" }, { "name": "ret", "type": "int" }] },
+        { "id": 50332919, "name": "standup", "className": "HoldemAgent", "server": "client", "isStatic": false, "args": [{ "name": "ret", "type": "int" }] },
+        { "id": 50332920, "name": "enterDeck", "className": "HoldemAgent", "server": "client", "isStatic": false, "args": [{ "name": "pokers", "type": "array" }, { "name": "publicCards", "type": "array" }, { "name": "myHoleCards", "type": "array" }, { "name": "gameNo", "type": "string" }] },
+        { "id": 50332921, "name": "notMyTurn", "className": "HoldemAgent", "server": "client", "isStatic": false, "args": [] },
+        { "id": 50332922, "name": "recvAllHoleCards", "className": "HoldemAgent", "server": "client", "isStatic": false, "args": [{ "name": "holeCards", "type": "array" }] },
+        { "id": 50332923, "name": "recvHoleCard", "className": "HoldemAgent", "server": "client", "isStatic": false, "args": [{ "name": "cards", "type": "array" }] },
+        { "id": 50332924, "name": "startNextHand", "className": "HoldemAgent", "server": "client", "isStatic": false, "args": [{ "name": "activeList", "type": "array" }, { "name": "gameNo", "type": "string" }] },
+        { "id": 16778493, "name": "getAction", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778494, "name": "leave", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778495, "name": "pause", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [{ "name": "ps", "type": "bool" }] },
+        { "id": 16778496, "name": "quit", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778497, "name": "say", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [{ "name": "clip", "type": "ar" }] },
+        { "id": 16778498, "name": "sitdown", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [{ "name": "seatNO", "type": "int" }] },
+        { "id": 16778499, "name": "standup", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778500, "name": "changeCardByName", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [{ "name": "seat", "type": "int" }, { "name": "cardstring", "type": "string" }] },
+        { "id": 16778501, "name": "doBet", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [{ "name": "amount", "type": "int" }] },
+        { "id": 16778502, "name": "fold", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778503, "name": "viewCardOne", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [{ "name": "isViewCardOne", "type": "bool" }] },
+        { "id": 16778504, "name": "viewCardTwo", "className": "HoldemAgent", "server": "hall", "isStatic": false, "args": [{ "name": "isViewCardTwo", "type": "bool" }] },
+        { "id": 50332937, "name": "enterScene", "className": "HoldemRobot", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332938, "name": "enterScene", "className": "ErbaRobot", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50332939, "name": "say", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "name", "type": "string" }, { "name": "clip", "type": "ar" }] },
+        { "id": 50332940, "name": "sitdown", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "rid", "type": "int48" }, { "name": "name", "type": "string" }, { "name": "icon", "type": "string" }, { "name": "sex", "type": "int8" }, { "name": "chip", "type": "int" }] },
+        { "id": 50332941, "name": "standup", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }] },
+        { "id": 50332942, "name": "takein", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "amount", "type": "int" }] },
+        { "id": 50332943, "name": "delay", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "cd", "type": "int" }] },
+        { "id": 50332944, "name": "earlyWin", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }] },
+        { "id": 50332945, "name": "openFlop", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "cards", "type": "array" }] },
+        { "id": 50332946, "name": "openRiver", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "card", "type": "int8" }] },
+        { "id": 50332947, "name": "openTurn", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "card", "type": "int8" }] },
+        { "id": 50332948, "name": "play", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "action", "type": "int8" }, { "name": "bet", "type": "int" }] },
+        { "id": 50332949, "name": "showCard", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "holeCards", "type": "array" }] },
+        { "id": 50332950, "name": "showdown", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "holeCards", "type": "array" }, { "name": "bestHands", "type": "array" }, { "name": "winner", "type": "array" }] },
+        { "id": 50332951, "name": "startNextHand", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "activeList", "type": "array" }, { "name": "gameNo", "type": "string" }] },
+        { "id": 50332952, "name": "viewCard", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "holeCards", "type": "array" }] },
+        { "id": 50332953, "name": "wait", "className": "HoldemDeck", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "action", "type": "int8" }, { "name": "cd", "type": "int" }] },
+        { "id": 67110170, "name": "onAllPlatformData", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "params", "type": "table" }, { "name": "info", "type": "table" }] },
+        { "id": 67110171, "name": "onInfo", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "info", "type": "table" }] },
+        { "id": 67110172, "name": "onLineInfo", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "lineData", "type": "table" }] },
+        { "id": 67110173, "name": "onLineParams", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "lineParams", "type": "table" }] },
+        { "id": 67110174, "name": "onParams", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "params", "type": "table" }] },
+        { "id": 67110175, "name": "onPlatformInfo", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "platformData", "type": "table" }] },
+        { "id": 67110176, "name": "onPlatformParams", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "params", "type": "table" }] },
+        { "id": 67110177, "name": "onUpdateGameList", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "gameId", "type": "int" }, { "name": "status", "type": "int" }] },
+        { "id": 67110178, "name": "onUpdateLineMatchFlag", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "roomId", "type": "int" }, { "name": "matchFlag", "type": "int" }] },
+        { "id": 67110179, "name": "onUpdateLineNoDive", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "noDive", "type": "bool" }] },
+        { "id": 67110180, "name": "onUpdateMaintainStatus", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "status", "type": "int" }] },
+        { "id": 67110181, "name": "onUpdatePlatformDeductRate", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "roomId", "type": "int" }, { "name": "deductRate", "type": "float" }] },
+        { "id": 67110182, "name": "onUpdatePlatformExRate", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "exRate", "type": "int" }] },
+        { "id": 67110183, "name": "onUpdatePlatformMatchFlag", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "roomId", "type": "int" }, { "name": "matchFlag", "type": "int" }] },
+        { "id": 67110184, "name": "onUpdatePlatformPublicId", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "publicId", "type": "int" }] },
+        { "id": 67110185, "name": "onUpdateRoomMsgProfit", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "roomId", "type": "int" }, { "name": "profit", "type": "int" }] },
+        { "id": 67110186, "name": "onUpdateWealMoney", "className": "PlatformManager", "server": "back", "isStatic": false, "args": [{ "name": "wealMoneyScale", "type": "int" }, { "name": "wealMoney", "type": "int" }, { "name": "killRate", "type": "float" }] },
+        { "id": 16778539, "name": "getAllPlatformData", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [] },
+        { "id": 16778540, "name": "hotUpdateCode", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "str", "type": "string" }] },
+        { "id": 16778541, "name": "onTotalGame", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "roomType", "type": "int" }, { "name": "totalInfo", "type": "table" }] },
+        { "id": 16778542, "name": "updateGameList", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "gameId", "type": "int" }, { "name": "status", "type": "int" }] },
+        { "id": 16778543, "name": "updateInfo", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "info", "type": "table" }, { "name": "mode", "type": "bool" }] },
+        { "id": 16778544, "name": "updateLineInfo", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "lineData", "type": "table" }, { "name": "mode", "type": "bool" }] },
+        { "id": 16778545, "name": "updateLineMatchFlag", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "roomId", "type": "int" }, { "name": "matchFlag", "type": "int" }] },
+        { "id": 16778546, "name": "updateLineNoDive", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "noDive", "type": "bool" }, { "name": "expectwinD", "type": "int" }, { "name": "linewinD", "type": "int" }, { "name": "expectwinA", "type": "int" }, { "name": "linewinA", "type": "int" }] },
+        { "id": 16778547, "name": "updateLineParams", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "lineData", "type": "table" }, { "name": "mode", "type": "bool" }] },
+        { "id": 16778548, "name": "updateMaintainStatus", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "status", "type": "int" }] },
+        { "id": 16778549, "name": "updateParams", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "params", "type": "table" }, { "name": "mode", "type": "bool" }] },
+        { "id": 16778550, "name": "updatePlatformDeductRate", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "roomId", "type": "int" }, { "name": "deductRate", "type": "float" }] },
+        { "id": 16778551, "name": "updatePlatformExRate", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "exRate", "type": "int" }] },
+        { "id": 16778552, "name": "updatePlatformInfo", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "platformData", "type": "table" }, { "name": "mode", "type": "bool" }] },
+        { "id": 16778553, "name": "updatePlatformMatchFlag", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "matchFlag", "type": "int" }, { "name": "roomId", "type": "int" }] },
+        { "id": 16778554, "name": "updatePlatformParams", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "platformData", "type": "table" }, { "name": "mode", "type": "bool" }] },
+        { "id": 16778555, "name": "updatePlatformPublicId", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "publicId", "type": "int" }] },
+        { "id": 16778556, "name": "updateRoomMsgProfit", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "roomId", "type": "int" }, { "name": "profit", "type": "int" }] },
+        { "id": 16778557, "name": "updateWealMoney", "className": "PlatformManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "wealMoneyScale", "type": "int" }, { "name": "wealMoney", "type": "int" }, { "name": "killRate", "type": "float" }] },
+        { "id": 16778558, "name": "onAllPlatformData", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "params", "type": "table" }, { "name": "info", "type": "table" }] },
+        { "id": 16778559, "name": "onInfo", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "info", "type": "table" }] },
+        { "id": 16778560, "name": "onLineInfo", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "lineData", "type": "table" }] },
+        { "id": 16778561, "name": "onLineParams", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "lineParams", "type": "table" }] },
+        { "id": 16778562, "name": "onParams", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "params", "type": "table" }] },
+        { "id": 16778563, "name": "onPlatformInfo", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "platformData", "type": "table" }] },
+        { "id": 16778564, "name": "onPlatformParams", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "params", "type": "table" }] },
+        { "id": 16778565, "name": "onUpdateGameList", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "gameId", "type": "int" }, { "name": "status", "type": "int" }] },
+        { "id": 16778566, "name": "onUpdateLineMatchFlag", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "roomId", "type": "int" }, { "name": "matchFlag", "type": "int" }] },
+        { "id": 16778567, "name": "onUpdateLineNoDive", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "lineCode", "type": "string" }, { "name": "noDive", "type": "bool" }, { "name": "info", "type": "table" }] },
+        { "id": 16778568, "name": "onUpdateMaintainStatus", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "status", "type": "int" }] },
+        { "id": 16778569, "name": "onUpdatePlatformDeductRate", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "roomId", "type": "int" }, { "name": "deductRate", "type": "float" }] },
+        { "id": 16778570, "name": "onUpdatePlatformExRate", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "exRate", "type": "int" }] },
+        { "id": 16778571, "name": "onUpdatePlatformMatchFlag", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "roomId", "type": "int" }, { "name": "matchFlag", "type": "int" }] },
+        { "id": 16778572, "name": "onUpdatePlatformPublicId", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "platformId", "type": "int" }, { "name": "publicId", "type": "int" }] },
+        { "id": 16778573, "name": "onUpdateRoomMsgProfit", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "roomId", "type": "int" }, { "name": "profit", "type": "int" }] },
+        { "id": 16778574, "name": "onUpdateWealMoney", "className": "PlatformManager", "server": "hall", "isStatic": false, "args": [{ "name": "wealMoneyScale", "type": "int" }, { "name": "wealMoney", "type": "int" }, { "name": "killRate", "type": "float" }] },
+        { "id": 50333007, "name": "say", "className": "Room", "server": "client", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "name", "type": "string" }, { "name": "clip", "type": "ar" }] },
+        { "id": 50333008, "name": "sitdown", "className": "Room", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "rid", "type": "int48" }, { "name": "name", "type": "string" }, { "name": "icon", "type": "string" }, { "name": "sex", "type": "int8" }, { "name": "chip", "type": "int" }] },
+        { "id": 50333009, "name": "standup", "className": "Room", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }] },
+        { "id": 50333010, "name": "takein", "className": "Room", "server": "client", "isStatic": false, "args": [{ "name": "seat", "type": "int8" }, { "name": "amount", "type": "int" }] },
+        { "id": 50333011, "name": "enterScene", "className": "RoomAgent", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50333012, "name": "openScene", "className": "RoomAgent", "server": "client", "isStatic": false, "args": [{ "name": "sceneEid", "type": "int48" }] },
+        { "id": 50333013, "name": "quit", "className": "RoomAgent", "server": "client", "isStatic": false, "args": [{ "name": "ret", "type": "int" }] },
+        { "id": 50333014, "name": "robotAction", "className": "RoomAgent", "server": "client", "isStatic": false, "args": [{ "name": "ps", "type": "bool" }, { "name": "cnt", "type": "string" }] },
+        { "id": 50333015, "name": "sitdown", "className": "RoomAgent", "server": "client", "isStatic": false, "args": [{ "name": "seatNO", "type": "int" }, { "name": "ret", "type": "int" }] },
+        { "id": 50333016, "name": "standup", "className": "RoomAgent", "server": "client", "isStatic": false, "args": [{ "name": "ret", "type": "int" }] },
+        { "id": 16778585, "name": "getAction", "className": "RoomAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778586, "name": "leave", "className": "RoomAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778587, "name": "pause", "className": "RoomAgent", "server": "hall", "isStatic": false, "args": [{ "name": "ps", "type": "bool" }] },
+        { "id": 16778588, "name": "quit", "className": "RoomAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778589, "name": "say", "className": "RoomAgent", "server": "hall", "isStatic": false, "args": [{ "name": "clip", "type": "ar" }] },
+        { "id": 16778590, "name": "sitdown", "className": "RoomAgent", "server": "hall", "isStatic": false, "args": [{ "name": "seatNO", "type": "int" }] },
+        { "id": 16778591, "name": "standup", "className": "RoomAgent", "server": "hall", "isStatic": false, "args": [] },
+        { "id": 16778592, "name": "changeAutoQueue", "className": "QueueManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "name", "type": "string" }, { "name": "roomType", "type": "int" }, { "name": "info", "type": "table" }] },
+        { "id": 16778593, "name": "onAutoQueue", "className": "QueueManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "roomType", "type": "int" }, { "name": "ret", "type": "int" }] },
+        { "id": 16778594, "name": "onAutoQueueSuccess", "className": "QueueManager", "server": "hall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "sn", "type": "int" }, { "name": "roomType", "type": "int" }, { "name": "gameType", "type": "string" }, { "name": "info", "type": "table" }] },
+        { "id": 67110243, "name": "onRobotInfo", "className": "RobotManager", "server": "back", "isStatic": false, "args": [{ "name": "info", "type": "table" }] },
+        { "id": 16778596, "name": "getRobotInfo", "className": "RobotManager", "server": "globalhall", "isStatic": false, "args": [] },
+        { "id": 16778597, "name": "onRobotFinishGame", "className": "RobotManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "rid", "type": "int48" }, { "name": "roomType", "type": "int" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "matchType", "type": "int" }, { "name": "aid", "type": "int" }, { "name": "take", "type": "int" }, { "name": "chip", "type": "int" }, { "name": "win", "type": "int" }, { "name": "deduct", "type": "int" }, { "name": "validBet", "type": "int" }] },
+        { "id": 16778598, "name": "onRobotInfo", "className": "RobotManager", "server": "hall", "isStatic": false, "args": [{ "name": "info", "type": "table" }] },
+        { "id": 16778599, "name": "addNoticeMsg", "className": "MsgManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "msgSN", "type": "int" }, { "name": "msg", "type": "string" }, { "name": "gameType", "type": "string" }, { "name": "interval", "type": "int" }, { "name": "startTime", "type": "uint" }, { "name": "endTime", "type": "uint" }, { "name": "ab", "type": "string" }] },
+        { "id": 16778600, "name": "delNoticeMsg", "className": "MsgManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "msgSN", "type": "int" }] },
+        { "id": 16778601, "name": "getNoticeMsg", "className": "MsgManager", "server": "globalhall", "isStatic": false, "args": [] },
+        { "id": 16778602, "name": "sendAllMsg", "className": "MsgManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "msg", "type": "string" }, { "name": "gameType", "type": "string" }, { "name": "msgType", "type": "int" }, { "name": "srcname", "type": "string" }, { "name": "info", "type": "string" }] },
+        { "id": 16778603, "name": "sendAllMsgId", "className": "MsgManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "msgId", "type": "int" }, { "name": "paramList", "type": "table" }, { "name": "gameType", "type": "string" }, { "name": "msgType", "type": "int" }, { "name": "srcname", "type": "string" }, { "name": "info", "type": "string" }] },
+        { "id": 16778604, "name": "sendMsg", "className": "MsgManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "msg", "type": "table" }] },
+        { "id": 16778605, "name": "sendNameMsg", "className": "MsgManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "dstname", "type": "string" }, { "name": "msg", "type": "string" }, { "name": "gameType", "type": "string" }, { "name": "msgType", "type": "int" }, { "name": "srcname", "type": "string" }, { "name": "info", "type": "string" }] },
+        { "id": 16778606, "name": "sendNameMsgId", "className": "MsgManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "dstname", "type": "string" }, { "name": "msgId", "type": "int" }, { "name": "paramList", "type": "table" }, { "name": "gameType", "type": "string" }, { "name": "msgType", "type": "int" }, { "name": "srcname", "type": "string" }, { "name": "info", "type": "string" }] },
+        { "id": 16778607, "name": "sendRidMsg", "className": "MsgManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "dstrid", "type": "int48" }, { "name": "msg", "type": "string" }, { "name": "gameType", "type": "string" }, { "name": "msgType", "type": "int" }, { "name": "srcname", "type": "string" }, { "name": "info", "type": "string" }] },
+        { "id": 16778608, "name": "sendRidMsgId", "className": "MsgManager", "server": "globalhall", "isStatic": false, "args": [{ "name": "dstrid", "type": "int48" }, { "name": "msgId", "type": "int" }, { "name": "paramList", "type": "table" }, { "name": "gameType", "type": "string" }, { "name": "msgType", "type": "int" }, { "name": "srcname", "type": "string" }, { "name": "info", "type": "string" }] },
+        { "id": 16778609, "name": "onAddNoticeMsg", "className": "MsgManager", "server": "hall", "isStatic": false, "args": [{ "name": "msgSN", "type": "int" }, { "name": "msg", "type": "string" }, { "name": "gameType", "type": "string" }, { "name": "interval", "type": "int" }, { "name": "startTime", "type": "uint" }, { "name": "endTime", "type": "uint" }, { "name": "ab", "type": "string" }] },
+        { "id": 16778610, "name": "onAllNoticeMsg", "className": "MsgManager", "server": "hall", "isStatic": false, "args": [{ "name": "noticeMsg", "type": "table" }] },
+        { "id": 16778611, "name": "onDelNoticeMsg", "className": "MsgManager", "server": "hall", "isStatic": false, "args": [{ "name": "msgSN", "type": "int" }] },
+        { "id": 16778612, "name": "recvMsg", "className": "MsgManager", "server": "hall", "isStatic": false, "args": [{ "name": "msg", "type": "table" }] }
+    ],
+    "PropList": [
+        { "id": 1, "name": "name", "className": "Sprite", "type": "string", "defVal": "nonamed", "flag": "CLIENT" },
+        { "id": 2, "name": "sceneId", "className": "Sprite", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 3, "name": "sceneTag", "className": "Sprite", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 4, "name": "name", "className": "Agent", "type": "string", "defVal": "nonamed", "flag": "CLIENT" },
+        { "id": 5, "name": "sceneId", "className": "Agent", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 6, "name": "sceneTag", "className": "Agent", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 7, "name": "rid", "className": "Agent", "type": "int48", "defVal": 0, "flag": "CLIENT" },
+        { "id": 8, "name": "name", "className": "Robot", "type": "string", "defVal": "nonamed", "flag": "CLIENT" },
+        { "id": 9, "name": "sceneId", "className": "Robot", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 10, "name": "sceneTag", "className": "Robot", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 11, "name": "rid", "className": "Robot", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 12, "name": "name", "className": "Player", "type": "string", "defVal": "nonamed", "flag": "CLIENT" },
+        { "id": 13, "name": "sceneId", "className": "Player", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 14, "name": "sceneTag", "className": "Player", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 15, "name": "rid", "className": "Player", "type": "int48", "defVal": 0, "flag": "CLIENT" },
+        { "id": 16, "name": "accountId", "className": "Player", "type": "string", "defVal": "nonamed", "flag": "SERVER" },
+        { "id": 17, "name": "channelId", "className": "Player", "type": "string", "defVal": "none", "flag": "SERVER" },
+        { "id": 18, "name": "dayDeductGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 19, "name": "dayDiveGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 20, "name": "dayFTime", "className": "Player", "type": "uint", "defVal": 0, "flag": "SERVER" },
+        { "id": 21, "name": "dayKillGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 22, "name": "dayLostGames", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 23, "name": "dayLostGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 24, "name": "dayTotalGames", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 25, "name": "dayValidBet", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 26, "name": "dayWinGames", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 27, "name": "dayWinGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 28, "name": "debugFlag", "className": "Player", "type": "bool", "defVal": 0, "flag": "CLIENT" },
+        { "id": 29, "name": "deductGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 30, "name": "diveGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 31, "name": "firstLogin", "className": "Player", "type": "uint", "defVal": 0, "flag": "SERVER" },
+        { "id": 32, "name": "gameMatchType", "className": "Player", "type": "int48", "defVal": 0, "flag": "CLIENT" },
+        { "id": 33, "name": "gameType", "className": "Player", "type": "string", "defVal": "main", "flag": "CLIENT" },
+        { "id": 34, "name": "gold", "className": "Player", "type": "int48", "defVal": 0, "flag": "CLIENT" },
+        { "id": 35, "name": "haveGames", "className": "Player", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 36, "name": "icon", "className": "Player", "type": "string", "defVal": "0", "flag": "CLIENT" },
+        { "id": 37, "name": "iconType", "className": "Player", "type": "int8", "defVal": 0, "flag": "CLIENT" },
+        { "id": 38, "name": "isOnline", "className": "Player", "type": "bool", "defVal": true, "flag": "SERVER" },
+        { "id": 39, "name": "killGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 40, "name": "lang", "className": "Player", "type": "string", "defVal": "nonamed", "flag": "SERVER" },
+        { "id": 41, "name": "level", "className": "Player", "type": "int", "defVal": 1, "flag": "CLIENT" },
+        { "id": 42, "name": "lineCode", "className": "Player", "type": "string", "defVal": "1", "flag": "CLIENT" },
+        { "id": 43, "name": "lockGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "CLIENT" },
+        { "id": 44, "name": "lostGames", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 45, "name": "lostGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 46, "name": "monthDeductGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 47, "name": "monthDiveGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 48, "name": "monthKillGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 49, "name": "monthLostGames", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 50, "name": "monthLostGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 51, "name": "monthTotalGames", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 52, "name": "monthValidBet", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 53, "name": "monthWinGames", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 54, "name": "monthWinGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 55, "name": "newbie", "className": "Player", "type": "bool", "defVal": true, "flag": "SERVER" },
+        { "id": 56, "name": "nickname", "className": "Player", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 57, "name": "offlineTime", "className": "Player", "type": "uint", "defVal": 0, "flag": "SERVER" },
+        { "id": 58, "name": "platformFlag", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 59, "name": "platformId", "className": "Player", "type": "int", "defVal": 1, "flag": "CLIENT" },
+        { "id": 60, "name": "platformUserId", "className": "Player", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 61, "name": "queueRoomType", "className": "Player", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 62, "name": "regIp", "className": "Player", "type": "string", "defVal": "nonamed", "flag": "SERVER" },
+        { "id": 63, "name": "roomSN", "className": "Player", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 64, "name": "sex", "className": "Player", "type": "int8", "defVal": 0, "flag": "CLIENT" },
+        { "id": 65, "name": "statusFlag", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 66, "name": "svrId", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 67, "name": "totalGames", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 68, "name": "tutorial", "className": "Player", "type": "bool", "defVal": true, "flag": "SERVER" },
+        { "id": 69, "name": "uplineTime", "className": "Player", "type": "uint", "defVal": 0, "flag": "SERVER" },
+        { "id": 70, "name": "validBet", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 71, "name": "vipLevel", "className": "Player", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 72, "name": "winGames", "className": "Player", "type": "int", "defVal": 0, "flag": "SERVER" },
+        { "id": 73, "name": "winGold", "className": "Player", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 74, "name": "sceneId", "className": "CityScene", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 75, "name": "tag", "className": "CityScene", "type": "string", "defVal": "", "flag": "ALLCLIENTS" },
+        { "id": 76, "name": "sceneId", "className": "Scene", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 77, "name": "tag", "className": "Scene", "type": "string", "defVal": "", "flag": "ALLCLIENTS" },
+        { "id": 78, "name": "sceneId", "className": "ErbaDesk", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 79, "name": "tag", "className": "ErbaDesk", "type": "string", "defVal": "", "flag": "ALLCLIENTS" },
+        { "id": 80, "name": "chip", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 81, "name": "closeTime", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 82, "name": "createTime", "className": "ErbaDesk", "type": "int48", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 83, "name": "defaultTakeIn", "className": "ErbaDesk", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 84, "name": "gamesn", "className": "ErbaDesk", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 85, "name": "isPause", "className": "ErbaDesk", "type": "bool", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 86, "name": "isPlaying", "className": "ErbaDesk", "type": "bool", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 87, "name": "maxTakeIn", "className": "ErbaDesk", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 88, "name": "minTakeIn", "className": "ErbaDesk", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 89, "name": "roomType", "className": "ErbaDesk", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 90, "name": "size", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 91, "name": "sn", "className": "ErbaDesk", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 92, "name": "blink", "className": "ErbaDesk", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 93, "name": "cardRecordStr", "className": "ErbaDesk", "type": "string", "defVal": "", "flag": "ALLCLIENTS" },
+        { "id": 94, "name": "currentNo", "className": "ErbaDesk", "type": "int", "defVal": -1, "flag": "ALLCLIENTS" },
+        { "id": 95, "name": "dealer", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 96, "name": "dealerTimes", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 97, "name": "grabTime", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 98, "name": "pot", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 99, "name": "round", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 100, "name": "sice1", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 101, "name": "sice2", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 102, "name": "stage", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 103, "name": "turnExpired", "className": "ErbaDesk", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 104, "name": "name", "className": "ErbaAgent", "type": "string", "defVal": "nonamed", "flag": "CLIENT" },
+        { "id": 105, "name": "sceneId", "className": "ErbaAgent", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 106, "name": "sceneTag", "className": "ErbaAgent", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 107, "name": "rid", "className": "ErbaAgent", "type": "int48", "defVal": 0, "flag": "CLIENT" },
+        { "id": 108, "name": "bet", "className": "ErbaAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 109, "name": "chip", "className": "ErbaAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 110, "name": "deductRate", "className": "ErbaAgent", "type": "float", "defVal": 0.05, "flag": "CLIENT" },
+        { "id": 111, "name": "lineCode", "className": "ErbaAgent", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 112, "name": "platformId", "className": "ErbaAgent", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 113, "name": "seatNO", "className": "ErbaAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 114, "name": "sn", "className": "ErbaAgent", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 115, "name": "take", "className": "ErbaAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 116, "name": "gameNo", "className": "ErbaAgent", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 117, "name": "grabTime", "className": "ErbaAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 118, "name": "name", "className": "HoldemAgent", "type": "string", "defVal": "nonamed", "flag": "CLIENT" },
+        { "id": 119, "name": "sceneId", "className": "HoldemAgent", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 120, "name": "sceneTag", "className": "HoldemAgent", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 121, "name": "rid", "className": "HoldemAgent", "type": "int48", "defVal": 0, "flag": "CLIENT" },
+        { "id": 122, "name": "bet", "className": "HoldemAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 123, "name": "chip", "className": "HoldemAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 124, "name": "deductRate", "className": "HoldemAgent", "type": "float", "defVal": 0.05, "flag": "CLIENT" },
+        { "id": 125, "name": "lineCode", "className": "HoldemAgent", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 126, "name": "platformId", "className": "HoldemAgent", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 127, "name": "seatNO", "className": "HoldemAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 128, "name": "sn", "className": "HoldemAgent", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 129, "name": "take", "className": "HoldemAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 130, "name": "passable", "className": "HoldemAgent", "type": "bool", "defVal": 0, "flag": "CLIENT" },
+        { "id": 131, "name": "name", "className": "HoldemRobot", "type": "string", "defVal": "nonamed", "flag": "CLIENT" },
+        { "id": 132, "name": "sceneId", "className": "HoldemRobot", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 133, "name": "sceneTag", "className": "HoldemRobot", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 134, "name": "rid", "className": "HoldemRobot", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 135, "name": "name", "className": "ErbaRobot", "type": "string", "defVal": "nonamed", "flag": "CLIENT" },
+        { "id": 136, "name": "sceneId", "className": "ErbaRobot", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 137, "name": "sceneTag", "className": "ErbaRobot", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 138, "name": "rid", "className": "ErbaRobot", "type": "int48", "defVal": 0, "flag": "SERVER" },
+        { "id": 139, "name": "sceneId", "className": "HoldemDeck", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 140, "name": "tag", "className": "HoldemDeck", "type": "string", "defVal": "", "flag": "ALLCLIENTS" },
+        { "id": 141, "name": "chip", "className": "HoldemDeck", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 142, "name": "closeTime", "className": "HoldemDeck", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 143, "name": "createTime", "className": "HoldemDeck", "type": "int48", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 144, "name": "defaultTakeIn", "className": "HoldemDeck", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 145, "name": "gamesn", "className": "HoldemDeck", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 146, "name": "isPause", "className": "HoldemDeck", "type": "bool", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 147, "name": "isPlaying", "className": "HoldemDeck", "type": "bool", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 148, "name": "maxTakeIn", "className": "HoldemDeck", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 149, "name": "minTakeIn", "className": "HoldemDeck", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 150, "name": "roomType", "className": "HoldemDeck", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 151, "name": "size", "className": "HoldemDeck", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 152, "name": "sn", "className": "HoldemDeck", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 153, "name": "ante", "className": "HoldemDeck", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 154, "name": "blink", "className": "HoldemDeck", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 155, "name": "curHand", "className": "HoldemDeck", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 156, "name": "dealer", "className": "HoldemDeck", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 157, "name": "hand", "className": "HoldemDeck", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 158, "name": "isShowCard", "className": "HoldemDeck", "type": "bool", "defVal": true, "flag": "ALLCLIENTS" },
+        { "id": 159, "name": "miniBet", "className": "HoldemDeck", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 160, "name": "miniRaise", "className": "HoldemDeck", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 161, "name": "nextHandCD", "className": "HoldemDeck", "type": "int", "defVal": -1, "flag": "ALLCLIENTS" },
+        { "id": 162, "name": "pot", "className": "HoldemDeck", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 163, "name": "sceneId", "className": "Room", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 164, "name": "tag", "className": "Room", "type": "string", "defVal": "", "flag": "ALLCLIENTS" },
+        { "id": 165, "name": "chip", "className": "Room", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 166, "name": "closeTime", "className": "Room", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 167, "name": "createTime", "className": "Room", "type": "int48", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 168, "name": "defaultTakeIn", "className": "Room", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 169, "name": "gamesn", "className": "Room", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 170, "name": "isPause", "className": "Room", "type": "bool", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 171, "name": "isPlaying", "className": "Room", "type": "bool", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 172, "name": "maxTakeIn", "className": "Room", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 173, "name": "minTakeIn", "className": "Room", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 174, "name": "roomType", "className": "Room", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 175, "name": "size", "className": "Room", "type": "uint", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 176, "name": "sn", "className": "Room", "type": "int", "defVal": 0, "flag": "ALLCLIENTS" },
+        { "id": 177, "name": "name", "className": "RoomAgent", "type": "string", "defVal": "nonamed", "flag": "CLIENT" },
+        { "id": 178, "name": "sceneId", "className": "RoomAgent", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 179, "name": "sceneTag", "className": "RoomAgent", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 180, "name": "rid", "className": "RoomAgent", "type": "int48", "defVal": 0, "flag": "CLIENT" },
+        { "id": 181, "name": "bet", "className": "RoomAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 182, "name": "chip", "className": "RoomAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 183, "name": "deductRate", "className": "RoomAgent", "type": "float", "defVal": 0.05, "flag": "CLIENT" },
+        { "id": 184, "name": "lineCode", "className": "RoomAgent", "type": "string", "defVal": "", "flag": "CLIENT" },
+        { "id": 185, "name": "platformId", "className": "RoomAgent", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 186, "name": "seatNO", "className": "RoomAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" },
+        { "id": 187, "name": "sn", "className": "RoomAgent", "type": "int", "defVal": 0, "flag": "CLIENT" },
+        { "id": 188, "name": "take", "className": "RoomAgent", "type": "uint", "defVal": 0, "flag": "CLIENT" }
+    ],
+    "EntityList": [
+        { "id": 1, "className": "Sprite" },
+        { "id": 2, "className": "Agent" },
+        { "id": 3, "className": "Robot" },
+        { "id": 4, "className": "Account" },
+        { "id": 5, "className": "Player" },
+        { "id": 6, "className": "Admin" },
+        { "id": 7, "className": "CityScene" },
+        { "id": 8, "className": "Scene" },
+        { "id": 9, "className": "ErbaDesk" },
+        { "id": 10, "className": "ErbaAgent" },
+        { "id": 11, "className": "HoldemAgent" },
+        { "id": 12, "className": "HoldemRobot" },
+        { "id": 13, "className": "ErbaRobot" },
+        { "id": 14, "className": "HoldemDeck" },
+        { "id": 15, "className": "Room" },
+        { "id": 16, "className": "RoomAgent" }
+    ],
+    "TypeList": [
+        { "id": 11, "name": "ar", "defs": [] },
+        { "id": 10, "name": "array", "defs": [] },
+        { "id": 9, "name": "bool", "defs": [] },
+        { "id": 16, "name": "double", "defs": [] },
+        { "id": 8, "name": "float", "defs": [] },
+        { "id": 14, "name": "float2", "defs": [] },
+        { "id": 2, "name": "int", "defs": [] },
+        { "id": 5, "name": "int16", "defs": [] },
+        { "id": 15, "name": "int48", "defs": [] },
+        { "id": 3, "name": "int8", "defs": [] },
+        { "id": 12, "name": "lstring", "defs": [] },
+        { "id": 17, "name": "lzo", "defs": [] },
+        { "id": 7, "name": "string", "defs": [] },
+        { "id": 18, "name": "table", "defs": [] },
+        { "id": 1, "name": "uint", "defs": [] },
+        { "id": 6, "name": "uint16", "defs": [] },
+        { "id": 4, "name": "uint8", "defs": [] },
+        { "id": 13, "name": "vint", "defs": [] },
+        { "id": 21, "name": "Agent", "defs": [{ "name": "rid", "type": "int48" }, { "name": "name", "type": "string" }, { "name": "icon", "type": "string" }, { "name": "sex", "type": "int8" }] },
+        { "id": 22, "name": "BestHand", "defs": [{ "name": "seatNO", "type": "int8" }, { "name": "type", "type": "int8" }, { "name": "cards", "type": "array" }] },
+        { "id": 23, "name": "ErbaPoker", "defs": [{ "name": "rid", "type": "int48" }, { "name": "name", "type": "string" }, { "name": "icon", "type": "string" }, { "name": "sex", "type": "int8" }, { "name": "seatNO", "type": "int8" }, { "name": "chip", "type": "int" }, { "name": "dealer", "type": "bool" }, { "name": "bet", "type": "int" }, { "name": "amount", "type": "int" }, { "name": "busted", "type": "bool" }, { "name": "grabFlag", "type": "int" }, { "name": "grabTime", "type": "int" }, { "name": "card1", "type": "int" }, { "name": "card2", "type": "int" }, { "name": "cardType", "type": "int" }, { "name": "open", "type": "bool" }] },
+        { "id": 24, "name": "ErbaWinner", "defs": [{ "name": "seatNO", "type": "int8" }, { "name": "name", "type": "string" }, { "name": "bet", "type": "int" }, { "name": "win", "type": "int" }, { "name": "chip", "type": "int" }] },
+        { "id": 25, "name": "HoleCard", "defs": [{ "name": "seatNO", "type": "int8" }, { "name": "cards", "type": "array" }] },
+        { "id": 26, "name": "NoticeMsg", "defs": [{ "name": "msgSN", "type": "int" }, { "name": "msg", "type": "string" }, { "name": "gameType", "type": "string" }, { "name": "interval", "type": "int" }, { "name": "startTime", "type": "uint" }, { "name": "endTime", "type": "uint" }, { "name": "ab", "type": "string" }] },
+        { "id": 27, "name": "Poker", "defs": [{ "name": "rid", "type": "int48" }, { "name": "name", "type": "string" }, { "name": "icon", "type": "string" }, { "name": "sex", "type": "int8" }, { "name": "seatNO", "type": "int8" }, { "name": "take", "type": "int" }, { "name": "chip", "type": "int" }, { "name": "bet", "type": "int" }, { "name": "action", "type": "int8" }, { "name": "amount", "type": "int" }, { "name": "busted", "type": "bool" }, { "name": "fold", "type": "bool" }, { "name": "myturn", "type": "bool" }, { "name": "defaultAction", "type": "int8" }, { "name": "cd", "type": "int" }, { "name": "stageBet", "type": "int" }, { "name": "viewCardOne", "type": "bool" }, { "name": "viewCardTwo", "type": "bool" }] },
+        { "id": 28, "name": "Record", "defs": [{ "name": "gameType", "type": "string" }, { "name": "roomType", "type": "int" }, { "name": "sn", "type": "int" }, { "name": "gamesn", "type": "int" }, { "name": "gameNo", "type": "string" }, { "name": "matchType", "type": "int" }, { "name": "take", "type": "int" }, { "name": "chip", "type": "int" }, { "name": "win", "type": "int" }, { "name": "deduct", "type": "int" }, { "name": "time", "type": "uint" }] },
+        { "id": 29, "name": "ServerType", "defs": [{ "name": "serverID", "type": "int" }, { "name": "serverType", "type": "int8" }] },
+        { "id": 30, "name": "ShowGamePlayer", "defs": [{ "name": "game", "type": "string" }, { "name": "num", "type": "int" }] },
+        { "id": 31, "name": "Winner", "defs": [{ "name": "seatNO", "type": "int8" }, { "name": "order", "type": "int" }, { "name": "chip", "type": "int" }] }
+    ]
+};
+//# sourceMappingURL=Dump.js.map
+/**
+ * 数据包加密模块
+ * @author	Fictiony
+ * @version	2017/7/8
+ */
+var Ctx = /** @class */ (function () {
+    /**
+     * 构造函数
+     * @param sd	加密种子
+     * @param mask	加密种子蒙板
+     */
+    function Ctx(sd) {
+        this._index = 0;
+        this._addikey = [];
+        this._buffer = new laya.utils.Byte();
+        this._buffer.endian = laya.utils.Byte.LITTLE_ENDIAN;
+        this._addikey[0] = new AddiKey();
+        this._addikey[0].sd = this.linearity(sd);
+        this._addikey[0].dis1 = 55;
+        this._addikey[0].dis2 = 24;
+        this._addikey[1] = new AddiKey();
+        this._addikey[1].sd = this.linearity(((sd & 0xAAAAAAAA) >>> 1) | ((sd & 0x55555555) << 1));
+        this._addikey[1].dis1 = 57;
+        this._addikey[1].dis2 = 7;
+        this._addikey[2] = new AddiKey();
+        this._addikey[2].sd = this.linearity(~(((sd & 0xF0F0F0F0) >>> 4) | ((sd & 0x0F0F0F0F) << 4)));
+        this._addikey[2].dis1 = 58;
+        this._addikey[2].dis2 = 19;
+        for (var i = 0; i < 3; ++i) {
+            var tmp = this._addikey[i].sd;
+            for (var j = 0; j < 64; ++j) {
+                for (var k = 0; k < 32; ++k) {
+                    tmp = this.linearity(tmp);
+                }
+                this._addikey[i].buffer[j] = tmp;
+            }
+            this._addikey[i].carry = 0;
+            this._addikey[i].index = 63;
+        }
+        this._index = 4096;
+        this._buffer.length = 4096;
+        this._bufferBytes = this.getBytes(this._buffer);
+    }
+    Ctx.prototype.linearity = function (key) {
+        var n = ((((key >>> 31)
+            ^ (key >>> 6)
+            ^ (key >>> 4)
+            ^ (key >>> 2)
+            ^ (key >>> 1)
+            ^ key)
+            & 0x00000001) << 31)
+            | (key >>> 1);
+        return n < 0 ? 0x100000000 + n : n;
+    };
+    Ctx.prototype.addikeyNext = function (addikey) {
+        ++addikey.index;
+        addikey.index &= 0x3F;
+        var i1 = ((addikey.index | 0x40) - addikey.dis1) & 0x3F;
+        var i2 = ((addikey.index | 0x40) - addikey.dis2) & 0x3F;
+        addikey.buffer[addikey.index] = (addikey.buffer[i1] + addikey.buffer[i2]) % 0x100000000;
+        addikey.carry = addikey.buffer[addikey.index] < addikey.buffer[i1] || addikey.buffer[addikey.index] < addikey.buffer[i2] ? 1 : 0;
+    };
+    Ctx.prototype.generate = function () {
+        this._buffer.pos = 0;
+        this._index = 0;
+        for (var i = 0; i < 1024; ++i) {
+            var carry = this._addikey[0].carry + this._addikey[1].carry + this._addikey[2].carry;
+            if (carry == 0 || carry == 3) {
+                this.addikeyNext(this._addikey[0]);
+                this.addikeyNext(this._addikey[1]);
+                this.addikeyNext(this._addikey[2]);
+            }
+            else {
+                var flag = 0;
+                if (carry == 2) {
+                    flag = 1;
+                }
+                for (var j = 0; j < 3; ++j) {
+                    if (this._addikey[j].carry == flag) {
+                        this.addikeyNext(this._addikey[j]);
+                    }
+                }
+            }
+            this._buffer.writeUint32(this._addikey[0].buffer[this._addikey[0].index]
+                ^ this._addikey[1].buffer[this._addikey[1].index]
+                ^ this._addikey[2].buffer[this._addikey[2].index]);
+        }
+    };
+    /**
+     * 数据流编码（加密解密对称）
+     * @param data	数据流
+     * @param len	数据字节数
+     * @param start	起始字节序号
+     */
+    Ctx.prototype.encode = function (data, len, start) {
+        if (start === void 0) { start = 0; }
+        if (!data)
+            return;
+        if (len <= 0)
+            return;
+        var data_bytes = this.getBytes(data);
+        do {
+            var remnant = 4096 - this._index;
+            if (remnant <= 0) {
+                this.generate();
+            }
+            if (remnant > len) {
+                remnant = len;
+            }
+            len -= remnant;
+            for (var i = 0; i < remnant; ++i, ++start, ++this._index) {
+                data_bytes[start] ^= this._bufferBytes[this._index];
+            }
+        } while (len > 0);
+    };
+    Ctx.prototype.getBytes = function (bytes) {
+        // 新的版本用bytes代替只读
+        if (bytes['bytes']) {
+            return bytes["bytes"];
+        }
+        return new Uint8Array(bytes.buffer);
+    };
+    return Ctx;
+}());
+var AddiKey = /** @class */ (function () {
+    function AddiKey() {
+        this.sd = 0;
+        this.dis1 = 0;
+        this.dis2 = 0;
+        this.index = 0;
+        this.carry = 0;
+        this.buffer = [];
+    }
+    return AddiKey;
+}());
+//# sourceMappingURL=Ctx.js.map
+/**
+     * @description 解析具体数据
+     * @author wangyz
+     * @export
+     * @class Analyzer
+     */
+var Analyzer = /** @class */ (function () {
+    function Analyzer() {
+        this.GENIUS_NUMBER = 0x05027919; //加密蒙板数字
+        this.MAX_LEN = 0xFFFF; //最大数据包体长度
+        this.BAD_LEN = 0xFFFF00; //异常数据包体长度
+        this.INT_SIZE = 4;
+        this._packetLen = 0;
+        this._byte = new laya.utils.Byte();
+        this._byte.endian = laya.utils.Byte.LITTLE_ENDIAN;
+        this._byte.pos = 0;
+        new RpcDef();
+        new RpcType();
+    }
+    Analyzer.prototype.analyzeRecv = function (data) {
+        // console.log("前：" + this._byte.length + "_" + this._byte.pos + "_" + this._byte.bytesAvailable);
+        this._byte.writeArrayBuffer(data); //把接收到的二进制数据读进byte数组便于解析。
+        // console.log("中：" + this._byte.length + "_" + this._byte.pos + "_" + this._byte.bytesAvailable);
+        var len = this._packetLen;
+        if (len == 0) {
+            this._byte.pos = 0;
+            if (this._byte.bytesAvailable >= this.INT_SIZE) {
+                if (StaticData.seed > 0) {
+                    if (this._encrypter == undefined) {
+                        this._encrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
+                        this._decrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
+                    }
+                    this._decrypter.encode(this._byte, this.INT_SIZE, this._byte.pos);
+                }
+                len = this._byte.getUint32();
+                var flag = (len >> 24) & 0xFF;
+                len &= 0xFFFFFF;
+                if (len == 0 || len > this.BAD_LEN || flag != (len % 255)) {
+                    CFun.throw("Invalid packet size: " + len);
+                    return null;
+                }
+                if (len > this.MAX_LEN) {
+                    CFun.throw("packet size exceed: " + len);
+                    return null;
+                }
+                this._packetLen = len;
+            }
+        }
+        // console.log("后：" + this._byte.length + "_" + this._byte.pos + "_" + this._byte.bytesAvailable);
+        if (len > 0 && this._byte.bytesAvailable >= len) {
+            this._packetLen = 0;
+            if (StaticData.seed > 0) {
+                if (this._encrypter == undefined) {
+                    this._encrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
+                    this._decrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
+                }
+                this._decrypter.encode(this._byte, len, this._byte.pos);
+            }
+            var data_id = this._byte.getUint32();
+            var data_obj = RpcDef.getMethodByID(data_id);
+            var data_eid = data_obj["isStatic"] ? 0 : (this._byte.getUint32() + 4294967296 * this._byte.getInt16());
+            var data_params = { "e_id": data_eid };
+            var cName = data_obj["isStatic"] ? "ModelHandle" : data_obj["className"];
+            var args = data_obj["args"], ilen = args.length, targ = void 0, tname = void 0;
+            for (var i = 0; i < ilen; i++) {
+                targ = args[i];
+                tname = targ["name"];
+                // if(tname == "props"){
+                // 	console.log("");
+                // }
+                var reader = RpcDef.getTypeReader(targ.type);
+                data_params[tname] = reader(this._byte);
+            }
+            var cPro = new ClassPro();
+            cPro.recv_id = data_obj["id"];
+            cPro.className = cName;
+            cPro.event_id = data_obj["server"] + "_" + data_obj["className"] + "_" + data_obj["name"];
+            cPro.params = data_params;
+            this._byte.clear();
+            this._byte.pos = 0;
+            return cPro;
+        }
+        return null;
+    };
+    Analyzer.prototype.analyzeSend = function (data) {
+        var tmp_byte = laya.utils.Pool.getItemByClass("tmpByte", laya.utils.Byte);
+        tmp_byte.endian = laya.utils.Byte.LITTLE_ENDIAN;
+        tmp_byte.clear();
+        tmp_byte.pos = 0;
+        var data_obj = data.method;
+        if (!data_obj)
+            CFun.throw("RPC method not found: " + data_obj["id"]);
+        RpcType.uintWriter(tmp_byte, data_obj["id"]);
+        if (!data_obj["isStatic"]) {
+            RpcType.int48Writer(tmp_byte, data.e_id);
+        }
+        var args = data_obj["args"], ilen = args.length, targ, tname;
+        for (var i = 0; i < ilen; i++) {
+            targ = args[i];
+            var writer = RpcDef.getTypeWriter(targ.type);
+            if (writer == null) {
+                CFun.throw("Type writer not found: " + targ.type);
+            }
+            writer(tmp_byte, data.args[i]);
+        }
+        var len = tmp_byte.length;
+        if (!len)
+            return;
+        if (len > this.BAD_LEN) {
+            CFun.throw("Invalid packet size: " + len);
+        }
+        // SocketInterface.debugLog && SocketInterface.debugLog("Sending packet: " + packet);
+        var write_byte = laya.utils.Pool.getItemByClass("tmpByte", laya.utils.Byte);
+        write_byte.endian = laya.utils.Byte.LITTLE_ENDIAN;
+        write_byte.clear();
+        write_byte.pos = 0;
+        //写入数据包
+        var flag = ((len % 255) << 24) | len;
+        write_byte.length = len + this.INT_SIZE;
+        write_byte.writeUint32(flag);
+        write_byte.writeArrayBuffer(tmp_byte.buffer);
+        if (StaticData.seed > 0) {
+            if (this._encrypter == undefined) {
+                this._encrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
+                this._decrypter = new Ctx(StaticData.seed ^ this.GENIUS_NUMBER);
+            }
+            this._encrypter.encode(write_byte, write_byte.length);
+        }
+        // let t_encrypter = new Ctx(1 ^ this.GENIUS_NUMBER);
+        // t_encrypter.encode(write_byte, write_byte.length);
+        CFun.log(data.toString());
+        laya.utils.Pool.recover("tmpSend", data);
+        laya.utils.Pool.recover("tmpByte", tmp_byte);
+        return [write_byte, write_byte.buffer];
+    };
+    Analyzer.seed = 0;
+    return Analyzer;
+}());
+//# sourceMappingURL=Analyzer.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 指定项类型的列表
+ * @author	Fictiony
+ * @version	2017/7/22
+ */
+var TypeArray = /** @class */ (function (_super) {
+    __extends(TypeArray, _super);
+    function TypeArray(type, arr) {
+        var _this = _super.call(this) || this;
+        var t = eval("this"); //因为编译成JS后this会被替换掉造成实例类型错误，因此要重新取this
+        t._type = type;
+        if (arr && arr.length > 0) {
+            t.push.apply(t, arr);
+        }
+        return t;
+    }
+    Object.defineProperty(TypeArray.prototype, "$type", {
+        /**
+         * 获取项类型定义
+         */
+        get: function () {
+            return this._type;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * 列表连接
+     */
+    TypeArray.prototype.concat = function () {
+        var items = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            items[_i] = arguments[_i];
+        }
+        var new_arr = new TypeArray(this._type, this);
+        for (var _a = 0, items_1 = items; _a < items_1.length; _a++) {
+            var i = items_1[_a];
+            if (i instanceof Array) {
+                new_arr.push.apply(new_arr, i);
+            }
+            else {
+                new_arr.push(i);
+            }
+        }
+        return new_arr;
+    };
+    /**
+     * 列表截取
+     */
+    TypeArray.prototype.slice = function (start, end) {
+        if (start === void 0) { start = 0; }
+        if (end === void 0) { end = 0xffffff; }
+        return new TypeArray(this._type, _super.prototype.slice.call(this, start, end));
+    };
+    TypeArray.prototype.splice = function (start, deleteCount) {
+        var items = [];
+        for (var _i = 2; _i < arguments.length; _i++) {
+            items[_i - 2] = arguments[_i];
+        }
+        if (deleteCount === undefined) {
+            return new TypeArray(this._type, _super.prototype.splice.call(this, start));
+        }
+        return new TypeArray(this._type, _super.prototype.splice.apply(this, [start, deleteCount].concat(items)));
+    };
+    TypeArray.prototype.toString = function () {
+        return "<TypeArray type=" + this._type.name + " [" + this.join(",") + "]>";
+    };
+    return TypeArray;
+}(Array));
+//# sourceMappingURL=TypeArray.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * @description BOX内部的遮罩
+ * @author wangyz
+ * @export
+ * @class BoxMask
+ */
+var BoxMask = /** @class */ (function (_super) {
+    __extends(BoxMask, _super);
+    function BoxMask() {
+        var _this = _super.call(this) || this;
+        _this.on(Laya.Event.DISPLAY, _this, _this.onSetMask);
+        _this.on(Laya.Event.UNDISPLAY, _this, _this.onRemoveMask);
+        return _this;
+    }
+    BoxMask.prototype.onSetMask = function () {
+        this.getChildByName("img_head")["mask"] = this.getChildByName("mmask");
+    };
+    BoxMask.prototype.onRemoveMask = function () {
+        this.getChildByName("img_head")["mask"] = null;
+    };
+    return BoxMask;
+}(laya.ui.Box));
+//# sourceMappingURL=BoxMask.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * @description 附加按钮皮肤修改
+ * @author wangyz
+ * @export
+ * @class ScaleComponent
+ */
+var ButtonState = /** @class */ (function (_super) {
+    __extends(ButtonState, _super);
+    function ButtonState(skin, label) {
+        var _this = _super.call(this, skin, label) || this;
+        _this.state = -1;
+        _this.state = 0;
+        return _this;
+    }
+    ButtonState.prototype.changeState = function () {
+        _super.prototype.changeState.call(this);
+        var com = null;
+        if (this.state == 0) {
+            com = this.getChildByName("up");
+            if (com)
+                com["visible"] = true;
+            com = this.getChildByName("down");
+            if (com)
+                com["visible"] = false;
+            com = this.getChildByName("over");
+            if (com)
+                com["visible"] = false;
+        }
+        else if (this.state == 1) {
+            com = this.getChildByName("up");
+            if (com)
+                com["visible"] = false;
+            com = this.getChildByName("down");
+            if (com)
+                com["visible"] = false;
+            com = this.getChildByName("over");
+            if (com)
+                com["visible"] = true;
+        }
+        else if (this.state == 2) {
+            com = this.getChildByName("up");
+            if (com)
+                com["visible"] = false;
+            com = this.getChildByName("down");
+            if (com)
+                com["visible"] = true;
+            com = this.getChildByName("over");
+            if (com)
+                com["visible"] = false;
+        }
+    };
+    return ButtonState;
+}(laya.ui.Button));
+//# sourceMappingURL=ButtonState.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * @description 实现的一个自定义的checkbox
+ * @author wangyz
+ * @export
+ * @class SettingToggle
+ * @extends {laya.ui.Box}
+ */
+var CheckState = /** @class */ (function (_super) {
+    __extends(CheckState, _super);
+    function CheckState(skin, label) {
+        var _this = _super.call(this, skin, label) || this;
+        _this.selected = false;
+        return _this;
+    }
+    CheckState.prototype.changeState = function () {
+        _super.prototype.changeState.call(this);
+        if (this.selected) {
+            var com = this.getChildByName("on");
+            if (com)
+                com["visible"] = true;
+            com = this.getChildByName("off");
+            if (com)
+                com["visible"] = false;
+        }
+        else {
+            var com = this.getChildByName("on");
+            if (com)
+                com["visible"] = false;
+            com = this.getChildByName("off");
+            if (com)
+                com["visible"] = true;
+        }
+    };
+    return CheckState;
+}(laya.ui.CheckBox));
+//# sourceMappingURL=CheckState.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * @description 设置面板中的Slider
+ * @author wangyz
+ * @export
+ * @class SettingSlider
+ * @extends {laya.ui.HSlider}
+ */
+var SettingSlider = /** @class */ (function (_super) {
+    __extends(SettingSlider, _super);
+    function SettingSlider() {
+        var _this = _super.call(this) || this;
+        _this.showLabel = false;
+        _this.on(Laya.Event.DISPLAY, _this, _this.onAddStage);
+        _this.on(Laya.Event.CHANGE, _this, _this.onChange);
+        return _this;
+    }
+    SettingSlider.prototype.onChange = function () {
+        var front = this.getChildByName("front");
+        front["width"] = this.bar.x + 5;
+    };
+    SettingSlider.prototype.onAddStage = function () {
+        // this.skin = this["back"];
+        // this.bar.skin = val;
+        var front = this.getChildByName("front");
+        var thumb = this.getChildByName("thumb");
+        thumb["visible"] = false;
+        this.bar.stateNum = 1;
+        this.bar.skin = thumb["skin"];
+        this.bar.y = thumb["y"];
+        this.addChild(this.bar);
+        front["width"] = this.bar.x + 5;
+    };
+    return SettingSlider;
+}(laya.ui.HSlider));
+//# sourceMappingURL=SettingSlider.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * @description 有前滚动条，按钮非三态
+ * @author wangyz
+ * @export
+ * @class SliderCustomer
+ * @extends {laya.ui.HSlider}
+ */
+var SliderCustomer = /** @class */ (function (_super) {
+    __extends(SliderCustomer, _super);
+    function SliderCustomer(skin) {
+        var _this = _super.call(this, skin) || this;
+        _this._beginOff = -999;
+        _this.on(Laya.Event.CHANGE, _this, _this.on_slider_change);
+        return _this;
+    }
+    Object.defineProperty(SliderCustomer.prototype, "is_v", {
+        set: function (val) {
+            this.isVertical = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SliderCustomer.prototype.on_slider_change = function () {
+        var front = this.getChildByName("cfront");
+        if (this.isVertical) {
+            front["height"] = this.bar.y + 6;
+        }
+        else {
+            front["width"] = this.bar.x + 5;
+        }
+    };
+    SliderCustomer.prototype.changeValue = function () {
+        _super.prototype.changeValue.call(this);
+        this.on_slider_change();
+    };
+    SliderCustomer.prototype.addChild = function (node) {
+        var s_node = _super.prototype.addChild.call(this, node);
+        var front = this.getChildByName("cfront");
+        if (front && this._beginOff == -999) {
+            if (this.isVertical) {
+                this._beginOff = front["y"];
+            }
+            else {
+                this._beginOff = front["x"];
+            }
+            this.addChild(this.bar);
+            this.bar.stateNum = 1;
+        }
+        return s_node;
+    };
+    return SliderCustomer;
+}(laya.ui.Slider));
+//# sourceMappingURL=SliderCustomer.js.map
+var SendHandel = /** @class */ (function () {
+    function SendHandel() {
+        //设置个默认连接，子类需要给其他链接发送数据可改
+    }
+    SendHandel.prototype.send = function (data) {
+        SocketManager.ins.send(data, this._host == undefined ? SocketManager.arr_address[0]["main"] : this._host, this._port == undefined ? SocketManager.arr_address[0]["sub"] : this._port);
+    };
+    return SendHandel;
+}());
+//# sourceMappingURL=SendHandel.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * @description MODEL数据层
+ * @author wangyz
+ * @export
+ * @class Model
+ */
+var Model = /** @class */ (function (_super) {
+    __extends(Model, _super);
+    function Model() {
+        var _this = _super.call(this) || this;
+        _this._eventManager = EventManager.ins;
+        _this.recvInit();
+        return _this;
+    }
+    Model.prototype.regist = function (type, listener) {
+        this._eventManager.on(type, listener, this);
+    };
+    Model.prototype.proChange = function (type, data) {
+        this._eventManager.dispatch(type, data);
+    };
+    Model.prototype.recvInit = function () {
+    };
+    return Model;
+}(SendHandel));
+//# sourceMappingURL=Model.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var mview;
+(function (mview) {
+    var ComView = /** @class */ (function (_super) {
+        __extends(ComView, _super);
+        function ComView() {
+            var _this = _super.call(this) || this;
+            _this._view_type = "other";
+            _this.on(Laya.Event.CLICK, _this, _this.onClick);
+            _this.comInit();
+            _this.layerInit();
+            return _this;
+        }
+        Object.defineProperty(ComView.prototype, "viewType", {
+            get: function () {
+                return this._view_type;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ComView.prototype, "vm", {
+            get: function () {
+                if (!this._vm)
+                    CFun.throw("ComView中_vm还未初始化！");
+                return this._vm;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        //组件事件初始化，实例化时调用一次
+        ComView.prototype.comInit = function () {
+        };
+        //显示对象根据数据初始化，每次显示时调用
+        ComView.prototype.viewInit = function (data) {
+        };
+        //关闭前调用
+        ComView.prototype.beClose = function () {
+        };
+        ComView.prototype.onClick = function (e) {
+            //阻止后续节点的监听器
+            e.stopPropagation();
+        };
+        ComView.prototype.layerInit = function () {
+        };
+        // createChildren():void {
+        //     super.createChildren();
+        //     let path = CFun.parsingPath(this.constructor.prototype.constructor.__proto__);
+        //     this.createView(Laya.loader.getRes(path));
+        // }
+        ComView.prototype.loadUI = function (path) {
+            this.createView(Laya.loader.getRes(path + ".json"));
+            _super.prototype.loadUI.call(this, path);
+        };
+        ComView.TOP = "top";
+        ComView.WINDOW = "window";
+        /**
+         * 不需要点击空白处关窗的界面
+         */
+        ComView.WINDOW_NO_CLOSEAUTO = "window_no_closeauto";
+        ComView.SCENE = "scene";
+        return ComView;
+    }(laya.ui.View));
+    mview.ComView = ComView;
+})(mview || (mview = {}));
+//# sourceMappingURL=ComView.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var mview;
+(function (mview) {
+    var DialogView = /** @class */ (function (_super) {
+        __extends(DialogView, _super);
+        function DialogView() {
+            return _super.call(this) || this;
+        }
+        // createChildren():void {
+        //     super.createChildren();
+        //     let path = CFun.parsingPath(this.constructor);
+        //     console.log(path);
+        //     this.createView(Laya.loader.getRes(path));
+        // }
+        DialogView.prototype.loadUI = function (path) {
+            this.createView(Laya.loader.getRes(path + ".json"));
+            _super.prototype.loadUI.call(this, path);
+        };
+        return DialogView;
+    }(laya.ui.Dialog));
+    mview.DialogView = DialogView;
+})(mview || (mview = {}));
+//# sourceMappingURL=DialogView.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var mview;
+(function (mview) {
+    var SceneView = /** @class */ (function (_super) {
+        __extends(SceneView, _super);
+        function SceneView() {
+            var _this = _super.call(this) || this;
+            _this._view_type = mview.ComView.SCENE;
+            return _this;
+        }
+        SceneView.prototype.layerInit = function () {
+            this.centerX = 0;
+            this.centerY = 0;
+        };
+        return SceneView;
+    }(mview.ComView));
+    mview.SceneView = SceneView;
+})(mview || (mview = {}));
+//# sourceMappingURL=SceneView.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var mview;
+(function (mview) {
+    var WinView = /** @class */ (function (_super) {
+        __extends(WinView, _super);
+        function WinView() {
+            var _this = _super.call(this) || this;
+            _this._view_type = mview.ComView.WINDOW;
+            _this.btnCloseInit();
+            return _this;
+        }
+        WinView.prototype.layerInit = function () {
+            this.centerX = 0;
+            this.centerY = 0;
+        };
+        WinView.prototype.btnCloseInit = function () {
+            this["btn_close"].on(Laya.Event.CLICK, this, this.onClose);
+            this.on(Laya.Event.DISPLAY, this, this.onWinShow);
+            this.on(Laya.Event.REMOVED, this, this.onWinHide);
+        };
+        WinView.prototype.onWinShow = function () {
+            CFun.playSound("sounds/hall/window_open.mp3");
+        };
+        WinView.prototype.onWinHide = function () {
+            CFun.playSound("sounds/hall/window_close.mp3");
+        };
+        WinView.prototype.onClose = function () {
+            this.vm.closeNow();
+        };
+        return WinView;
+    }(mview.ComView));
+    mview.WinView = WinView;
+})(mview || (mview = {}));
+//# sourceMappingURL=WinView.js.map
+var ComView = mview.ComView;
+/*
+可显示对象
+*/
+var CView = /** @class */ (function () {
+    function CView(vm) {
+        this._parent = null;
+        this._class = null;
+        this._atlas_url = null; //需要多个不同资源，用逗号隔开
+        this._view_path = null; //排版路径
+        this._is_show = false;
+        this._is_need_show = false;
+        this._is_on_parent = false;
+        this._is_load_complete = false;
+        this._event_manager = EventManager.ins;
+        this._vm = vm;
+    }
+    CView.prototype.regist = function (type, listener) {
+        this._event_manager.on(type, listener, this);
+    };
+    /*
+        设置资源路径
+    */
+    CView.prototype.setAtlasName = function (arg_params) {
+        this._atlas_url = arg_params;
+    };
+    /*
+       设置资源路径
+   */
+    CView.prototype.setViewPath = function (arg_params) {
+        this._view_path = arg_params;
+    };
+    CView.prototype.setParent = function (val) {
+        this._parent = val;
+    };
+    Object.defineProperty(CView.prototype, "vm", {
+        get: function () {
+            if (!this._vm)
+                CFun.throw("CView中_vm还未初始化！");
+            return this._vm;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /*
+      设置显示类型
+    */
+    CView.prototype.setClass = function (arg_class) {
+        this._class = arg_class;
+    };
+    CView.prototype.onLoaded = function () {
+        this._is_load_complete = true;
+        if (!this._class) {
+            CFun.throw("VisibleView的_class为空！");
+        }
+        this._display = new (this._class)(this.vm);
+        if (this._parent == null) {
+            if (this.display.viewType == ComView.WINDOW) {
+                this._parent = Layer.WINDOW_LAYER;
+            }
+            else if (this.display.viewType == ComView.TOP) {
+                this._parent = Layer.TOP_LAYER;
+            }
+            else if (this.display.viewType == ComView.SCENE) {
+                this._parent = Layer.SCENE_LAYER;
+            }
+            else {
+                this._parent = Layer.SCENE_LAYER;
+            }
+        }
+        if (this._is_need_show) {
+            this.showNow();
+        }
+    };
+    CView.prototype.onLoadResource = function () {
+        if (!this._atlas_url) {
+            CFun.throw("VisibleView的_atlas_url为空！");
+        }
+        var tmp_arrAtlas = [];
+        var arr_atlas = this._atlas_url.split(",");
+        var len = arr_atlas.length;
+        for (var i = 0; i < len; i++) {
+            if (arr_atlas[i] == "")
+                continue;
+            tmp_arrAtlas.push({ url: arr_atlas[i], type: laya.net.Loader.ATLAS });
+        }
+        // let path = CFun.parsingPath(this._class.prototype.constructor.__proto__);
+        var arr_json = this._view_path.split(",");
+        for (var i = 0; i < len; i++) {
+            if (arr_json[i] == "")
+                continue;
+            tmp_arrAtlas.push({ url: arr_json[i] + ".json", type: laya.net.Loader.JSON });
+        }
+        if (tmp_arrAtlas.length > 0) {
+            Laya.loader.load(tmp_arrAtlas, laya.utils.Handler.create(this, this.onLoaded));
+        }
+    };
+    CView.prototype.addToParent = function () {
+        if (!this._parent) {
+            CFun.throw("VisibleView的addToParent中的_parent为空！");
+        }
+        this._parent.addChild(this.display);
+        if (Layer.WINDOW_LAYER == this._parent) {
+            Layer.WINDOW_LAYER.mouseEnabled = true;
+        }
+        if (Layer.TOP_LAYER == this._parent) {
+            Layer.TOP_LAYER.mouseEnabled = true;
+        }
+        this._is_on_parent = true;
+    };
+    CView.prototype.removeFromParent = function () {
+        if (!this._parent) {
+            CFun.throw("VisibleView的removeFromParent中的_parent为空！");
+        }
+        this._parent.removeChild(this.display);
+        if (this._parent.numChildren <= 0) {
+            if (Layer.WINDOW_LAYER == this._parent) {
+                Layer.WINDOW_LAYER.mouseEnabled = false;
+            }
+            if (Layer.TOP_LAYER == this._parent) {
+                Layer.TOP_LAYER.mouseEnabled = false;
+            }
+        }
+        this._is_on_parent = false;
+        this._is_show = false;
+    };
+    Object.defineProperty(CView.prototype, "display", {
+        get: function () {
+            if (!this._display) {
+                CFun.throw("VisibleView的_display为空！");
+            }
+            return this._display;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    //请求显示，内部重写，调用
+    CView.prototype.showNow = function () {
+        this.vm.preShow();
+        this._is_need_show = false;
+        this.addToParent();
+        this.setVisible(true);
+        this.vm.afterShow();
+    };
+    //请求关闭，内部重写，调用
+    CView.prototype.closeNow = function () {
+        this.vm.preClose();
+        this.removeFromParent();
+        this.setVisible(false);
+        this.vm.afterClose();
+    };
+    /*
+    是否添加在父显示对象上
+    */
+    CView.prototype.isOnParent = function () {
+        return this._is_on_parent;
+    };
+    /*
+      是否已经显示
+    */
+    CView.prototype.isShow = function () {
+        return this._is_show;
+    };
+    //关闭，外部调用
+    CView.prototype.closeME = function () {
+        if (!this._is_load_complete)
+            return;
+        this.closeNow();
+    };
+    /*
+      开始显示，外部调用
+    */
+    CView.prototype.showME = function () {
+        if (this._is_need_show)
+            return;
+        this._is_need_show = true;
+        if (this._is_load_complete) {
+            this.showNow();
+        }
+        else {
+            this.onLoadResource();
+        }
+    };
+    /*
+    设置显示对象的visible属性
+    */
+    CView.prototype.setVisible = function (visible) {
+        this.display.visible = visible;
+        if (this.isOnParent())
+            this._is_show = visible;
+    };
+    return CView;
+}());
+//# sourceMappingURL=CView.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * @description VM层
+ * @author wangyz
+ * @export
+ * @class ViewModel
+ */
+var ViewModel = /** @class */ (function (_super) {
+    __extends(ViewModel, _super);
+    /**
+     * Creates an instance of ViewModel.
+     * @author wangyz
+     * @param {*} vclass 传入的显示类型
+     * @memberof ViewModel
+     */
+    function ViewModel() {
+        var _this = _super.call(this) || this;
+        _this._data = null;
+        _this._event_manager = EventManager.ins;
+        _this._event_list = [];
+        return _this;
+    }
+    Object.defineProperty(ViewModel.prototype, "data", {
+        get: function () {
+            if (!this._data)
+                CFun.throw("ViewModel的this._data为空");
+            return this._data;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ViewModel.prototype.regist = function (type, listener) {
+        if (!this._event_manager)
+            CFun.throw("ViewModel的regist中的this._event_manager还未初始化");
+        this._event_manager.on(type, listener, this);
+        this._event_list.push({ type: type, listener: listener });
+    };
+    //派发事件
+    ViewModel.prototype.dispach = function (type, data) {
+        if (data === void 0) { data = null; }
+        if (!this._event_manager)
+            CFun.throw("ViewModel的dispach中的this._event_manager还未初始化");
+        this._event_manager.dispatch(type, data);
+    };
+    ViewModel.prototype.eventRemove = function () {
+        var i = 0, len = this._event_list.length;
+        for (i = 0; i < len; i++) {
+            this._event_manager.off(this._event_list["type"], this._event_list["listener"], this);
+        }
+    };
+    ViewModel.prototype.eventInit = function () {
+    };
+    //内部可被重写的显示方法
+    ViewModel.prototype.vmShow = function (data) {
+        this._data = data;
+        this.cview.showME();
+    };
+    //设置父对象
+    ViewModel.prototype.setParent = function (val) {
+        this.cview.setParent(val);
+    };
+    Object.defineProperty(ViewModel.prototype, "setAtlasName", {
+        /*
+            设置资源路径
+        */
+        set: function (arg_params) {
+            this.cview.setAtlasName(arg_params);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ViewModel.prototype, "setViewPath", {
+        /*
+            设置资源路径
+        */
+        set: function (arg_params) {
+            this.cview.setViewPath(arg_params);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ViewModel.prototype, "setClass", {
+        /*
+          设置显示类型
+        */
+        set: function (arg_class) {
+            this.cview.setClass(arg_class);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ViewModel.prototype, "view", {
+        get: function () {
+            return this.cview.display;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ViewModel.prototype, "cview", {
+        get: function () {
+            if (!this._cview)
+                CFun.throw("_cview还未被初始化！");
+            return this._cview;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ViewModel.prototype, "is_show", {
+        get: function () {
+            return this.cview.isShow();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ViewModel.prototype.vmType = function () {
+        return this.view.viewType;
+    };
+    //关闭前
+    ViewModel.prototype.preClose = function () {
+        this.eventRemove();
+    };
+    //关闭中
+    ViewModel.prototype.closeNow = function () {
+        this.view.beClose();
+        this.cview.closeME();
+    };
+    //关闭后
+    ViewModel.prototype.afterClose = function () {
+    };
+    //显示前调用，已经加载完成，还未添加到舞台
+    ViewModel.prototype.preShow = function () {
+        this.eventInit();
+    };
+    //显示中接口,会被外部调用
+    ViewModel.prototype.onShow = function (data) {
+        this.vmShow(data);
+    };
+    //正常显示后
+    ViewModel.prototype.afterShow = function () {
+        this.view.viewInit(this._data);
+    };
+    /**
+     * @description 获取显示对象类型
+     * @author wangyz
+     * @returns {string}
+     * @memberof ViewModel
+     */
+    ViewModel.prototype.getViewType = function () {
+        return this.view.viewType;
+    };
+    return ViewModel;
+}(SendHandel));
+//# sourceMappingURL=ViewModel.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var MModel = /** @class */ (function (_super) {
+    __extends(MModel, _super);
+    function MModel() {
+        return _super.call(this) || this;
+    }
+    MModel.prototype.sendData = function (method_id, args) {
+        if (args === void 0) { args = []; }
+        var send2 = laya.utils.Pool.getItemByClass("tmpSend", SSend);
+        send2.method_id = method_id;
+        send2.args = args;
+        send2.e_id = this["e_id"];
+        send2.sendClass = this["wyz_class_name"];
+        this.send(send2);
+    };
+    return MModel;
+}(Model));
+//# sourceMappingURL=MModel.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var ModelHandle = /** @class */ (function (_super) {
+    __extends(ModelHandle, _super);
+    function ModelHandle() {
+        var _this = _super.call(this) || this;
+        _this.networkTime = 0;
+        _this.serverTime = 0;
+        _this.latacy = 0;
+        _this._seed = 0;
+        _this._mManager = ModelManager.ins;
+        return _this;
+    }
+    Object.defineProperty(ModelHandle.prototype, "nowServerTime", {
+        //当前服务器时间
+        get: function () {
+            return this.serverTime + this.latacy;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ModelHandle.prototype, "seed", {
+        get: function () {
+            return this._seed;
+        },
+        set: function (val) {
+            this._seed = val;
+            StaticData.seed = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ModelHandle.prototype.recvInit = function () {
+        this.regist("server_Client_createEntity", this.onCreateModel);
+        this.regist("server_Client_syncProperty", this.onSyncProperty);
+        this.regist("server_Client_setNetSeed", this.onSetNetSeed);
+        this.regist("server_Client_connectError", this.onConnectError);
+        this.regist("server_Client_adjustTime", this.onAdjustTime);
+    };
+    ModelHandle.prototype.onAdjustTime = function () {
+        this.sendData(4026532845, [laya.utils.Browser.now()]);
+    };
+    ModelHandle.prototype.onConnectError = function () {
+        if (this.code == 0) {
+            this.sendData(4026532849, [0]);
+        }
+        else {
+            if (this.code != 2 && this.code != 4 && this.code != 30) {
+            }
+            else {
+            }
+        }
+    };
+    ModelHandle.prototype.onSetNetSeed = function () {
+        this.sendData(4026532846, [RpcDef.version]);
+    };
+    ModelHandle.prototype.onSyncProperty = function () {
+        if (!this.data)
+            CFun.throw("onSyncProperty中没有需要同步的数据");
+        this.eid = RpcType.int48Reader(this.data);
+        var cName = ModelManager.ins.getInfoByProValue("e_id", this.eid);
+        var dataParams = { "e_id": this.eid };
+        var proName = "";
+        while (this.data.bytesAvailable > 0) {
+            var pid = RpcType.vintReader(this.data);
+            var def = RpcDef.getProByID(pid);
+            if (!def) {
+                //若读到未定义的属性，则忽略后面所有数据
+                break;
+            }
+            proName += ("_" + def.name);
+            dataParams[def.name] = def.reader(this.data);
+        }
+        var str_event = "server_Client_syncProperty_" + cName + proName;
+        ModelManager.ins.setPro(cName, dataParams, function (aModel) {
+            EventManager.ins.dispatch(str_event, aModel);
+        }, this, "更新：" + cName + " [event:" + str_event + ",");
+        // event.EventManager.ins.dispatch("server_Client_syncProperty_" + cName,aModel);
+        this.data = null;
+    };
+    ModelHandle.prototype.onCreateModel = function () {
+        // {"name":"eid","type":"int48"},{"name":"tid","type":"int"},{"name":"active","type":"bool"},{"name":"props","type":"ar"}]},
+        var cName = null;
+        if (this.tid > 0) {
+            cName = RpcDef.getModelClassByID(this.tid);
+        }
+        else {
+            CFun.throw("onCreateModel中需要的类型不存在");
+        }
+        var data_params = { "e_id": this.eid };
+        if (this.props) {
+            this.props.pos = 0;
+            while (this.props.bytesAvailable > 0) {
+                var pid = RpcType.vintReader(this.props);
+                var def = RpcDef.getProByID(pid);
+                if (!def) {
+                    //若读到未定义的属性，则忽略后面所有数据
+                    break;
+                }
+                data_params[def.name] = def.reader(this.props);
+            }
+        }
+        var str_event = "server_Client_createEntity_" + cName;
+        ModelManager.ins.setPro(cName, data_params, function (aModel) {
+            EventManager.ins.dispatch(str_event, aModel);
+        }, this, "创建：" + cName + " [event:" + str_event + ",");
+        this.eid = 0;
+        this.tid = 0;
+        this.active = false;
+        if (this.props) {
+            this.props.clear();
+            this.props.pos = 0;
+            this.props = null;
+        }
+    };
+    return ModelHandle;
+}(MModel));
+//# sourceMappingURL=ModelHandle.js.map
+var StaticData = /** @class */ (function () {
+    function StaticData() {
+    }
+    StaticData.dic_model = {};
+    StaticData.seed = 0;
+    StaticData.appName = "";
+    StaticData.accountId = 0;
+    return StaticData;
+}());
+//# sourceMappingURL=StaticData.js.map
+var MsgData = [{ "id": 2001, "msg": "个人信息修改失败", "msgId": "player_info_fail" }, { "id": 2002, "msg": "个人信息修改成功", "msgId": "player_info_success" }, { "id": 2003, "msg": "ID：{0}", "msgId": "player_info_id" }, { "id": 1, "msg": "版本号错误", "msgId": "sys_wrong_version" }, { "id": 4001, "msg": "1、除了大小盲注外，所有玩家在牌局开始后会自动下{0}前注。\n2、前注进入池子后不会退还。\n3、下注顺序和牌局规则与普通房相同。", "msgId": "holdem_qz_tip" }, { "id": 4002, "msg": "1、除了大小盲注外，所有玩家在牌局开始后会自动下一定数额的筹码作为前注。\n2、前注进入池子后不会退还。\n3、下注顺序和牌局规则与普通房相同。", "msgId": "holdem_qz_tip2" }, { "id": 4003, "msg": "{0}秒后自动继续游戏", "msgId": "holdem_game_continue" }, { "id": 4004, "msg": "本房间前注：{0}", "msgId": "holdem_room_pre_info" }, { "id": 4005, "msg": "（前注：{0}）", "msgId": "holdem_room_pre_info1" }, { "id": 4006, "msg": "祝您发大财！", "msgId": "holdem_heguan_say_0" }, { "id": 4007, "msg": "玩牌时要正经点哦！", "msgId": "holdem_heguan_say_1" }, { "id": 2, "msg": "您的账号在其它地方登录，如果这不是您本人操作，那么您的密码很可能已经泄露！", "msgId": "sys_replace_kickoff" }, { "id": 4009, "msg": "继续匹配", "msgId": "holdem_btn_continue" }, { "id": 4010, "msg": "音乐", "msgId": "holdem_setting_music" }, { "id": 4011, "msg": "音效", "msgId": "holdem_setting_sound" }, { "id": 3, "msg": "由于您长时间未执行任何操作，系统已将您断开连接，请重新登陆！", "msgId": "sys_inactive_timeout" }, { "id": 4013, "msg": "音效开关", "msgId": "holdem_setting_sound_switch" }, { "id": 4014, "msg": "基本玩法", "msgId": "holdem_help_how" }, { "id": 4015, "msg": "游戏操作", "msgId": "holdem_help_play" }, { "id": 4, "msg": "您的账号暂时处于封停状态，如有疑问请联系平台在线客服了解详情！", "msgId": "sys_account_freeze" }, { "id": 4017, "msg": "功能键说明", "msgId": "holdem_help_key" }, { "id": 5, "msg": "您的账号登录异常", "msgId": "sys_account_error" }, { "id": 7001, "msg": "正在匹配", "msgId": "gf_txt_pipei" }, { "id": 4019, "msg": "自动让牌", "msgId": "holdem_game_auto" }, { "id": 6, "msg": "客户端非法加速", "msgId": "sys_client_accelerate" }, { "id": 3001, "msg": "玩家取消匹配", "msgId": "games_queue_quit" }, { "id": 7, "msg": "服务器内部错误", "msgId": "sys_internal_error" }, { "id": 3003, "msg": "正在为您匹配牌桌\n\n游戏即将开始，请耐心等待", "msgId": "games_queue_tip" }, { "id": 8, "msg": "服务器正在维护中,请稍后重试!", "msgId": "sys_busy_op" }, { "id": 9, "msg": "防沉迷", "msgId": "sys_fcm" }, { "id": 10, "msg": "正在同步数据,请稍候重试", "msgId": "sys_msg_charging" }, { "id": 11, "msg": "充值正在进行中,请稍后:)", "msgId": "sys_charging" }, { "id": 12, "msg": "GM测试", "msgId": "sys_gmtest" }, { "id": 6001, "msg": "<font color=\"#aeb7ce\">天啊，玩家</font><font color=\"#fff292\">{0}</font><font color=\"#aeb7ce\">在</font><font color=\"#fff292\">{1}</font><font color=\"#aeb7ce\">一把赢得</font><font color=\"#fff292\">{2}</font><font color=\"#aeb7ce\">，真是太厉害了！</font>", "msgId": "game_msg_0" }, { "id": 13, "msg": "跳转服务器中", "msgId": "sys_jump" }, { "id": 6003, "msg": "<font color=\"#aeb7ce\">玩家</font><font color=\"#fff292\">{0}</font><font color=\"#aeb7ce\">在</font><font color=\"#fff292\">{1}</font><font color=\"#aeb7ce\">再次赢了</font><font color=\"#fff292\">{2}</font><font color=\"#aeb7ce\">，果然人品爆发啊！</font>", "msgId": "game_msg_2" }, { "id": 14, "msg": "服务器繁忙中", "msgId": "sys_server_busy" }, { "id": 6005, "msg": "<font color=\"#aeb7ce\">恭喜玩家</font><font color=\"#fff292\">{0}</font><font color=\"#aeb7ce\">鸿运当头，在</font><font color=\"#fff292\">{1}</font><font color=\"#aeb7ce\">赢了</font><font color=\"#fff292\">{2}</font><font color=\"#aeb7ce\">，真是游戏1分钟，少打10年工！</font>", "msgId": "game_msg_4" }, { "id": 15, "msg": "服务器已满，请您稍后再登录！", "msgId": "sys_busy" }, { "id": 6007, "msg": "<font color=\"#aeb7ce\">好运再次来临，玩家</font><font color=\"#fff292\">{0}</font><font color=\"#aeb7ce\">在</font><font color=\"#fff292\">{1}</font><font color=\"#aeb7ce\">再度赢了</font><font color=\"#fff292\">{2}</font><font color=\"#aeb7ce\">，气氛太火爆了！</font>", "msgId": "game_msg_6" }, { "id": 16, "msg": "连接失败，请检查网络连接后重试", "msgId": "sys_connect_fail" }, { "id": 17, "msg": "连接被中止", "msgId": "sys_connect_terminated" }, { "id": 18, "msg": "长时间未操作，已经断开链接", "msgId": "sys_connect_heart" }, { "id": 19, "msg": "对方已关闭", "msgId": "sys_connect_peerclose" }, { "id": 20, "msg": "重新登录", "msgId": "sys_relogin" }, { "id": 21, "msg": "重试", "msgId": "sys_try_again" }, { "id": 22, "msg": "连接中", "msgId": "sys_connecting" }, { "id": 23, "msg": "网络断开，正在进行第{0}次重连…", "msgId": "sys_connect_tip" }, { "id": 24, "msg": "登陆异常(同时请求进入初始场景)", "msgId": "sys_req_initscene_fail" }, { "id": 25, "msg": "登录失败，帐号或密码错误", "msgId": "sys_login_faile" }, { "id": 26, "msg": "攻击中", "msgId": "sys_under_attack" }, { "id": 27, "msg": "尊敬的用户您好，为了给您提供更好的游戏体验，服务器正在进行停机维护，请稍后再尝试登录，给您带来不便敬请谅解。", "msgId": "sys_maintain" }, { "id": 28, "msg": "尊敬的用户您好，为了给您提供更好的游戏体验，服务器正在进行停机维护，请稍后再尝试登录，给您带来不便敬请谅解。", "msgId": "sys_notGame" }, { "id": 29, "msg": "您的连接已过期，请重新登录哦！", "msgId": "sys_token_error" }, { "id": 30, "msg": "你已经与游戏断开连接，请重新登录", "msgId": "sys_kickoff" }, { "id": 31, "msg": "网络连接故障，您可能尚未连接网络，请检查网络连接后重试！", "msgId": "sys_network_error" }, { "id": 32, "msg": "部分浏览器可能无法开启全屏模式或全屏后显示异常，如果遇到以上问题，请使用浏览器自带的全屏功能！", "msgId": "sys_full_tip" }, { "id": 5005, "msg": "游戏中禁止退出，请完成本轮五局游戏", "msgId": "erba_game_back_forbid" }, { "id": 3021, "msg": "游戏已结束", "msgId": "games_game_end" }, { "id": 3022, "msg": "获取排名失败，请稍候再试", "msgId": "games_get_rank_fail" }, { "id": 3023, "msg": "暂无牌局记录", "msgId": "games_record_no" }, { "id": 3024, "msg": "提   示", "msgId": "games_alert_default_tip" }, { "id": 3025, "msg": "确   定", "msgId": "games_alert_default_yes" }, { "id": 3026, "msg": "取   消", "msgId": "games_alert_default_no" }, { "id": 3027, "msg": "游戏资源加载中，请稍候：{0} ，第{1}/{2}", "msgId": "games_loading_progress" }, { "id": 3028, "msg": "确定要退出游戏吗？", "msgId": "games_back_alert" }, { "id": 3029, "msg": "游戏中禁止退出，请先弃牌后再退出！", "msgId": "games_back_forbid" }, { "id": 3030, "msg": "准入：", "msgId": "games_txt_min_tip" }, { "id": 3031, "msg": "轮到您操作了！", "msgId": "games_tip_you_turn" }, { "id": 4052, "msg": "您的游戏币超过本房间最大带入，系统已自动将您的带入设为最大带入！", "msgId": "holdem_chip_max" }, { "id": 4053, "msg": "下一局您的牌桌携带筹码将调整至{0}游戏币", "msgId": "holdem_take_nextgame" }, { "id": 4054, "msg": "您的牌桌携带筹码已调整至{0}游戏币", "msgId": "holdem_take_tip" }, { "id": 4055, "msg": "由于您的牌桌筹码不足，系统已自动将您的牌桌携带筹码调整至{0}游戏币", "msgId": "holdem_autotake_tip" }, { "id": 4056, "msg": "[{ \"label\": \"基本玩法\", \"iconDown\": \"help_tabar1_1_png\", \"iconUp\": \"help_tabar1_0_png\", \"iconDownBg\": \"help_tabarBg_0_png\", \"scaleX\": \"1\" }, { \"label\": \"游戏操作\", \"iconDown\": \"help_tabar2_1_png\", \"iconUp\": \"help_tabar2_0_png\", \"iconDownBg\": \"help_tabarBg_1_png\", \"scaleX\": \"1\" }, { \"label\": \"牌型说明\", \"iconDown\": \"help_tabar3_1_png\", \"iconUp\": \"help_tabar3_0_png\", \"iconDownBg\": \"help_tabarBg_1_png\", \"scaleX\": \"1\" }, { \"label\": \"功能键说明\", \"iconDown\": \"help_tabar4_1_png\", \"iconUp\": \"help_tabar4_0_png\", \"iconDownBg\": \"help_tabarBg_0_png\", \"scaleX\": \"-1\" }]", "msgId": "holdem_htlp_text" }, { "id": 6006, "msg": "<font color=\"#aeb7ce\">厉害了我的天，玩家</font><font color=\"#fff292\">{0}</font><font color=\"#aeb7ce\">在</font><font color=\"#fff292\">{1}</font><font color=\"#aeb7ce\">神来之手轻松把</font><font color=\"#fff292\">{2}</font><font color=\"#aeb7ce\">金币收入囊中！</font>", "msgId": "game_msg_5" }, { "id": 6004, "msg": "<font color=\"#aeb7ce\">财神降临，玩家</font><font color=\"#fff292\">{0}</font><font color=\"#aeb7ce\">竟然在</font><font color=\"#fff292\">{1}</font><font color=\"#aeb7ce\">赢了</font><font color=\"#fff292\">{2}</font><font color=\"#aeb7ce\">，金币哗啦啦的！</font>", "msgId": "game_msg_3" }, { "id": 6002, "msg": "<font color=\"#aeb7ce\">恭喜玩家</font><font color=\"#fff292\">{0}</font><font color=\"#aeb7ce\">在</font><font color=\"#fff292\">{1}</font><font color=\"#aeb7ce\">赢得</font><font color=\"#fff292\">{2}</font><font color=\"#aeb7ce\">，简直是天上掉馅饼呀~~</font>", "msgId": "game_msg_1" }, { "id": 5006, "msg": "游戏币不足，您已被请离房间", "msgId": "erba_game_no_enough" }, { "id": 5004, "msg": "有玩家被请离房间，本轮游戏结束", "msgId": "erba_game_end_tip" }, { "id": 5003, "msg": "后开始第{0}局游戏，共5局", "msgId": "erba_game_txt_round" }, { "id": 5002, "msg": "局数", "msgId": "erba_game_round" }, { "id": 5001, "msg": "底注", "msgId": "erba_game_blind" }, { "id": 4051, "msg": "您的牌桌筹码小于{0}，请增加牌桌筹码后重试", "msgId": "holdem_chip_min" }, { "id": 4050, "msg": "不在这个房间中无法带入", "msgId": "holdem_take_notin" }, { "id": 4049, "msg": "不能加入房间", "msgId": "holdem_join_cannot" }, { "id": 4048, "msg": "游戏已经开始无法加入", "msgId": "holdem_join_playing" }, { "id": 4047, "msg": "皇家同花顺", "msgId": "holdem_card_type_10" }, { "id": 4046, "msg": "同花顺", "msgId": "holdem_card_type_9" }, { "id": 4045, "msg": "四条", "msgId": "holdem_card_type_8" }, { "id": 4044, "msg": "葫芦", "msgId": "holdem_card_type_7" }, { "id": 4043, "msg": "同花", "msgId": "holdem_card_type_6" }, { "id": 4042, "msg": "顺子", "msgId": "holdem_card_type_5" }, { "id": 4041, "msg": "三条", "msgId": "holdem_card_type_4" }, { "id": 4040, "msg": "两对", "msgId": "holdem_card_type_3" }, { "id": 4039, "msg": "对子", "msgId": "holdem_card_type_2" }, { "id": 4038, "msg": "散牌", "msgId": "holdem_card_type_1" }, { "id": 4037, "msg": "未知", "msgId": "holdem_card_type_0" }, { "id": 4036, "msg": "小盲注", "msgId": "holdem_txt_small_blind" }, { "id": 4035, "msg": "大盲注", "msgId": "holdem_txt_big_blind" }, { "id": 4034, "msg": "底池：{0}", "msgId": "holdem_txt_pot" }, { "id": 4033, "msg": "Allin", "msgId": "holdem_txt_allin" }, { "id": 4032, "msg": "跟注{0}", "msgId": "holdem_txt_call_number" }, { "id": 4031, "msg": "跟注", "msgId": "holdem_txt_call" }, { "id": 4030, "msg": "加注", "msgId": "holdem_txt_raise" }, { "id": 4029, "msg": "让牌", "msgId": "holdem_txt_pass" }, { "id": 4028, "msg": "弃牌", "msgId": "holdem_txt_give_up" }, { "id": 4027, "msg": "游戏币不足，匹配失败，请充值后继续游戏！", "msgId": "holdem_tip_charge" }, { "id": 4026, "msg": "盲注：{0}/{1}", "msgId": "holdem_txt_blind" }, { "id": 4025, "msg": "前注：{0}", "msgId": "holdem_txt_pre_chip" }, { "id": 4024, "msg": "准入：{0}", "msgId": "holdem_txt_min_chip" }, { "id": 4023, "msg": "赢", "msgId": "holdem_txt_win" }, { "id": 4022, "msg": "等待下一局", "msgId": "holdem_waiting_game" }, { "id": 4021, "msg": "您确定要Allin吗？", "msgId": "holdem_game_tip_allin" }, { "id": 4020, "msg": "您确定要弃牌吗？", "msgId": "holdem_game_tip_fold" }, { "id": 4018, "msg": "重新登陆", "msgId": "holdem_sign_up" }, { "id": 4016, "msg": "牌型说明", "msgId": "holdem_help_hand" }, { "id": 4012, "msg": "音乐开关", "msgId": "holdem_setting_music_switch" }, { "id": 4008, "msg": "我看好你哟！", "msgId": "holdem_heguan_say_2" }, { "id": 3020, "msg": "该座位有人", "msgId": "games_seat_done" }, { "id": 3019, "msg": "您还没坐下", "msgId": "games_player_not_seat" }, { "id": 3018, "msg": "您已坐下", "msgId": "games_player_seat" }, { "id": 3017, "msg": "玩家不足", "msgId": "games_player_not_enough" }, { "id": 3016, "msg": "存在无效玩家", "msgId": "games_player_invalid" }, { "id": 3015, "msg": "筹码带入成功", "msgId": "games_chip_success" }, { "id": 3014, "msg": "非常抱歉，您的筹码数量超过本房间最大带入，无法带入。", "msgId": "games_chip_max" }, { "id": 3013, "msg": "非常抱歉，您的筹码数量低于本房间最小带入，无法带入。", "msgId": "games_chip_min" }, { "id": 3012, "msg": "筹码不足，请充值后继续游戏或尝试进入其他房间。", "msgId": "games_chip_not_enough" }, { "id": 3011, "msg": "游戏中无法带入筹码", "msgId": "games_chip_running" }, { "id": 3010, "msg": "正在进行游戏", "msgId": "games_room_playing" }, { "id": 3009, "msg": "无法进入房间", "msgId": "games_room_not_reg" }, { "id": 3008, "msg": "玩家离开房间", "msgId": "games_room_leave" }, { "id": 3007, "msg": "玩家不在房间中", "msgId": "games_room_out" }, { "id": 3006, "msg": "玩家已在房间中", "msgId": "games_room_in" }, { "id": 3005, "msg": "房间不存在", "msgId": "games_room_not_exit" }, { "id": 3004, "msg": "当前房间禁止登陆", "msgId": "games_room_forbid" }, { "id": 3002, "msg": "玩家正在游戏中", "msgId": "games_queue_done" }];
+//# sourceMappingURL=MsgData.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var Handler = laya.utils.Handler;
+var MCView = /** @class */ (function (_super) {
+    __extends(MCView, _super);
+    function MCView(mv) {
+        return _super.call(this, mv) || this;
+    }
+    MCView.prototype.closeNow = function () {
+        if (this.display.viewType == ComView.WINDOW || this.display.viewType == ComView.WINDOW_NO_CLOSEAUTO) {
+            laya.utils.Tween.to(this.display, { scaleX: 0.9, scaleY: 0.9, alpha: 0.5 }, 100, null, Handler.create(this, this.tweenClose, [], false));
+        }
+        else {
+            _super.prototype.closeNow.call(this);
+        }
+    };
+    MCView.prototype.tweenClose = function () {
+        _super.prototype.closeNow.call(this);
+        this.display.scaleX = this.display.scaleY = this.display.alpha = 1;
+    };
+    MCView.prototype.showNow = function () {
+        _super.prototype.showNow.call(this);
+        if (this.display.viewType == ComView.WINDOW || this.display.viewType == ComView.WINDOW_NO_CLOSEAUTO) {
+            laya.utils.Tween.from(this.display, { scaleX: 0.9, scaleY: 0.9, alpha: 0.5 }, 100, null, Handler.create(this, this.tweenShow, [], false));
+        }
+        else {
+            _super.prototype.showNow.call(this);
+        }
+    };
+    MCView.prototype.tweenShow = function () {
+    };
+    return MCView;
+}(CView));
+//# sourceMappingURL=MCView.js.map
+var InitData = /** @class */ (function () {
+    function InitData() {
+    }
+    return InitData;
+}());
+//# sourceMappingURL=InitData.js.map
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var View = mview.ComView;
+var Dialogs = mview.DialogView;
+var Scenes = mview.SceneView;
+var Windows = mview.WinView;
+var ui;
+(function (ui) {
+    var avater_chose;
+    (function (avater_chose) {
+        var AvaterChoseUI = /** @class */ (function (_super) {
+            __extends(AvaterChoseUI, _super);
+            function AvaterChoseUI() {
+                return _super.call(this) || this;
+            }
+            AvaterChoseUI.prototype.createChildren = function () {
+                View.regComponent("ScaleCom", ScaleCom);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("avater_chose/AvaterChose");
+            };
+            return AvaterChoseUI;
+        }(Windows));
+        avater_chose.AvaterChoseUI = AvaterChoseUI;
+    })(avater_chose = ui.avater_chose || (ui.avater_chose = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var dialog;
+    (function (dialog) {
+        var OneButtonUI = /** @class */ (function (_super) {
+            __extends(OneButtonUI, _super);
+            function OneButtonUI() {
+                return _super.call(this) || this;
+            }
+            OneButtonUI.prototype.createChildren = function () {
+                View.regComponent("ScaleCom", ScaleCom);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("dialog/OneButton");
+            };
+            return OneButtonUI;
+        }(Dialogs));
+        dialog.OneButtonUI = OneButtonUI;
+    })(dialog = ui.dialog || (ui.dialog = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var dialog;
+    (function (dialog) {
+        var TwoButtonUI = /** @class */ (function (_super) {
+            __extends(TwoButtonUI, _super);
+            function TwoButtonUI() {
+                return _super.call(this) || this;
+            }
+            TwoButtonUI.prototype.createChildren = function () {
+                View.regComponent("ScaleCom", ScaleCom);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("dialog/TwoButton");
+            };
+            return TwoButtonUI;
+        }(Dialogs));
+        dialog.TwoButtonUI = TwoButtonUI;
+    })(dialog = ui.dialog || (ui.dialog = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_dzpk;
+    (function (game_dzpk) {
+        var DZPKCardsUI = /** @class */ (function (_super) {
+            __extends(DZPKCardsUI, _super);
+            function DZPKCardsUI() {
+                return _super.call(this) || this;
+            }
+            DZPKCardsUI.prototype.createChildren = function () {
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_dzpk/DZPKCards");
+            };
+            return DZPKCardsUI;
+        }(View));
+        game_dzpk.DZPKCardsUI = DZPKCardsUI;
+    })(game_dzpk = ui.game_dzpk || (ui.game_dzpk = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_dzpk;
+    (function (game_dzpk) {
+        var DZPKCardTypeUI = /** @class */ (function (_super) {
+            __extends(DZPKCardTypeUI, _super);
+            function DZPKCardTypeUI() {
+                return _super.call(this) || this;
+            }
+            DZPKCardTypeUI.prototype.createChildren = function () {
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_dzpk/DZPKCardType");
+            };
+            return DZPKCardTypeUI;
+        }(Windows));
+        game_dzpk.DZPKCardTypeUI = DZPKCardTypeUI;
+    })(game_dzpk = ui.game_dzpk || (ui.game_dzpk = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_dzpk;
+    (function (game_dzpk) {
+        var DZPKHeadUI = /** @class */ (function (_super) {
+            __extends(DZPKHeadUI, _super);
+            function DZPKHeadUI() {
+                return _super.call(this) || this;
+            }
+            DZPKHeadUI.prototype.createChildren = function () {
+                View.regComponent("BoxMask", BoxMask);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_dzpk/DZPKHead");
+            };
+            return DZPKHeadUI;
+        }(View));
+        game_dzpk.DZPKHeadUI = DZPKHeadUI;
+    })(game_dzpk = ui.game_dzpk || (ui.game_dzpk = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_dzpk;
+    (function (game_dzpk) {
+        var DZPKHelpUI = /** @class */ (function (_super) {
+            __extends(DZPKHelpUI, _super);
+            function DZPKHelpUI() {
+                return _super.call(this) || this;
+            }
+            DZPKHelpUI.prototype.createChildren = function () {
+                View.regComponent("ScaleCom", ScaleCom);
+                View.regComponent("ButtonState", ButtonState);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_dzpk/DZPKHelp");
+            };
+            return DZPKHelpUI;
+        }(Windows));
+        game_dzpk.DZPKHelpUI = DZPKHelpUI;
+    })(game_dzpk = ui.game_dzpk || (ui.game_dzpk = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_dzpk;
+    (function (game_dzpk) {
+        var DZPKMenuUI = /** @class */ (function (_super) {
+            __extends(DZPKMenuUI, _super);
+            function DZPKMenuUI() {
+                return _super.call(this) || this;
+            }
+            DZPKMenuUI.prototype.createChildren = function () {
+                View.regComponent("ButtonState", ButtonState);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_dzpk/DZPKMenu");
+            };
+            return DZPKMenuUI;
+        }(Windows));
+        game_dzpk.DZPKMenuUI = DZPKMenuUI;
+    })(game_dzpk = ui.game_dzpk || (ui.game_dzpk = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_dzpk;
+    (function (game_dzpk) {
+        var DZPKRecordUI = /** @class */ (function (_super) {
+            __extends(DZPKRecordUI, _super);
+            function DZPKRecordUI() {
+                return _super.call(this) || this;
+            }
+            DZPKRecordUI.prototype.createChildren = function () {
+                View.regComponent("ScaleCom", ScaleCom);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_dzpk/DZPKRecord");
+            };
+            return DZPKRecordUI;
+        }(Windows));
+        game_dzpk.DZPKRecordUI = DZPKRecordUI;
+    })(game_dzpk = ui.game_dzpk || (ui.game_dzpk = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_dzpk;
+    (function (game_dzpk) {
+        var DZPKRoomUI = /** @class */ (function (_super) {
+            __extends(DZPKRoomUI, _super);
+            function DZPKRoomUI() {
+                return _super.call(this) || this;
+            }
+            DZPKRoomUI.prototype.createChildren = function () {
+                View.regComponent("ScaleCom", ScaleCom);
+                View.regComponent("Text", laya.display.Text);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_dzpk/DZPKRoom");
+            };
+            return DZPKRoomUI;
+        }(Scenes));
+        game_dzpk.DZPKRoomUI = DZPKRoomUI;
+    })(game_dzpk = ui.game_dzpk || (ui.game_dzpk = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_dzpk;
+    (function (game_dzpk) {
+        var DZPKSceneUI = /** @class */ (function (_super) {
+            __extends(DZPKSceneUI, _super);
+            function DZPKSceneUI() {
+                return _super.call(this) || this;
+            }
+            DZPKSceneUI.prototype.createChildren = function () {
+                View.regComponent("ScaleCom", ScaleCom);
+                View.regComponent("ui.game_dzpk.DZPKHeadUI", ui.game_dzpk.DZPKHeadUI);
+                View.regComponent("ui.game_dzpk.DZPKCardsUI", ui.game_dzpk.DZPKCardsUI);
+                View.regComponent("SliderCustomer", SliderCustomer);
+                View.regComponent("CheckState", CheckState);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_dzpk/DZPKScene");
+            };
+            return DZPKSceneUI;
+        }(Scenes));
+        game_dzpk.DZPKSceneUI = DZPKSceneUI;
+    })(game_dzpk = ui.game_dzpk || (ui.game_dzpk = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_dzpk;
+    (function (game_dzpk) {
+        var DZPKSuccUI = /** @class */ (function (_super) {
+            __extends(DZPKSuccUI, _super);
+            function DZPKSuccUI() {
+                return _super.call(this) || this;
+            }
+            DZPKSuccUI.prototype.createChildren = function () {
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_dzpk/DZPKSucc");
+            };
+            return DZPKSuccUI;
+        }(View));
+        game_dzpk.DZPKSuccUI = DZPKSuccUI;
+    })(game_dzpk = ui.game_dzpk || (ui.game_dzpk = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_dzpk;
+    (function (game_dzpk) {
+        var DZPKTakeUI = /** @class */ (function (_super) {
+            __extends(DZPKTakeUI, _super);
+            function DZPKTakeUI() {
+                return _super.call(this) || this;
+            }
+            DZPKTakeUI.prototype.createChildren = function () {
+                View.regComponent("ScaleCom", ScaleCom);
+                View.regComponent("CheckState", CheckState);
+                View.regComponent("SliderCustomer", SliderCustomer);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_dzpk/DZPKTake");
+            };
+            return DZPKTakeUI;
+        }(Windows));
+        game_dzpk.DZPKTakeUI = DZPKTakeUI;
+    })(game_dzpk = ui.game_dzpk || (ui.game_dzpk = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_dzpk;
+    (function (game_dzpk) {
+        var TestVSUI = /** @class */ (function (_super) {
+            __extends(TestVSUI, _super);
+            function TestVSUI() {
+                return _super.call(this) || this;
+            }
+            TestVSUI.prototype.createChildren = function () {
+                View.regComponent("SliderCustomer", SliderCustomer);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_dzpk/TestVS");
+            };
+            return TestVSUI;
+        }(View));
+        game_dzpk.TestVSUI = TestVSUI;
+    })(game_dzpk = ui.game_dzpk || (ui.game_dzpk = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_hall;
+    (function (game_hall) {
+        var GameChoseUI = /** @class */ (function (_super) {
+            __extends(GameChoseUI, _super);
+            function GameChoseUI() {
+                return _super.call(this) || this;
+            }
+            GameChoseUI.prototype.createChildren = function () {
+                View.regComponent("Text", laya.display.Text);
+                View.regComponent("ScaleCom", ScaleCom);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_hall/GameChose");
+            };
+            return GameChoseUI;
+        }(View));
+        game_hall.GameChoseUI = GameChoseUI;
+    })(game_hall = ui.game_hall || (ui.game_hall = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var game_hall;
+    (function (game_hall) {
+        var GameHallUI = /** @class */ (function (_super) {
+            __extends(GameHallUI, _super);
+            function GameHallUI() {
+                return _super.call(this) || this;
+            }
+            GameHallUI.prototype.createChildren = function () {
+                View.regComponent("ScaleCom", ScaleCom);
+                View.regComponent("Text", laya.display.Text);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("game_hall/GameHall");
+            };
+            return GameHallUI;
+        }(Scenes));
+        game_hall.GameHallUI = GameHallUI;
+    })(game_hall = ui.game_hall || (ui.game_hall = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var pipei;
+    (function (pipei) {
+        var PiPeiViewUI = /** @class */ (function (_super) {
+            __extends(PiPeiViewUI, _super);
+            function PiPeiViewUI() {
+                return _super.call(this) || this;
+            }
+            PiPeiViewUI.prototype.createChildren = function () {
+                View.regComponent("ScaleCom", ScaleCom);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("pipei/PiPeiView");
+            };
+            return PiPeiViewUI;
+        }(Windows));
+        pipei.PiPeiViewUI = PiPeiViewUI;
+    })(pipei = ui.pipei || (ui.pipei = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var setting;
+    (function (setting) {
+        var SettingWindowUI = /** @class */ (function (_super) {
+            __extends(SettingWindowUI, _super);
+            function SettingWindowUI() {
+                return _super.call(this) || this;
+            }
+            SettingWindowUI.prototype.createChildren = function () {
+                View.regComponent("CheckState", CheckState);
+                View.regComponent("ScaleCom", ScaleCom);
+                View.regComponent("SettingSlider", SettingSlider);
+                _super.prototype.createChildren.call(this);
+                this.loadUI("setting/SettingWindow");
+            };
+            return SettingWindowUI;
+        }(Windows));
+        setting.SettingWindowUI = SettingWindowUI;
+    })(setting = ui.setting || (ui.setting = {}));
+})(ui || (ui = {}));
+(function (ui) {
+    var TempleteWindowUI = /** @class */ (function (_super) {
+        __extends(TempleteWindowUI, _super);
+        function TempleteWindowUI() {
+            return _super.call(this) || this;
+        }
+        TempleteWindowUI.prototype.createChildren = function () {
+            View.regComponent("ScaleCom", ScaleCom);
+            _super.prototype.createChildren.call(this);
+            this.loadUI("TempleteWindow");
+        };
+        return TempleteWindowUI;
+    }(Windows));
+    ui.TempleteWindowUI = TempleteWindowUI;
+})(ui || (ui = {}));
+//# sourceMappingURL=layaUI.max.all.js.map
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.3.5 Copyright jQuery Foundation and other contributors.
  * Released under MIT license, https://github.com/requirejs/requirejs/blob/master/LICENSE
@@ -52329,9 +56711,6 @@ var requirejs, require, define;
              * @private
              */
             execCb: function (name, callback, args, exports) {
-                if(name == "mbase/data/Player"){
-                    console.log(name);
-                }
                 return callback.apply(exports, args);
             },
 

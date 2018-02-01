@@ -18,7 +18,6 @@ class CView{
         protected  _parent:laya.display.Node = null;
         protected  _class:any = null;
         protected  _atlas_url:string = null;//需要多个不同资源，用逗号隔开
-        protected  _view_path:string = null;//排版路径
         protected  _is_show:boolean = false;
         protected  _is_need_show:boolean = false;
         protected  _is_on_parent:boolean = false;
@@ -29,13 +28,6 @@ class CView{
         */
         public setAtlasName(arg_params:string) {
             this._atlas_url = arg_params;
-        }
-
-         /*
-            设置资源路径
-        */
-        public setViewPath(arg_params:string) {
-            this._view_path = arg_params;
         }
 
         public setParent(val:laya.display.Node){
@@ -94,16 +86,40 @@ class CView{
                 if(arr_atlas[i] == "") continue;
                 tmp_arrAtlas.push({url:arr_atlas[i],type:laya.net.Loader.ATLAS});
             }
-            // let path = CFun.parsingPath(this._class.prototype.constructor.__proto__);
-            let arr_json = this._view_path.split(",");
+
+            let arr_json = this.analysisUIJson(this._class["__proto__"].name);
+            len = arr_json.length;
             for(let i = 0;i < len;i++){
                 if(arr_json[i] == "") continue;
-                tmp_arrAtlas.push({url:arr_json[i] +".json",type:laya.net.Loader.JSON});
+                tmp_arrAtlas.push({url:arr_json[i],type:laya.net.Loader.JSON});
             }
             
             if(tmp_arrAtlas.length > 0){
                 Laya.loader.load(tmp_arrAtlas, laya.utils.Handler.create(this, this.onLoaded));
             }
+        }
+
+        private analysisUIJson(name:string){
+            let ui_txt:string = Laya.loader.getRes("js/ui/layaUI.max.all.js");
+            let sign = ", ui.";
+            
+            let arr_path = [];
+            let sign_index = 0;
+            let str_load = "this.loadUI";
+            let stop_index = ui_txt.indexOf(str_load,ui_txt.indexOf(name + ".prototype.createChildren")) + str_load.length;
+            do{
+                sign_index = ui_txt.indexOf(sign,sign_index);
+                if(sign_index > stop_index || sign_index == -1) break;
+                let str_begin = ui_txt.lastIndexOf(".",ui_txt.indexOf(");",sign_index)) + 1;
+                let str_end = ui_txt.indexOf(");",str_begin);
+                let path = CFun.parsingPath(ui_txt.substring(str_begin,str_end));
+                sign_index += 1;
+                arr_path.push(path);
+            }while(1)
+
+            arr_path.push(CFun.parsingPath(this._class["__proto__"].name));
+
+            return arr_path;
         }
 
         protected addToParent(){

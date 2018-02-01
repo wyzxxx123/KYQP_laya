@@ -32,7 +32,6 @@ import { MViewModel } from '../../mbase/base/MViewModel';
             super();
 
             this.setAtlasName = "res/atlas/settingWindow.atlas";
-            this.setViewPath = "setting/SettingWindow";
             this.setClass = SettingView;
         }
     }

@@ -1,0 +1,1 @@
+var ClassPro=function(){function t(){}return t.prototype.toString=function(){return"收到："+this.className+" [f_id:"+this.recv_id+",event:"+this.event_id+","},t}();

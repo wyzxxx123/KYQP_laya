@@ -53,16 +53,22 @@ module mview{
             this.layerInit();
         }
 
-        // createChildren():void {
-        //     super.createChildren();
+        createChildren():void {
+            super.createChildren();
 
-        //     let path = CFun.parsingPath(this.constructor.prototype.constructor.__proto__);
-        //     this.createView(Laya.loader.getRes(path));
-        // }
+            let pname = this["__proto__"].constructor["__proto__"].name;
+            if(pname == "ComView"){
+                pname = this.constructor.name;
+            }
 
-        loadUI(path:string):void{
-            this.createView(Laya.loader.getRes(path + ".json"));
-            super.loadUI(path);
+            let path = CFun.parsingPath(pname);
+            this.createView(Laya.loader.getRes(path));
         }
+
+        // loadUI(path:string):void{
+        //     this.createView(Laya.loader.getRes(path + ".json"));
+        //     // let parsing_path = CFun.parsingPath(this["__proto__"].constructor["__proto__"].name);
+        //     super.loadUI(path);
+        // }
     }
 }

@@ -16,7 +16,6 @@ define(["require", "exports", "./DZPKRoomsView", "../../mbase/data/Player", "../
         function DZPKRoomsVM() {
             var _this = _super.call(this) || this;
             _this.setClass = DZPKRoomsView_1.DZPKRoomsView;
-            _this.setViewPath = "game_dzpk/DZPKRoom";
             _this.setAtlasName = "res/atlas/dzpk/roomHallScene.atlas,res/atlas/dzpk/zh-cn/roomHallScene.atlas";
             return _this;
         }

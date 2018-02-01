@@ -72,7 +72,6 @@ import { MViewModel } from '../../mbase/base/MViewModel';
             super();
 
             this.setClass = DZPKRoomsView;
-            this.setViewPath = "game_dzpk/DZPKRoom";
             this.setAtlasName = "res/atlas/dzpk/roomHallScene.atlas,res/atlas/dzpk/zh-cn/roomHallScene.atlas";
         }
     }

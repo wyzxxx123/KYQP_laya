@@ -1,0 +1,1 @@
+var EffectView=function(){return function(){this._effectLayer=Layer.EFFECT_LAYER}}();

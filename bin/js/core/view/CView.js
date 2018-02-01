@@ -7,7 +7,6 @@ var CView = /** @class */ (function () {
         this._parent = null;
         this._class = null;
         this._atlas_url = null; //需要多个不同资源，用逗号隔开
-        this._view_path = null; //排版路径
         this._is_show = false;
         this._is_need_show = false;
         this._is_on_parent = false;
@@ -23,12 +22,6 @@ var CView = /** @class */ (function () {
     */
     CView.prototype.setAtlasName = function (arg_params) {
         this._atlas_url = arg_params;
-    };
-    /*
-       设置资源路径
-   */
-    CView.prototype.setViewPath = function (arg_params) {
-        this._view_path = arg_params;
     };
     CView.prototype.setParent = function (val) {
         this._parent = val;
@@ -84,16 +77,36 @@ var CView = /** @class */ (function () {
                 continue;
             tmp_arrAtlas.push({ url: arr_atlas[i], type: laya.net.Loader.ATLAS });
         }
-        // let path = CFun.parsingPath(this._class.prototype.constructor.__proto__);
-        var arr_json = this._view_path.split(",");
+        var arr_json = this.analysisUIJson(this._class["__proto__"].name);
+        len = arr_json.length;
         for (var i = 0; i < len; i++) {
             if (arr_json[i] == "")
                 continue;
-            tmp_arrAtlas.push({ url: arr_json[i] + ".json", type: laya.net.Loader.JSON });
+            tmp_arrAtlas.push({ url: arr_json[i], type: laya.net.Loader.JSON });
         }
         if (tmp_arrAtlas.length > 0) {
             Laya.loader.load(tmp_arrAtlas, laya.utils.Handler.create(this, this.onLoaded));
         }
+    };
+    CView.prototype.analysisUIJson = function (name) {
+        var ui_txt = Laya.loader.getRes("js/ui/layaUI.max.all.js");
+        var sign = ", ui.";
+        var arr_path = [];
+        var sign_index = 0;
+        var str_load = "this.loadUI";
+        var stop_index = ui_txt.indexOf(str_load, ui_txt.indexOf(name + ".prototype.createChildren")) + str_load.length;
+        do {
+            sign_index = ui_txt.indexOf(sign, sign_index);
+            if (sign_index > stop_index || sign_index == -1)
+                break;
+            var str_begin = ui_txt.lastIndexOf(".", ui_txt.indexOf(");", sign_index)) + 1;
+            var str_end = ui_txt.indexOf(");", str_begin);
+            var path = CFun.parsingPath(ui_txt.substring(str_begin, str_end));
+            sign_index += 1;
+            arr_path.push(path);
+        } while (1);
+        arr_path.push(CFun.parsingPath(this._class["__proto__"].name));
+        return arr_path;
     };
     CView.prototype.addToParent = function () {
         if (!this._parent) {

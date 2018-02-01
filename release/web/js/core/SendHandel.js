@@ -1,0 +1,1 @@
+var SendHandel=function(){function t(){}return t.prototype.send=function(t){SocketManager.ins.send(t,void 0==this._host?SocketManager.arr_address[0].main:this._host,void 0==this._port?SocketManager.arr_address[0].sub:this._port)},t}();

@@ -1,0 +1,1 @@
+var AnalyzerManager=function(){function n(){this._analyzer=new Analyzer}return n.prototype.getAnalyzed=function(n){return this._analyzer.analyzeRecv(n)},n.prototype.getSendAnalyzed=function(n){return this._analyzer.analyzeSend(n)},Object.defineProperty(n,"ins",{get:function(){return this._instance||(this._instance=new n),this._instance},enumerable:!0,configurable:!0}),n}();

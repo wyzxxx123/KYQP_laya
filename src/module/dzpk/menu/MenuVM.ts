@@ -75,6 +75,5 @@ import { MViewModel } from '../../../mbase/base/MViewModel';
 
             this.setAtlasName = "res/atlas/dzpk/zh-cn/font/menuPanelFont.atlas";
             this.setClass = MenuView;
-            this.setViewPath = "game_dzpk/DZPKMenu";
         }
     }

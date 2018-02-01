@@ -33,12 +33,16 @@ var CFun = /** @class */ (function () {
             m_class = ui.dialog.OneButtonUI;
             path = "dialog/OneButton.json";
         }
-        this.parsingPath(m_class);
+        // path = this.parsingPath(m_class);
         Laya.loader.load([{ url: path, type: laya.net.Loader.JSON }], laya.utils.Handler.create(this, this.onDialogLoaded, [content, callback, obj, button, title]));
     };
-    CFun.parsingPath = function (m_class) {
+    CFun.parsingPath = function (name) {
         var ui_txt = Laya.loader.getRes("js/ui/layaUI.max.all.js");
-        return "";
+        var str_load = "this.loadUI(\"";
+        var str_begin = ui_txt.indexOf(str_load, ui_txt.indexOf(name + ".prototype.createChildren")) + str_load.length;
+        var str_end = ui_txt.indexOf("\");", str_begin);
+        var path = ui_txt.substring(str_begin, str_end);
+        return path + ".json";
     };
     CFun.onDialogLoaded = function (content, callback, obj, button, title) {
         var arrBtn = button.split("|");

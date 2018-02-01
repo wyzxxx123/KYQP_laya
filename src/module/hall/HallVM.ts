@@ -47,7 +47,7 @@ import { MViewModel } from '../../mbase/base/MViewModel';
 
             if(CFun.DEBUG){
                 if(this.playerData.gold == 0){
-                    this.sendData(16778278,[10000]);
+                    // this.sendData(16778278,[10000]);
                 }
             }
         }
@@ -56,7 +56,6 @@ import { MViewModel } from '../../mbase/base/MViewModel';
             super();
 
             this.setAtlasName = "res/atlas/gamehall/mainScene.atlas";
-            this.setViewPath = "game_hall/GameHall";
             this.setClass = HallView;
         }
     }

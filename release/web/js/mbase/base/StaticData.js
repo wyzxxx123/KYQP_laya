@@ -1,0 +1,1 @@
+var StaticData=function(){function a(){}return a.dic_model={},a.seed=0,a.appName="",a.accountId=0,a}();

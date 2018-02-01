@@ -218,6 +218,7 @@ module ui.game_dzpk {
 			View.regComponent("ui.game_dzpk.DZPKCardsUI",ui.game_dzpk.DZPKCardsUI);
 			View.regComponent("SliderCustomer",SliderCustomer);
 			View.regComponent("CheckState",CheckState);
+			View.regComponent("ui.game_dzpk.DZPKSuccUI",ui.game_dzpk.DZPKSuccUI);
 
             super.createChildren();
             this.loadUI("game_dzpk/DZPKScene");

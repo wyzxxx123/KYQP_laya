@@ -17,7 +17,6 @@ define(["require", "exports", "./DZPKRecordView", "../../../mbase/base/MViewMode
             var _this = _super.call(this) || this;
             _this.setAtlasName = "res/atlas/dzpk/zh-cn/gameRecord.atlas";
             _this.setClass = DZPKRecordView_1.DZPKRecordView;
-            _this.setViewPath = "game_dzpk/DZPKRecord";
             return _this;
         }
         //继承的

@@ -24,7 +24,6 @@ define(["require", "exports", "./PiPeiView", "../../../mbase/base/MViewModel"], 
             var _this = _super.call(this) || this;
             _this.setAtlasName = "1";
             _this.setClass = PiPeiView_1.PiPeiView;
-            _this.setViewPath = "pipei/PiPeiView";
             return _this;
         }
         PiPeiVM.prototype.cancelPiPei = function () {

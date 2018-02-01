@@ -39,12 +39,13 @@ class GameMain {
             Handler.create(this, this.onLoadComplete));
     }
     private onLoadComplete() {
-
+        // let m = Laya.loader.getRes("js/ui/layaUI.max.all.js");
+        // console.log(m);
         // let m = require(["js/module/dzpk/help/DZPKHelpVM"]);
         // let c = new m();
         // console.log("");
 
-        CFun.parsingPath(1);
+        // CFun.parsingPath(1);
     }
 
     private localInit() {

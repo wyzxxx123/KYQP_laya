@@ -12,6 +12,5 @@ import { MViewModel } from '../../../mbase/base/MViewModel';
 
             this.setAtlasName = "res/atlas/dzpk/zh-cn/gameRecord.atlas";
             this.setClass = DZPKRecordView;
-            this.setViewPath = "game_dzpk/DZPKRecord";
         }
     }

@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scenes",
-    "selectedBox":408,
-    "selecteID":387,
+    "selectedBox":1,
+    "selecteID":473,
     "referenceLines":null,
     "props":{"width":1280,"sceneWidth":600,"sceneHeight":400,"sceneColor":"#000000","height":720},
     "nodeParent":-1,
@@ -2382,6 +2382,21 @@
             "compId":433,
             "child":[
                 ]
+        },
+        {
+            "x":15,
+            "type":"UIView",
+            "source":"game_dzpk/DZPKSucc.ui",
+            "props":{"y":507,"x":219,"visible":false},
+            "nodeParent":1,
+            "label":"UIView",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":473,
+            "child":[
+                ],
+            "$HIDDEN":true
         }],
     "animations":[
         {

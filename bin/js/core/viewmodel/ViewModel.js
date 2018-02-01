@@ -78,16 +78,6 @@ var ViewModel = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ViewModel.prototype, "setViewPath", {
-        /*
-            设置资源路径
-        */
-        set: function (arg_params) {
-            this.cview.setViewPath(arg_params);
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(ViewModel.prototype, "setClass", {
         /*
           设置显示类型

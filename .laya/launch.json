@@ -18,6 +18,7 @@
 			"type": "chrome",
 			"request": "launch",
 			"url": "${workspaceRoot}/bin/index.html",
+			// "url": "${workspaceRoot}/release/web/index.html",
 			// "换成自己的谷歌安装路径，": 比如
 			//window 默认安装路径为: "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
 			//mac 系统上的默认安装路径为 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";

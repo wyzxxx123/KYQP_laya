@@ -26,7 +26,6 @@ import { MViewModel } from '../../../mbase/base/MViewModel';
             super();
 
             this.setAtlasName = "res/atlas/dzpk/buySitDownWindow.atlas,res/atlas/dzpk/zh-cn/buySitDownWindow.atlas";
-            this.setViewPath = "game_dzpk/DZPKTake";
             this.setClass = DZPKTakeView;
         }
     }

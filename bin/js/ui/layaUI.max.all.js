@@ -207,6 +207,7 @@ var ui;
                 View.regComponent("ui.game_dzpk.DZPKCardsUI", ui.game_dzpk.DZPKCardsUI);
                 View.regComponent("SliderCustomer", SliderCustomer);
                 View.regComponent("CheckState", CheckState);
+                View.regComponent("ui.game_dzpk.DZPKSuccUI", ui.game_dzpk.DZPKSuccUI);
                 _super.prototype.createChildren.call(this);
                 this.loadUI("game_dzpk/DZPKScene");
             };

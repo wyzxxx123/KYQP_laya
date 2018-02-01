@@ -24,7 +24,6 @@ define(["require", "exports", "./MenuView", "../../../mbase/base/MViewModel"], f
             var _this = _super.call(this) || this;
             _this.setAtlasName = "res/atlas/dzpk/zh-cn/font/menuPanelFont.atlas";
             _this.setClass = MenuView_1.MenuView;
-            _this.setViewPath = "game_dzpk/DZPKMenu";
             return _this;
         }
         MenuVM.prototype.openCard = function () {

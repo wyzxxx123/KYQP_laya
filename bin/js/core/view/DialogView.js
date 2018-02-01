@@ -23,6 +23,7 @@ var mview;
         // }
         DialogView.prototype.loadUI = function (path) {
             this.createView(Laya.loader.getRes(path + ".json"));
+            // this.createView(CFun.parsingPath(this.constructor.));
             _super.prototype.loadUI.call(this, path);
         };
         return DialogView;

@@ -70,13 +70,6 @@
         }
 
         /*
-            设置资源路径
-        */
-        protected set setViewPath(arg_params:string) {
-            this.cview.setViewPath(arg_params);
-        }
-
-        /*
           设置显示类型
         */
         protected set setClass(arg_class:any){

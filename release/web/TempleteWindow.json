@@ -1,0 +1,1 @@
+{"type":"Windows","props":{},"child":[{"type":"Image","props":{"y":0,"x":0,"top":0,"skin":"public/b1.png","sizeGrid":"100,80,60,80","right":0,"left":0,"bottom":0}},{"type":"Image","props":{"y":18,"x":442,"var":"btn_close","top":18,"skin":"public/b3_normal.png","right":18},"child":[{"type":"Script","props":{"runtime":"ScaleCom"}}]}]}

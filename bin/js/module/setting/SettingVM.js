@@ -23,7 +23,6 @@ define(["require", "exports", "./SettingView", "../../mbase/base/MViewModel"], f
         function SettingVM() {
             var _this = _super.call(this) || this;
             _this.setAtlasName = "res/atlas/settingWindow.atlas";
-            _this.setViewPath = "setting/SettingWindow";
             _this.setClass = SettingView_1.SettingView;
             return _this;
         }

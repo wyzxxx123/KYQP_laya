@@ -23,7 +23,6 @@ define(["require", "exports", "./HallView", "../../mbase/data/Player", "../../mb
         function HallVM() {
             var _this = _super.call(this) || this;
             _this.setAtlasName = "res/atlas/gamehall/mainScene.atlas";
-            _this.setViewPath = "game_hall/GameHall";
             _this.setClass = HallView_1.HallView;
             return _this;
         }
@@ -57,7 +56,7 @@ define(["require", "exports", "./HallView", "../../mbase/data/Player", "../../mb
             this.sendData(16778275, []); //getGamePlayer 
             if (CFun.DEBUG) {
                 if (this.playerData.gold == 0) {
-                    this.sendData(16778278, [10000]);
+                    // this.sendData(16778278,[10000]);
                 }
             }
         };

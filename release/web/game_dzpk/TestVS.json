@@ -1,0 +1,1 @@
+{"type":"View","props":{},"child":[{"type":"VSlider","props":{"y":409,"x":53,"var":"vs","skin":"dzpk/gameScene/track2.png","showLabel":false,"scaleY":-1,"min":1,"max":100,"runtime":"SliderCustomer"},"child":[{"type":"Image","props":{"y":2,"x":3,"skin":"dzpk/gameScene/track1.png","sizeGrid":"8,0,8,0","name":"cfront"}}]}]}

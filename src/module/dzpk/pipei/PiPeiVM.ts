@@ -30,6 +30,5 @@ import { MViewModel } from '../../../mbase/base/MViewModel';
 
             this.setAtlasName = "1";
             this.setClass = PiPeiView;
-            this.setViewPath = "pipei/PiPeiView";
         }
     }

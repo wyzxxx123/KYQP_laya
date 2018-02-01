@@ -1,0 +1,14 @@
+{"file":"gameOverVictoryFnt.png","frames":{
+"+":{"x":24,"y":30,"w":23,"h":24,"offX":0,"offY":2,"sourceW":23,"sourceH":27},
+"0":{"x":74,"y":1,"w":22,"h":27,"offX":0,"offY":0,"sourceW":22,"sourceH":27},
+"1":{"x":24,"y":56,"w":15,"h":27,"offX":0,"offY":0,"sourceW":15,"sourceH":27},
+"2":{"x":71,"y":30,"w":20,"h":27,"offX":0,"offY":0,"sourceW":20,"sourceH":27},
+"3":{"x":49,"y":30,"w":20,"h":27,"offX":0,"offY":0,"sourceW":20,"sourceH":27},
+"4":{"x":1,"y":1,"w":23,"h":27,"offX":0,"offY":0,"sourceW":23,"sourceH":27},
+"5":{"x":93,"y":30,"w":19,"h":27,"offX":0,"offY":0,"sourceW":19,"sourceH":27},
+"6":{"x":1,"y":30,"w":21,"h":27,"offX":0,"offY":0,"sourceW":21,"sourceH":27},
+"7":{"x":98,"y":1,"w":21,"h":27,"offX":0,"offY":0,"sourceW":21,"sourceH":27},
+"8":{"x":50,"y":1,"w":22,"h":27,"offX":0,"offY":0,"sourceW":22,"sourceH":27},
+"9":{"x":26,"y":1,"w":22,"h":27,"offX":0,"offY":0,"sourceW":22,"sourceH":27},
+",":{"x":114,"y":30,"w":11,"h":12,"offX":0,"offY":15,"sourceW":11,"sourceH":27},
+".":{"x":114,"y":44,"w":10,"h":9,"offX":0,"offY":18,"sourceW":10,"sourceH":27}}}

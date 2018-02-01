@@ -31,14 +31,18 @@ class CFun {
                 m_class = ui.dialog.OneButtonUI;
                 path = "dialog/OneButton.json"
             }
-            this.parsingPath(m_class);
+            // path = this.parsingPath(m_class);
             Laya.loader.load([{url:path,type:laya.net.Loader.JSON}], laya.utils.Handler.create(this, this.onDialogLoaded,[content,callback,obj,button,title]));
         }
 
-        public static parsingPath(m_class:any):string{
-            let ui_txt = Laya.loader.getRes("js/ui/layaUI.max.all.js");
+        public static parsingPath(name:string):string{
+            let ui_txt:string = Laya.loader.getRes("js/ui/layaUI.max.all.js");
+            let str_load:string = "this.loadUI(\"";
+            let str_begin = ui_txt.indexOf(str_load,ui_txt.indexOf(name + ".prototype.createChildren")) + str_load.length;
+            let str_end = ui_txt.indexOf("\");",str_begin);
+            let path = ui_txt.substring(str_begin,str_end);
 
-            return "";
+            return path + ".json";
         }
 
         private static onDialogLoaded(content:string,callback:Function,obj:any,button:string,title:string){

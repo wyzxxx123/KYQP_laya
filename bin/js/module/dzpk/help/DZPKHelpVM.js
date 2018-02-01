@@ -17,7 +17,6 @@ define(["require", "exports", "./DZPKHelpView", "../../../mbase/base/MViewModel"
             var _this = _super.call(this) || this;
             _this.setAtlasName = "res/atlas/dzpk/helpWindow.atlas,res/atlas/dzpk/zh-cn/helpWindow.atlas";
             _this.setClass = DZPKHelpView_1.DZPKHelpView;
-            _this.setViewPath = "game_dzpk/DZPKHelp";
             return _this;
         }
         return DZPKHelpVM;

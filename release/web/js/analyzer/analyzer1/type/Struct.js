@@ -1,0 +1,1 @@
+var Struct=function(){function t(t){this._type=t}return t.createNew=function(e){return new t(e)},Object.defineProperty(t.prototype,"$type",{get:function(){return this._type},enumerable:!0,configurable:!0}),t.prototype.hasKey=function(t){return null!=this._type.defs[t]},t}();

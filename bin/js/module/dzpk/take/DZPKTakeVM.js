@@ -17,7 +17,6 @@ define(["require", "exports", "./DZPKTakeView", "../../../mbase/base/MViewModel"
             var _this = _super.call(this) || this;
             _this._roomInfo = null;
             _this.setAtlasName = "res/atlas/dzpk/buySitDownWindow.atlas,res/atlas/dzpk/zh-cn/buySitDownWindow.atlas";
-            _this.setViewPath = "game_dzpk/DZPKTake";
             _this.setClass = DZPKTakeView_1.DZPKTakeView;
             return _this;
         }

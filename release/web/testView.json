@@ -1,0 +1,1 @@
+{"type":"View","props":{"width":600,"height":400},"child":[{"type":"Button","props":{"y":175,"x":243,"width":293,"skin":"comp/button.png","sizeGrid":"4,5,6,4","label":"label","height":131}},{"type":"testView2","props":{"y":-33,"x":-135,"runtime":"ui.testView2UI"}}]}
