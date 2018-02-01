@@ -49,8 +49,8 @@ import { MViewModel } from '../../mbase/base/MViewModel';
 
         private getRoomInfo(roomIndex:number):any{
             let roomInfo = null;
-            if(this.playerData.roomDataList[Player.HOLDEM][roomIndex]){
-                roomInfo = this.playerData.roomDataList[Player.HOLDEM][roomIndex]
+            if(this.playerData.roomDataList[ StaticData.HOLDEM][roomIndex]){
+                roomInfo = this.playerData.roomDataList[ StaticData.HOLDEM][roomIndex]
             }
 
             return roomInfo;
@@ -60,7 +60,7 @@ import { MViewModel } from '../../mbase/base/MViewModel';
         public onShow(recv?:any){
             super.onShow(this.playerData);
 
-            this.sendData(16778269,[Player.HOLDEM]);//changeGameType 
+            this.sendData(16778269,[ StaticData.HOLDEM]);//changeGameType 
         }
 
         //继承的

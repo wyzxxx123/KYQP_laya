@@ -43,7 +43,7 @@ import { Player } from '../../mbase/data/Player';
             this.txt_gold.text = CFun.formatCurrency(recv["gold"]);
             this.btn_header.skin = this.getHeadImage((recv["sex"]),(recv["icon"] || 0));
 
-            let arr = recv.roomDataList[Player.HOLDEM];
+            let arr = recv.roomDataList[ StaticData.HOLDEM];
             let i = 0,len = arr.length,list = [];
             for(i = 0;i < len;i++){
                 list.push({ box_scale:{txt_blind:{value:arr[i]["blink"] * 0.01 + "/" + (arr[i]["blink"] * 0.02)},

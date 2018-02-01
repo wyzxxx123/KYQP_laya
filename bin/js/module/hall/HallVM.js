@@ -8,7 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./HallView", "../../mbase/data/Player", "../../mbase/base/MViewModel"], function (require, exports, HallView_1, Player_1, MViewModel_1) {
+define(["require", "exports", "./HallView", "../../mbase/base/MViewModel"], function (require, exports, HallView_1, MViewModel_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     /**
@@ -52,7 +52,7 @@ define(["require", "exports", "./HallView", "../../mbase/data/Player", "../../mb
         HallVM.prototype.onShow = function (recv) {
             _super.prototype.onShow.call(this, this.playerData);
             this.sendData(16778274, []); //getGameList 
-            this.sendData(16778269, [Player_1.Player.HALL]); //changeGameType 
+            this.sendData(16778269, [StaticData.HALL]); //changeGameType 
             this.sendData(16778275, []); //getGamePlayer 
             if (CFun.DEBUG) {
                 if (this.playerData.gold == 0) {

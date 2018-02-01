@@ -155,7 +155,6 @@ class Analyzer{
 			new RpcType();
         }
 
-		public static seed:number = 0;
 		private GENIUS_NUMBER: number = 0x05027919;	//加密蒙板数字
         private MAX_LEN: number = 0xFFFF;			//最大数据包体长度
         private BAD_LEN: number = 0xFFFF00;			//异常数据包体长度

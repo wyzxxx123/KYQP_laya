@@ -13,7 +13,7 @@ export class MVMManager extends VMManager{
 
         private onReconnect(){
             if(this.playerData.roomSN > 0){
-                if(this.playerData.gameType == Player.HOLDEM){
+                if(this.playerData.gameType ==  StaticData.HOLDEM){
                     this.showOther("SCENE_DZPKSceneVM",this.playerData.roomData);
                 }
             }
@@ -23,7 +23,7 @@ export class MVMManager extends VMManager{
             if(player.ret != 0){
                 CFun.dialog(CFun.getItem(MsgData, "id", player.ret)["msg"],null,null,"确 定");
 
-                if(player.gameType == Player.HOLDEM){
+                if(player.gameType ==  StaticData.HOLDEM){
                     this.showOther("SCENE_scene_620");
                 }
             }
@@ -33,7 +33,7 @@ export class MVMManager extends VMManager{
             if(player.ret != 0){
                 CFun.dialog(CFun.getItem(MsgData, "id", player.ret)["msg"],null,null,"确 定");
 
-                if(player.gameType == Player.HOLDEM){
+                if(player.gameType ==  StaticData.HOLDEM){
                     this.showOther("SCENE_scene_620");
                 }
             }

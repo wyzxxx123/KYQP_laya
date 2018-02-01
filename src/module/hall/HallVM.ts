@@ -42,7 +42,7 @@ import { MViewModel } from '../../mbase/base/MViewModel';
             super.onShow(this.playerData);
 
             this.sendData(16778274,[]);//getGameList 
-            this.sendData(16778269,[Player.HALL]);//changeGameType 
+            this.sendData(16778269,[ StaticData.HALL]);//changeGameType 
             this.sendData(16778275,[]);//getGamePlayer 
 
             if(CFun.DEBUG){

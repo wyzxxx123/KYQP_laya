@@ -8,7 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "../data/Player"], function (require, exports, Player_1) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var MVMManager = /** @class */ (function (_super) {
@@ -26,7 +26,7 @@ define(["require", "exports", "../data/Player"], function (require, exports, Pla
         };
         MVMManager.prototype.onReconnect = function () {
             if (this.playerData.roomSN > 0) {
-                if (this.playerData.gameType == Player_1.Player.HOLDEM) {
+                if (this.playerData.gameType == StaticData.HOLDEM) {
                     this.showOther("SCENE_DZPKSceneVM", this.playerData.roomData);
                 }
             }
@@ -34,7 +34,7 @@ define(["require", "exports", "../data/Player"], function (require, exports, Pla
         MVMManager.prototype.onEnterError = function (player) {
             if (player.ret != 0) {
                 CFun.dialog(CFun.getItem(MsgData, "id", player.ret)["msg"], null, null, "确 定");
-                if (player.gameType == Player_1.Player.HOLDEM) {
+                if (player.gameType == StaticData.HOLDEM) {
                     this.showOther("SCENE_scene_620");
                 }
             }
@@ -42,7 +42,7 @@ define(["require", "exports", "../data/Player"], function (require, exports, Pla
         MVMManager.prototype.onPlayError = function (player) {
             if (player.ret != 0) {
                 CFun.dialog(CFun.getItem(MsgData, "id", player.ret)["msg"], null, null, "确 定");
-                if (player.gameType == Player_1.Player.HOLDEM) {
+                if (player.gameType == StaticData.HOLDEM) {
                     this.showOther("SCENE_scene_620");
                 }
             }

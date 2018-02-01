@@ -8,7 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "../../../mbase/data/Player"], function (require, exports, Player_1) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var DZPKRecordView = /** @class */ (function (_super) {
@@ -21,7 +21,7 @@ define(["require", "exports", "../../../mbase/data/Player"], function (require, 
         DZPKRecordView.prototype.viewInit = function (data) {
             var arr = data.holdemRecords, tarr = [], i = 0, len = data.holdemRecords.length;
             for (i = 0; i < len; i++) {
-                tarr.push({ img_bg: { visible: i % 2 == 0 }, txt_num: i + 1, txt_id: arr[i].gameNo, txt_room_name: data.getRoomDataById(Player_1.Player.HOLDEM, arr[i].roomType).name,
+                tarr.push({ img_bg: { visible: i % 2 == 0 }, txt_num: i + 1, txt_id: arr[i].gameNo, txt_room_name: data.getRoomDataById(StaticData.HOLDEM, arr[i].roomType).name,
                     txt_score: CFun.formatCurrency(arr[i].win - arr[i].deduct), txt_end_time: arr[i].time });
             }
             if (arr.length <= 0) {

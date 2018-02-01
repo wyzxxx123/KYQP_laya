@@ -133,7 +133,6 @@ var Analyzer = /** @class */ (function () {
         laya.utils.Pool.recover("tmpByte", tmp_byte);
         return [write_byte, write_byte.buffer];
     };
-    Analyzer.seed = 0;
     return Analyzer;
 }());
 //# sourceMappingURL=Analyzer.js.map

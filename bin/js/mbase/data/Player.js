@@ -88,8 +88,10 @@ define(["require", "exports"], function (require, exports) {
             enumerable: true,
             configurable: true
         });
+        /*****************************************工具信息************************************************/
+        /** 登陆类型 */
         Player.prototype.getRoomTypeBySN = function (sn) {
-            return Math.floor(sn / Player.SNRoomType);
+            return Math.floor(sn / StaticData.SNRoomType);
         };
         Player.prototype.getGameTypeBySN = function (sn) {
             if (sn <= 0)
@@ -113,10 +115,10 @@ define(["require", "exports"], function (require, exports) {
                 var gameType = this.recordList[i].gameType;
                 var records = [];
                 switch (gameType) {
-                    case Player.HOLDEM:
+                    case StaticData.HOLDEM:
                         records = this.holdemRecords;
                         break;
-                    case Player.ERBA:
+                    case StaticData.ERBA:
                         records = this.erbaRecords;
                         break;
                 }
@@ -147,12 +149,6 @@ define(["require", "exports"], function (require, exports) {
                 }
             }
         };
-        /*****************************************工具信息************************************************/
-        /** 登陆类型 */
-        Player.HALL = ""; //大厅
-        Player.HOLDEM = "holdem"; //德州
-        Player.ERBA = "erba"; //二八杠
-        Player.SNRoomType = 200000;
         return Player;
     }(MModel));
     exports.Player = Player;

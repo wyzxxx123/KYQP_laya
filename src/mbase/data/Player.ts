@@ -89,12 +89,8 @@ export class Player extends MModel{
 
         /*****************************************工具信息************************************************/
         /** 登陆类型 */
-        public static HALL = ""; //大厅
-		public static HOLDEM = "holdem"; //德州
-		public static ERBA = "erba"; //二八杠
-		public static SNRoomType: number = 200000;
         public getRoomTypeBySN(sn: number) {
-            return Math.floor(sn / Player.SNRoomType);
+            return Math.floor(sn /  StaticData.SNRoomType);
         }
 
         public getGameTypeBySN(sn: number) {
@@ -123,10 +119,10 @@ export class Player extends MModel{
                 let gameType = this.recordList[i].gameType
                 let records = [];
                 switch (gameType) {
-                    case Player.HOLDEM:
+                    case  StaticData.HOLDEM:
                         records = this.holdemRecords;
                         break;
-                    case Player.ERBA:
+                    case  StaticData.ERBA:
                         records = this.erbaRecords;
                         break;
                 }

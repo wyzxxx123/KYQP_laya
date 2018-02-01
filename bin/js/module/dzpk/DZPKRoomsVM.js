@@ -8,7 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./DZPKRoomsView", "../../mbase/data/Player", "../../mbase/base/MViewModel"], function (require, exports, DZPKRoomsView_1, Player_1, MViewModel_1) {
+define(["require", "exports", "./DZPKRoomsView", "../../mbase/base/MViewModel"], function (require, exports, DZPKRoomsView_1, MViewModel_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var DZPKRoomsVM = /** @class */ (function (_super) {
@@ -54,15 +54,15 @@ define(["require", "exports", "./DZPKRoomsView", "../../mbase/data/Player", "../
         };
         DZPKRoomsVM.prototype.getRoomInfo = function (roomIndex) {
             var roomInfo = null;
-            if (this.playerData.roomDataList[Player_1.Player.HOLDEM][roomIndex]) {
-                roomInfo = this.playerData.roomDataList[Player_1.Player.HOLDEM][roomIndex];
+            if (this.playerData.roomDataList[StaticData.HOLDEM][roomIndex]) {
+                roomInfo = this.playerData.roomDataList[StaticData.HOLDEM][roomIndex];
             }
             return roomInfo;
         };
         //继承的
         DZPKRoomsVM.prototype.onShow = function (recv) {
             _super.prototype.onShow.call(this, this.playerData);
-            this.sendData(16778269, [Player_1.Player.HOLDEM]); //changeGameType 
+            this.sendData(16778269, [StaticData.HOLDEM]); //changeGameType 
         };
         //继承的
         DZPKRoomsVM.prototype.eventInit = function () {

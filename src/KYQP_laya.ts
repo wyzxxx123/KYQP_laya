@@ -22,8 +22,6 @@ class GameMain {
         //调用DebugTool调试面板
         // Laya.DebugTool.init();
 
-        new MCView(null);
-
         new RegistClass();
         new MLayer();
 

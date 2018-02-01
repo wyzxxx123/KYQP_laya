@@ -8,7 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "../../mbase/data/Player"], function (require, exports, Player_1) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var DZPKRoomsView = /** @class */ (function (_super) {
@@ -53,7 +53,7 @@ define(["require", "exports", "../../mbase/data/Player"], function (require, exp
             this.txt_name.text = recv["name"];
             this.txt_gold.text = CFun.formatCurrency(recv["gold"]);
             this.btn_header.skin = this.getHeadImage((recv["sex"]), (recv["icon"] || 0));
-            var arr = recv.roomDataList[Player_1.Player.HOLDEM];
+            var arr = recv.roomDataList[StaticData.HOLDEM];
             var i = 0, len = arr.length, list = [];
             for (i = 0; i < len; i++) {
                 list.push({ box_scale: { txt_blind: { value: arr[i]["blink"] * 0.01 + "/" + (arr[i]["blink"] * 0.02) },
